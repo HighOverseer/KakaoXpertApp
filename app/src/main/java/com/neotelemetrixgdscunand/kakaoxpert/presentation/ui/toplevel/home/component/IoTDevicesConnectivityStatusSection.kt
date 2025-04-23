@@ -4,13 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +37,7 @@ val mapConnectivityToIconResId = hashMapOf(
     true to R.drawable.ic_checklist,
     false to R.drawable.ic_not_checklist
 )
-val mapConnectivityToTextInfoResId:HashMap<Boolean?, Int> = hashMapOf(
+val mapConnectivityToTextInfoResId: HashMap<Boolean?, Int> = hashMapOf(
     true to R.string.telah_terhubung_dengan_perangkat_iot,
     false to R.string.belum_terhubung_dengan_perangkat_iot,
     null to R.string.sedang_menghubungkan_dengan_perangkat_iot
@@ -55,7 +52,7 @@ val mapConnectivityToTextColor = mapOf(
 @Composable
 fun IoTDevicesConnectivityStatusSection(
     modifier: Modifier = Modifier,
-    isConnected:Boolean? = null
+    isConnected: Boolean? = null
 ) {
     Row(
         modifier
@@ -80,14 +77,15 @@ fun IoTDevicesConnectivityStatusSection(
         Spacer(Modifier.width(8.dp))
         val textInfoResId = mapConnectivityToTextInfoResId[isConnected]
         Text(
-            text = stringResource(textInfoResId ?: R.string.sedang_menghubungkan_dengan_perangkat_iot),
+            text = stringResource(
+                textInfoResId ?: R.string.sedang_menghubungkan_dengan_perangkat_iot
+            ),
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontSize = 14.sp
             ),
             color = mapConnectivityToTextColor[isConnected] ?: Orange85
         )
     }
-
 
 
 }

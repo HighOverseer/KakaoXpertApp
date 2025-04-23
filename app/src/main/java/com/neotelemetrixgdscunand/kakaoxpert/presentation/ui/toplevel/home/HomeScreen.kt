@@ -31,9 +31,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDataOverviewSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.HomeDiagnosisHistory
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.HomeHeaderSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDataOverviewSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDevicesConnectivityStatusSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.PriceInfoSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.SectionHeadline

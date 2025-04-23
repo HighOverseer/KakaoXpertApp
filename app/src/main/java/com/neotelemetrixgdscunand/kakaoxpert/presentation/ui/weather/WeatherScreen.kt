@@ -152,7 +152,7 @@ fun WeatherScreenBody(
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val cardModifier = remember {
-        val xOffset = with(density){
+        val xOffset = with(density) {
             (configuration.screenHeightDp.dp / 2.5f).toPx()
         }
         Modifier

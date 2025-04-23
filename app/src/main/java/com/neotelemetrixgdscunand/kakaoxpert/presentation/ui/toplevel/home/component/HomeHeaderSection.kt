@@ -7,11 +7,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,18 +20,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,10 +49,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Maroon50
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green60
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Maroon50
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Pink
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
@@ -96,11 +90,11 @@ fun HomeHeaderSection(
     ) {
 
         val backgroundIconModifier = remember(inflatedCardHeight) {
-            val yOffset = with(density){
-                (-inflatedCardHeight/2.5f).roundToPx()
+            val yOffset = with(density) {
+                (-inflatedCardHeight / 2.5f).roundToPx()
             }
-            val xOffset = with(density){
-                (-inflatedCardHeight/2f).roundToPx()
+            val xOffset = with(density) {
+                (-inflatedCardHeight / 2f).roundToPx()
             }
             Modifier
                 .size(inflatedCardHeight)
@@ -119,11 +113,11 @@ fun HomeHeaderSection(
         )
 
         val backgroundIcon2Modifier = remember(inflatedCardHeight) {
-            val yOffset = with(density){
-                (-inflatedCardHeight/2.35f).roundToPx()
+            val yOffset = with(density) {
+                (-inflatedCardHeight / 2.35f).roundToPx()
             }
-            val xOffset = with(density){
-                (inflatedCardHeight/3.5f).roundToPx()
+            val xOffset = with(density) {
+                (inflatedCardHeight / 3.5f).roundToPx()
             }
             Modifier
                 .size(inflatedCardHeight * 0.8f)
@@ -347,10 +341,11 @@ fun HomeHeaderSection(
                 }
 
                 val bottomCardModifier = remember {
-                    Modifier.fillMaxWidth()
-                    .padding(0.dp)
-                    .height(32.dp)
-                    .wrapContentHeight()
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(0.dp)
+                        .height(32.dp)
+                        .wrapContentHeight()
                 }
                 Card(
                     modifier = bottomCardModifier,

@@ -5,14 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,11 +22,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.ensureActive
 
 @Composable
 fun SplashScreen(
@@ -53,7 +48,12 @@ fun SplashScreen(
         Image(
             modifier = Modifier
                 .size(147.dp)
-                .sizeIn(minWidth = 100.dp, maxWidth = 200.dp, minHeight = 100.dp, maxHeight = 100.dp)
+                .sizeIn(
+                    minWidth = 100.dp,
+                    maxWidth = 200.dp,
+                    minHeight = 100.dp,
+                    maxHeight = 100.dp
+                )
                 .aspectRatio(1f),
             imageVector = ImageVector
                 .vectorResource(R.drawable.ic_logo),
