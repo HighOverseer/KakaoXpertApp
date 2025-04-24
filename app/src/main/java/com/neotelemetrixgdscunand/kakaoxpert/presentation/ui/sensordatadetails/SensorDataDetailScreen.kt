@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -42,7 +41,7 @@ import kotlin.random.Random
 @Composable
 fun SensorDataDetailScreen(
     modifier: Modifier = Modifier,
-    navigateUp : () -> Unit = {}
+    navigateUp: () -> Unit = {}
 ) {
 
     val sortedDescendingYAxis = remember {
@@ -67,7 +66,7 @@ fun SensorDataDetailScreen(
     }
 
     val temperatureSensorItemDatas = remember {
-        List(7){ index ->
+        List(7) { index ->
             val randomAdditionalValue = Random.nextInt(0, 30)
             SensorItemData.Temperature(
                 value = 10.0f + randomAdditionalValue,
@@ -76,7 +75,7 @@ fun SensorDataDetailScreen(
                 )
             )
         }.toImmutableList().apply {
-            this.forEach{
+            this.forEach {
                 println(it)
             }
         }
@@ -129,7 +128,7 @@ fun SensorDataDetailScreen(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Icon(
                     modifier =
                     Modifier
@@ -162,7 +161,7 @@ fun SensorDataDetailScreen(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Icon(
                     modifier =
                     Modifier
@@ -195,7 +194,7 @@ fun SensorDataDetailScreen(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Icon(
                     modifier =
                     Modifier

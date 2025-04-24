@@ -49,7 +49,7 @@ sealed interface Navigation {
         data object Diagnosis : MainRoute
 
         @Serializable
-        data object IoTDevicesInfo: MainRoute
+        data object IoTDevicesInfo : MainRoute
 
         @Serializable
         data object Account : MainRoute
@@ -94,6 +94,6 @@ sealed interface Navigation {
     data object Profile : Route
 
     @Serializable
-    data object SensorDataDetails:Route
+    data object SensorDataDetails : Route
 }
 

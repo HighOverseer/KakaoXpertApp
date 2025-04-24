@@ -155,7 +155,7 @@ fun IoTDevicesInfoScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        repeat(2){
+        repeat(2) {
             Spacer(Modifier.height(16.dp))
 
             IoTDeviceItem()
