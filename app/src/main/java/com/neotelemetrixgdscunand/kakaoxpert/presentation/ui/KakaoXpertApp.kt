@@ -31,6 +31,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.screen.CacaoR
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.screen.NotificationScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.onboarding.OnBoardingScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.profile.ProfileScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.SensorDataDetailScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.shop.ShopScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.TakePhotoScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.MainPage
@@ -179,6 +180,11 @@ fun KakaoXpertApp(
                         rootNavHostController.navigate(
                             Navigation.Profile
                         )
+                    },
+                    navigateToSensorDataDetails = {
+                        rootNavHostController.navigate(
+                            Navigation.SensorDataDetails
+                        )
                     }
                 )
             }
@@ -276,6 +282,12 @@ fun KakaoXpertApp(
 
             composable<Navigation.Profile> {
                 ProfileScreen(
+                    navigateUp = rootNavHostController::navigateUp
+                )
+            }
+
+            composable<Navigation.SensorDataDetails> {
+                SensorDataDetailScreen(
                     navigateUp = rootNavHostController::navigateUp
                 )
             }

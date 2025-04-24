@@ -30,6 +30,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.IoTDataOverviewMenu
 
 @Composable
 fun IoTDataOverviewSection(
@@ -87,7 +88,9 @@ fun IoTDataOverviewSection(
 
             IoTDataOverviewMenu(
                 modifier = Modifier
-                    .widthIn(min = minWidth),
+                    .width(minWidth)
+                    .widthIn(min = minWidth)
+                    .aspectRatio(1.24f),
                 iconResId = R.drawable.ic_thermometer,
                 label = stringResource(R.string.suhu),
                 value = "15-16°C",
@@ -96,7 +99,9 @@ fun IoTDataOverviewSection(
             Spacer(Modifier.width(12.dp))
             IoTDataOverviewMenu(
                 modifier = Modifier
-                    .widthIn(min = minWidth),
+                    .width(minWidth)
+                    .widthIn(min = minWidth)
+                    .aspectRatio(1.24f),
                 iconResId = R.drawable.ic_drop,
                 label = stringResource(R.string.kelembapan),
                 value = "96%",
@@ -105,7 +110,9 @@ fun IoTDataOverviewSection(
             Spacer(Modifier.width(12.dp))
             IoTDataOverviewMenu(
                 modifier = Modifier
-                    .widthIn(min = minWidth),
+                    .width(minWidth)
+                    .widthIn(min = minWidth)
+                    .aspectRatio(1.24f),
                 iconResId = R.drawable.ic_sun,
                 label = stringResource(R.string.intensitas_cahaya),
                 value = "100 Lux",

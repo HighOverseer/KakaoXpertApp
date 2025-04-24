@@ -26,6 +26,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.account.AccountScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.DiagnosisScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.HomeScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDevicesInfoScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -41,6 +42,7 @@ fun MainPage(
     navigateToNotification: () -> Unit = {},
     navigateToTakePhoto: () -> Unit = {},
     navigateToProfile: () -> Unit = {},
+    navigateToSensorDataDetails: () -> Unit = {}
 ) {
 
     val snackbarHostState = remember {
@@ -110,11 +112,18 @@ fun MainPage(
                         showSnackbar = showSnackbar
                     )
                 }
+
                 composable<Navigation.Main.Diagnosis> {
                     DiagnosisScreen(
                         navigateToDiagnosisResult = navigateToDiagnosisResult,
                         navigateToTakePhoto = navigateToTakePhoto,
                         bottomBarHeightPxProvider = { bottomBarHeightPx }
+                    )
+                }
+
+                composable<Navigation.Main.IoTDevicesInfo> {
+                    IoTDevicesInfoScreen(
+                        navigateToSensorDataDetails = navigateToSensorDataDetails
                     )
                 }
 

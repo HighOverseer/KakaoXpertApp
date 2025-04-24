@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,41 +22,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey69
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
 
 @Composable
-fun IoTDataOverviewMenu(
+fun SeeMoreMenu(
     modifier: Modifier = Modifier,
-    iconResId: Int,
-    label: String,
-    value: String = "",
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
-
     val imageModifier = remember {
         Modifier
             .clip(CircleShape)
-            .border(width = 1.dp, color = Grey69, shape = CircleShape)
+            .border(width = 1.dp, color = Color.White, shape = CircleShape)
             .width(44.dp)
             .widthIn(32.dp, 64.dp)
             .aspectRatio(1f)
             .clickable(onClick = onClick)
-
     }
 
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = Green55
         ),
-        onClick = {},
+        onClick = onClick,
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
@@ -69,40 +64,39 @@ fun IoTDataOverviewMenu(
                 ImagePainterStable(
                     modifier = Modifier
                         .align(Alignment.Center),
-                    drawableResId = iconResId,
-                    contentDescription = label
+                    drawableResId = R.drawable.ic_right_arrow,
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color.White)
                 )
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.weight(1f))
 
             Text(
-                text = label,
+                text = stringResource(R.string.lebih_lengkap),
                 style = MaterialTheme.typography.titleMedium,
-                color = Black10,
+                color = Color.White,
             )
 
             Spacer(Modifier.height(8.dp))
 
             Text(
-                text = value,
-                style = MaterialTheme.typography.headlineMedium,
-                color = Orange85,
+                text = stringResource(R.string.lihat_secara_waktu),
+                style = MaterialTheme.typography.labelMedium,
+                color = Color.White,
             )
         }
     }
-
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-private fun IoTOverviewMenuPreview() {
+private fun SeeMoreMenuPreview() {
     KakaoXpertTheme {
-        IoTDataOverviewMenu(
-            modifier = Modifier,
-            iconResId = R.drawable.ic_thermometer,
-            label = "Suhu",
-            value = "96%"
+        SeeMoreMenu(
+            Modifier
+                .width(181.dp)
+                .aspectRatio(1.1f)
         )
     }
 }

@@ -211,4 +211,10 @@
     <string name="telah_terhubung_dengan_perangkat_iot">Telah Terhubung Dengan Perangkat IoT</string>
     <string name="belum_terhubung_dengan_perangkat_iot">Belum Terhubung Dengan Perangkat IoT</string>
     <string name="sedang_menghubungkan_dengan_perangkat_iot">Sedang Menghubungkan dengan Perangkat IoT</string>
+    <string name="perangkat">Perangkat</string>
+    <string name="lebih_lengkap">Lebih Lengkap</string>
+    <string name="lihat_secara_waktu">Lihat Secara Waktu</string>
+    <string name="perangkat_tersambung">Perangkat Tersambung</string>
+    <string name="tambah_perangkat">Tambah Perangkat</string>
+    <string name="overview">Overview</string>
 </resources>

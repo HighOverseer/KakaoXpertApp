@@ -45,7 +45,8 @@ class MainPageState(
     private val topLevelRoutesStringValMap = mapOf(
         Navigation.Main.Home.stringVal to Navigation.Main.Home,
         Navigation.Main.Diagnosis.stringVal to Navigation.Main.Diagnosis,
-        Navigation.Main.Account.stringVal to Navigation.Main.Account,
+        Navigation.Main.IoTDevicesInfo.stringVal to Navigation.Main.IoTDevicesInfo,
+        Navigation.Main.Account.stringVal to Navigation.Main.Account
     )
 
     val currentSelectedTopLevelRoute: StateFlow<Navigation.Main.MainRoute?> =
@@ -94,6 +95,11 @@ class MainPageState(
                 titleRestId = R.string.diagnosis,
                 iconResId = R.drawable.ic_camera,
                 route = Navigation.Main.Diagnosis
+            ),
+            NavigationBarItemData(
+                titleRestId = R.string.perangkat,
+                iconResId = R.drawable.ic_connectivity,
+                route = Navigation.Main.IoTDevicesInfo
             ),
             NavigationBarItemData(
                 titleRestId = R.string.akun,

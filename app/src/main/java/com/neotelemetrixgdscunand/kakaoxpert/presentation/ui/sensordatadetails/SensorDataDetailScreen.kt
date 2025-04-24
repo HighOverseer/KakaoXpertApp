@@ -1,0 +1,240 @@
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.util.getTimeString
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
+import kotlin.random.Random
+
+@Composable
+fun SensorDataDetailScreen(
+    modifier: Modifier = Modifier,
+    navigateUp : () -> Unit = {}
+) {
+
+    val sortedDescendingYAxis = remember {
+        persistentListOf(
+            "40°C",
+            "30°C",
+            "20°C",
+            "10°C",
+            "0°C",
+        ).reversed().toImmutableList()
+    }
+    val sortedDescendingXAxis = remember {
+        persistentListOf(
+            "1\nJan",
+            "2\nJan",
+            "3\nJan",
+            "4\nJan",
+            "5\nJan",
+            "6\nJan",
+            "7\nJan",
+        ).toImmutableList()
+    }
+
+    val temperatureSensorItemDatas = remember {
+        List(7){ index ->
+            val randomAdditionalValue = Random.nextInt(0, 30)
+            SensorItemData.Temperature(
+                value = 10.0f + randomAdditionalValue,
+                timeString = getTimeString(
+                    additionalTimesInMillis = 3600_000L * 24 * (index)
+                )
+            )
+        }.toImmutableList().apply {
+            this.forEach{
+                println(it)
+            }
+        }
+    }
+
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Grey90)
+            .verticalScroll(scrollState)
+    ) {
+        Spacer(Modifier.height(24.dp))
+
+        Box(
+            Modifier
+                .fillMaxWidth()
+        ) {
+            IconButton(
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .align(Alignment.CenterStart),
+                onClick = navigateUp
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(20.dp),
+                    imageVector = ImageVector
+                        .vectorResource(R.drawable.ic_arrow_left),
+                    tint = Black10,
+                    contentDescription = stringResource(R.string.kembali)
+                )
+            }
+            Text(
+                modifier = Modifier
+                    .align(Alignment.Center),
+                text = stringResource(R.string.overview),
+                style = MaterialTheme.typography.headlineSmall,
+                color = Black10
+            )
+        }
+
+        Spacer(Modifier.height(24.dp))
+
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    modifier =
+                    Modifier
+                        .height(18.dp)
+                        .aspectRatio(0.565f),
+                    imageVector = ImageVector
+                        .vectorResource(R.drawable.ic_thermometer),
+                    contentDescription = null,
+                    tint = Orange85
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                Text(
+                    text = stringResource(R.string.suhu),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = Black10
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            SensorDataGraph(
+                sortedDescendingXAxis = sortedDescendingXAxis,
+                sortedDescendingYAxis = sortedDescendingYAxis,
+                sensorItemData = temperatureSensorItemDatas
+            )
+
+            Spacer(Modifier.height(32.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    modifier =
+                    Modifier
+                        .height(16.dp)
+                        .aspectRatio(0.714f),
+                    imageVector = ImageVector
+                        .vectorResource(R.drawable.ic_drop),
+                    contentDescription = null,
+                    tint = Orange85
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                Text(
+                    text = stringResource(R.string.kelembapan),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = Black10
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            SensorDataGraph(
+                sortedDescendingXAxis = sortedDescendingXAxis,
+                sortedDescendingYAxis = sortedDescendingYAxis,
+                sensorItemData = temperatureSensorItemDatas
+            )
+
+            Spacer(Modifier.height(32.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    modifier =
+                    Modifier
+                        .height(20.dp)
+                        .aspectRatio(1f),
+                    imageVector = ImageVector
+                        .vectorResource(R.drawable.ic_sun),
+                    contentDescription = null,
+                    tint = Orange85
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                Text(
+                    text = stringResource(R.string.intensitas_cahaya),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = Black10
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            SensorDataGraph(
+                sortedDescendingXAxis = sortedDescendingXAxis,
+                sortedDescendingYAxis = sortedDescendingYAxis,
+                sensorItemData = temperatureSensorItemDatas
+            )
+
+        }
+
+        Spacer(Modifier.height(81.dp))
+
+    }
+}
+
+@Preview
+@Composable
+private fun SensorDataDetailScreenPreview() {
+    KakaoXpertTheme {
+        SensorDataDetailScreen()
+    }
+}
