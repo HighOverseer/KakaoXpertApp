@@ -1,9 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails
 
-import android.graphics.Region
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,10 +20,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -46,8 +42,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
-import androidx.compose.ui.window.PopupProperties
-import androidx.core.graphics.contains
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
@@ -89,7 +83,7 @@ fun SensorDataGraph(
 
         val invalidValue = -1
         var lowerBoundDataY by remember { mutableIntStateOf(invalidValue) }
-        var upperBoundDataY by remember { mutableIntStateOf(invalidValue)}
+        var upperBoundDataY by remember { mutableIntStateOf(invalidValue) }
         var stepPerUnit by remember { mutableIntStateOf(invalidValue) }
 
         val lowerBoundDataX = remember {
@@ -137,7 +131,6 @@ fun SensorDataGraph(
         }
 
 
-
         val yTextMeasurables = remember {
             val sensorDataUnit = sensorItemData.firstOrNull()?.unit ?: ""
             val minimumValue = sensorItemData
@@ -148,8 +141,8 @@ fun SensorDataGraph(
                 .maxOfOrNull { it.value }
                 ?.plus(1)?.roundToInt()
                 ?.run {
-                    if(minimumValue + 4 > this) minimumValue + 4 else this
-                }?: 0
+                    if (minimumValue + 4 > this) minimumValue + 4 else this
+                } ?: 0
 
             stepPerUnit = ((maximumValue - minimumValue) / 4)
 
@@ -173,7 +166,7 @@ fun SensorDataGraph(
         var mapWidth = remember { 0f }
         var mapHeight = remember { 0f }
 
-        if(canDraw){
+        if (canDraw) {
             val baseDayOfTheYear = remember {
                 val calendar = Calendar.getInstance()
                 calendar.add(Calendar.DAY_OF_YEAR, -6)
@@ -181,7 +174,6 @@ fun SensorDataGraph(
             }
 
             var dataValuePath = remember<Path?> { null }
-
 
 
             val coroutine = rememberCoroutineScope()
@@ -212,12 +204,12 @@ fun SensorDataGraph(
 //                            }
 //                        }
 //                    }
-                    .pointerInput(Unit){
+                    .pointerInput(Unit) {
                         awaitPointerEventScope {
-                            while (true){
+                            while (true) {
                                 val event = awaitPointerEvent()
                                 val position = event.changes.first().position
-                                when(event.type){
+                                when (event.type) {
                                     PointerEventType.Release -> {
                                         dataValuePath?.let {
                                             val bounds = it.getBounds()
@@ -226,7 +218,8 @@ fun SensorDataGraph(
                                             if (isPointInsideBounds) {
                                                 job?.cancel()
                                                 job = coroutine.launch {
-                                                    val nearestPointInPath = getOffsetWithMatchingX(it, position)
+                                                    val nearestPointInPath =
+                                                        getOffsetWithMatchingX(it, position)
                                                     touchedPointInPath = nearestPointInPath
                                                     showPopUp = true
                                                 }
@@ -236,13 +229,15 @@ fun SensorDataGraph(
                                             }
                                         }
                                     }
+
                                     PointerEventType.Move -> {
                                         job?.cancel()
                                         job = coroutine.launch {
                                             showPopUp = false
                                             val nearestPointInPath = dataValuePath?.let {
                                                 getOffsetWithMatchingX(
-                                                    it, position)
+                                                    it, position
+                                                )
                                             }
                                             touchedPointInPath = nearestPointInPath
                                         }
@@ -285,7 +280,8 @@ fun SensorDataGraph(
                 }
 
                 yTextMeasurables.forEachIndexed { index, it ->
-                    val yLowBound = size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
+                    val yLowBound =
+                        size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
                     val yHighBound = yLowBound - spacePerStepCelcius
                     val y = ((yLowBound + yHighBound) / 2f)
 
@@ -294,7 +290,7 @@ fun SensorDataGraph(
                         color = Grey60,
                         topLeft = Offset(
                             x = 0f,
-                            y = y.minus(contentYHeight/2)
+                            y = y.minus(contentYHeight / 2)
                         )
                     )
                 }
@@ -319,7 +315,8 @@ fun SensorDataGraph(
 
 
                 for (index in 0 until yTextMeasurables.lastIndex) {
-                    val yLowBound = size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
+                    val yLowBound =
+                        size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
                     val yHighBound = yLowBound - spacePerStepCelcius
 
                     drawLine(
@@ -346,19 +343,28 @@ fun SensorDataGraph(
                         for (i in sensorItemData.indices) {
                             val data = sensorItemData[i]
 
-                            val isDataOutOfBoundInXAxis = data.timeInMillis < lowerBoundDataX || data.timeInMillis > upperBoundDataX
-                            val isDataOutOfBoundInYAxis = data.value < lowerBoundDataY.minus(stepPerUnit / 2) || data.value > upperBoundDataY.plus(stepPerUnit / 2)
+                            val isDataOutOfBoundInXAxis =
+                                data.timeInMillis < lowerBoundDataX || data.timeInMillis > upperBoundDataX
+                            val isDataOutOfBoundInYAxis =
+                                data.value < lowerBoundDataY.minus(stepPerUnit / 2) || data.value > upperBoundDataY.plus(
+                                    stepPerUnit / 2
+                                )
 
-                            val isDataOutOfBound = isDataOutOfBoundInYAxis || isDataOutOfBoundInXAxis
-                            if(isDataOutOfBound) continue
+                            val isDataOutOfBound =
+                                isDataOutOfBoundInYAxis || isDataOutOfBoundInXAxis
+                            if (isDataOutOfBound) continue
 
-                            val numerator = (data.value - lowerBoundDataY.toFloat().minus(stepPerUnit / 2f))
-                            val denominator =  (upperBoundDataY.toFloat().plus(stepPerUnit / 2f) - lowerBoundDataY.toFloat().minus(stepPerUnit / 2f))
+                            val numerator =
+                                (data.value - lowerBoundDataY.toFloat().minus(stepPerUnit / 2f))
+                            val denominator = (upperBoundDataY.toFloat()
+                                .plus(stepPerUnit / 2f) - lowerBoundDataY.toFloat()
+                                .minus(stepPerUnit / 2f))
                             val ratio = numerator / denominator
                             val yValueRatio = (1 - ratio)
 
                             // 2.dp -> to slide it to the end a little
-                            val x1 = initialXAxisStartPadding + data.getDayInFraction(baseDayOfTheYear = baseDayOfTheYear) * spacePerDay + 2.dp.toPx()
+                            val x1 =
+                                initialXAxisStartPadding + data.getDayInFraction(baseDayOfTheYear = baseDayOfTheYear) * spacePerDay + 2.dp.toPx()
                             val y1 = (height - initialYAxisBottomPadding) * yValueRatio
 
                             if (i == 0) {
@@ -419,11 +425,11 @@ fun SensorDataGraph(
                 }
             }
 
-            if(showPopUp){
+            if (showPopUp) {
                 touchedPointInPath?.let {
                     val intOffset = IntOffset(it.x.roundToInt(), it.y.roundToInt())
                     val positionProvider = remember {
-                        object : PopupPositionProvider{
+                        object : PopupPositionProvider {
                             override fun calculatePosition(
                                 anchorBounds: IntRect,
                                 windowSize: IntSize,
@@ -439,10 +445,13 @@ fun SensorDataGraph(
                         onDismissRequest = { touchedPointInPath = null }
                     ) {
                         val touchedValue = remember(it.x, it.y) {
-                            val finalLowerBoundDataY = lowerBoundDataY.toFloat().minus(stepPerUnit / 2f)
-                            val finalUpperBoundDataY = upperBoundDataY.toFloat().plus(stepPerUnit / 2f)
+                            val finalLowerBoundDataY =
+                                lowerBoundDataY.toFloat().minus(stepPerUnit / 2f)
+                            val finalUpperBoundDataY =
+                                upperBoundDataY.toFloat().plus(stepPerUnit / 2f)
                             val ratio = 1 - (it.y / mapHeight)
-                            val value = ratio * (finalUpperBoundDataY - finalLowerBoundDataY) + finalLowerBoundDataY
+                            val value =
+                                ratio * (finalUpperBoundDataY - finalLowerBoundDataY) + finalLowerBoundDataY
                             value.roundOffDecimal(n = 2)
                         }
                         val unit = remember {
@@ -459,8 +468,6 @@ fun SensorDataGraph(
             }
 
         }
-
-
 
 
     }
@@ -645,10 +652,12 @@ private fun SensorDataGraphTest(
 
                         val spacePerDay2 =
                             ((size.width - xSpacing - xPadding) / sortedDescendingXAxis.size.minus(1))
-                        val x1 = data.getDayInFraction(baseDayOfTheYear) * spacePerDay2 + 6.dp.toPx()
+                        val x1 =
+                            data.getDayInFraction(baseDayOfTheYear) * spacePerDay2 + 6.dp.toPx()
                         //println("day.getday : ${data.getDay()}")
                         val y1 = (height - 32.dp.toPx() - 15.dp.toPx()) * leftRatio + 8.dp.toPx()
-                        val x2 = nextData.getDayInFraction(baseDayOfTheYear) * spacePerDay2 + 6.dp.toPx()
+                        val x2 =
+                            nextData.getDayInFraction(baseDayOfTheYear) * spacePerDay2 + 6.dp.toPx()
                         val y2 = (height - 32.dp.toPx() - 15.dp.toPx()) * rightRatio + 8.dp.toPx()
 //                        println(
 //                            "x1 : $x1, y1 : $y1, x2 : $x2, y2 : $y2"

@@ -1,17 +1,13 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails
 
-import android.graphics.RectF
 import android.graphics.Region
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.asAndroidPath
-import androidx.core.graphics.and
-import androidx.core.graphics.contains
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -52,13 +48,13 @@ fun getTimeInMillis(additionalTimesInMillis: Long = 0L): Long {
         .plus(additionalTimesInMillis)
 }
 
-fun getSevenPreviousDay():List<String>{
+fun getSevenPreviousDay(): List<String> {
     val df = SimpleDateFormat("d\nMMM", Locale.getDefault())
     val list = mutableListOf<String>()
     val calendar = Calendar.getInstance()
 
-    (0..6).map{ index ->
-        val subtractor = if(index > 0) -1 else 0
+    (0..6).map { index ->
+        val subtractor = if (index > 0) -1 else 0
 
         calendar.add(Calendar.DAY_OF_YEAR, subtractor)
         val dateString = df.format(calendar.time)
@@ -81,11 +77,19 @@ fun getCurrentDayInMillisSeconds(): String {
 }
 
 
-fun isPointInsidePath(path:Path, offset: Offset):Boolean{
+fun isPointInsidePath(path: Path, offset: Offset): Boolean {
     val bounds = path.getBounds()
 
     val region = Region().apply {
-        setPath(path.asAndroidPath(), Region(bounds.left.toInt(), bounds.top.toInt(), bounds.right.toInt(), bounds.bottom.toInt()))
+        setPath(
+            path.asAndroidPath(),
+            Region(
+                bounds.left.toInt(),
+                bounds.top.toInt(),
+                bounds.right.toInt(),
+                bounds.bottom.toInt()
+            )
+        )
     }
 
     return region.contains(offset.x.toInt(), offset.y.toInt())
@@ -93,16 +97,16 @@ fun isPointInsidePath(path:Path, offset: Offset):Boolean{
 
 suspend fun getOffsetWithMatchingX(
     path: Path,
-    touch:Offset,
-    precision:Float = 0.5f
-):Offset? = coroutineScope{
+    touch: Offset,
+    precision: Float = 0.5f
+): Offset? = coroutineScope {
 
     val pathMeasure = PathMeasure().apply {
         setPath(path, false)
     }
     val targetX = touch.x
 
-    var nearestOffset:Offset? = null
+    var nearestOffset: Offset? = null
     var minXDiff = Float.MAX_VALUE
 
     val pathLength = pathMeasure.length
@@ -110,16 +114,16 @@ suspend fun getOffsetWithMatchingX(
 
     ensureActive()
 
-    while (distance <= pathLength){
+    while (distance <= pathLength) {
         val position = pathMeasure.getPosition(distance)
         val diff = abs(position.x - targetX)
 
         ensureActive()
 
-        if (diff < minXDiff){
+        if (diff < minXDiff) {
             minXDiff = diff
             nearestOffset = position
-            if(diff < precision) break
+            if (diff < precision) break
         }
 
         distance += precision
