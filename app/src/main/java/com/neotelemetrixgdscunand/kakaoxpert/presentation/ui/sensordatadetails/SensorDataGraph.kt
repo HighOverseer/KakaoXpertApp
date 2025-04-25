@@ -1,5 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails
 
+import androidx.collection.mutableFloatListOf
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -22,11 +28,13 @@ import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.copy
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
@@ -37,6 +45,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import java.util.Calendar
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -57,21 +66,68 @@ fun SensorDataGraph(
     ) {
 
         val textMeasurer = rememberTextMeasurer()
-        val textAxisStyle = MaterialTheme.typography.labelMedium
+        val textAxisStyle = MaterialTheme.typography.labelMedium.copy(
+            textAlign = TextAlign.Center
+        )
+        val textAxisStyle2 = textAxisStyle.copy(
+            fontSize = 12.sp
+        )
 
-        var lowerBoundData = 0
-        var upperBoundData = 0
-        var stepPerUnit = 0
+        val invalidValue = -1
+        var lowerBoundDataY by remember { mutableIntStateOf(invalidValue) }
+        var upperBoundDataY by remember { mutableIntStateOf(invalidValue)}
+        var stepPerUnit by remember { mutableFloatStateOf(invalidValue.toFloat()) }
+
+        val lowerBoundDataX = remember {
+            Calendar.getInstance()
+                .let {
+                    it.add(Calendar.DAY_OF_YEAR, -6)
+                    it[Calendar.HOUR_OF_DAY] = 0
+                    it[Calendar.MINUTE] = 0
+                    it[Calendar.SECOND] = 0
+                    it[Calendar.MILLISECOND] = 0
+
+                    it.timeInMillis
+                }
+        }
+
+        val upperBoundDataX = remember {
+            Calendar.getInstance()
+                .let {
+                    it[Calendar.HOUR_OF_DAY] = 23
+                    it[Calendar.MINUTE] = 59
+                    it[Calendar.SECOND] = 59
+                    it[Calendar.MILLISECOND] = 999
+
+                    it.timeInMillis
+                }
+        }
+
+        val canDraw by remember {
+            derivedStateOf {
+                lowerBoundDataY != invalidValue
+                        && upperBoundDataY != invalidValue
+                        && stepPerUnit != invalidValue.toFloat()
+            }
+        }
+
         val xTextMeasurables = remember {
-
-            sortedDescendingXAxis.map {
+//            sortedDescendingXAxis.map {
+//                textMeasurer.measure(
+//                    text = it,
+//                    style = textAxisStyle.copy(
+//                        textAlign = TextAlign.Center
+//                    )
+//                )
+//            }.toImmutableList()
+            getSevenPreviousDay().map {
                 textMeasurer.measure(
                     text = it,
                     style = textAxisStyle.copy(
                         textAlign = TextAlign.Center
                     )
                 )
-            }.toImmutableList()
+            }
         }
 
         val yTextMeasurables = remember {
@@ -80,53 +136,70 @@ fun SensorDataGraph(
                 .minOfOrNull { it.value }
                 ?.roundToInt() ?: 0
 
-            println("min : $minimumValue")
-
             val maximumValue = sensorItemData
                 .maxOfOrNull { it.value }
-                ?.plus(1)?.roundToInt() ?: 0
+                ?.plus(1)?.roundToInt()
+                ?.run {
+                    if(minimumValue == this) minimumValue + 1 else this
+                }?: 0
 
-            println("max : $maximumValue")
+            stepPerUnit = ((maximumValue - minimumValue) / 4f)
 
-            stepPerUnit = ((maximumValue - minimumValue) / 4)
+            var currValue:Float = minimumValue.toFloat()
+            lowerBoundDataY = minimumValue
 
-            (minimumValue..maximumValue step stepPerUnit).mapIndexed{ index, it ->
-                if(index == 0){
-                    lowerBoundData = it
-                }
+            val valuesAxis = mutableListOf<Float>()
 
-                upperBoundData = it
+
+            while(currValue <= maximumValue){
+                upperBoundDataY = currValue.toInt()
+
+                valuesAxis.add(currValue)
+
+                currValue += stepPerUnit
+            }
+
+            val hasDecimal = valuesAxis.any { it % 1f != 0.0f }
+
+            val usedTextStyle = if(hasDecimal){
+                textAxisStyle2
+            }else{
+                textAxisStyle
+            }
+            valuesAxis.map {
+                val value = if(hasDecimal) it else it.roundToInt()
 
                 textMeasurer.measure(
-                    text = "$it$sensorDataUnit",
-                    style = textAxisStyle.copy(
-                        textAlign = TextAlign.Center
-                    )
+                    text = "$value$sensorDataUnit",
+                    style = usedTextStyle
                 )
             }.toImmutableList()
+
         }
 
-        Canvas(
-            Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.35f)
-                .padding(16.dp)
-        ) {
-            val contentXWidth = xTextMeasurables[0].size.width
-            val contentYHeight = yTextMeasurables[0].size.height
+        if(canDraw){
+            Canvas(
+                Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.35f)
+                    .padding(16.dp)
+            ) {
 
-            val initialXAxisStartPadding = 40.dp.toPx()
-            val xAxisBottomPadding = 32.dp.toPx()
-            val initialYAxisBottomPadding = 32.dp.toPx()
-            val spacePerDay =
-                (size.width - initialXAxisStartPadding) / sortedDescendingXAxis.size
-            val spacePerStepCelcius =
-                (size.height - initialYAxisBottomPadding) / 5
+                val contentXWidth = xTextMeasurables[0].size.width
+                val contentYHeight = yTextMeasurables[0].size.height
 
-            xTextMeasurables.forEachIndexed { index, it ->
-                val xLowBound = initialXAxisStartPadding + index * spacePerDay
-                val xHighBound = xLowBound + spacePerDay
-                val x = ((xLowBound + xHighBound) / 2f)
+                val initialXAxisStartPadding = 40.dp.toPx()
+                val xAxisBottomPadding = 32.dp.toPx()
+                val initialYAxisBottomPadding = 32.dp.toPx()
+                val spacePerDay =
+                    (size.width - initialXAxisStartPadding) / sortedDescendingXAxis.size
+                val spacePerStepCelcius =
+                    (size.height - initialYAxisBottomPadding) / 5
+
+                xTextMeasurables.forEachIndexed { index, it ->
+                    val xLowBound = initialXAxisStartPadding + index * spacePerDay
+                    val xHighBound = xLowBound + spacePerDay
+                    val x = ((xLowBound + xHighBound) / 2f)
 
 //                drawPoints(
 //                    points = listOf(
@@ -139,20 +212,20 @@ fun SensorDataGraph(
 //                    strokeWidth = 2.dp.toPx(),
 //                    pointMode = PointMode.Points
 //                )
-                drawText(
-                    it,
-                    color = Grey60,
-                    topLeft = Offset(
-                        x = x.minus(contentXWidth / 2),
-                        y = size.height - xAxisBottomPadding
-                    ),
-                )
-            }
+                    drawText(
+                        it,
+                        color = Grey60,
+                        topLeft = Offset(
+                            x = x.minus(contentXWidth / 2),
+                            y = size.height - xAxisBottomPadding
+                        ),
+                    )
+                }
 
-            yTextMeasurables.forEachIndexed { index, it ->
-                val yLowBound = size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
-                val yHighBound = yLowBound - spacePerStepCelcius
-                val y = ((yLowBound + yHighBound) / 2f)
+                yTextMeasurables.forEachIndexed { index, it ->
+                    val yLowBound = size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
+                    val yHighBound = yLowBound - spacePerStepCelcius
+                    val y = ((yLowBound + yHighBound) / 2f)
 
 //                drawPoints(
 //                    points = listOf(
@@ -166,85 +239,89 @@ fun SensorDataGraph(
 //                    pointMode = PointMode.Points
 //                )
 
-                drawText(
-                    it,
-                    color = Grey60,
-                    topLeft = Offset(
-                        x = 0f,
-                        y = y.minus(contentYHeight/2)
-                    )
-                )
-            }
-
-            for (index in 0 until xTextMeasurables.lastIndex) {
-                val xLowBound = initialXAxisStartPadding + index * spacePerDay
-                val xHighBound = xLowBound + (2 * spacePerDay)
-                val x = ((xLowBound + xHighBound) / 2f)
-                drawLine(
-                    color = Grey75,
-                    strokeWidth = 1.dp.toPx(),
-                    start = Offset(
-                        x = x,
-                        y = size.height - xAxisBottomPadding
-                    ),
-                    end = Offset(
-                        x = x,
-                        y = 0f
-                    )
-                )
-            }
-
-
-            for (index in 0 until yTextMeasurables.lastIndex) {
-                val yLowBound = size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
-                val yHighBound = yLowBound - spacePerStepCelcius
-
-                drawLine(
-                    color = Grey75,
-                    strokeWidth = 1.dp.toPx(),
-                    start = Offset(
-                        x = initialXAxisStartPadding,
-                        y = yHighBound
-                    ),
-                    end = Offset(
-                        x = size.width,
-                        y = yHighBound
-                    )
-                )
-            }
-
-            var lastX = 0f
-            var firstX = 0f
-            var maxY = 0f
-            val strokePath = Path()
-                .apply {
-                    val height = size.height
-
-                    for (i in sensorItemData.indices) {
-                        val data = sensorItemData[i]
-
-                        val isDataOutOfBound = data.value < lowerBoundData.minus(stepPerUnit / 2) || data.value > upperBoundData.plus(stepPerUnit / 2)
-                        if(isDataOutOfBound) continue
-
-                        val leftRatio = (1 - ((data.value - lowerBoundData.minus(stepPerUnit / 2)) / (upperBoundData.plus(stepPerUnit / 2) - lowerBoundData.minus(stepPerUnit / 2))))
-
-                        val x1 = initialXAxisStartPadding + data.getDayInFraction() * spacePerDay
-                        val y1 = (height - initialYAxisBottomPadding) * leftRatio
-
-                        if (i == 0) {
-                            moveTo(x1, y1)
-                            firstX = x1
-                        }
-                        lastX = x1
-
-                        lineTo(
-                            x1,
-                            y1,
+                    drawText(
+                        it,
+                        color = Grey60,
+                        topLeft = Offset(
+                            x = 0f,
+                            y = y.minus(contentYHeight/2)
                         )
-
-                        if (y1 > maxY) maxY = y1
-                    }
+                    )
                 }
+
+                for (index in 0 until xTextMeasurables.lastIndex) {
+                    val xLowBound = initialXAxisStartPadding + index * spacePerDay
+                    val xHighBound = xLowBound + (2 * spacePerDay)
+                    val x = ((xLowBound + xHighBound) / 2f)
+                    drawLine(
+                        color = Grey75,
+                        strokeWidth = 1.dp.toPx(),
+                        start = Offset(
+                            x = x,
+                            y = size.height - xAxisBottomPadding
+                        ),
+                        end = Offset(
+                            x = x,
+                            y = 0f
+                        )
+                    )
+                }
+
+
+                for (index in 0 until yTextMeasurables.lastIndex) {
+                    val yLowBound = size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
+                    val yHighBound = yLowBound - spacePerStepCelcius
+
+                    drawLine(
+                        color = Grey75,
+                        strokeWidth = 1.dp.toPx(),
+                        start = Offset(
+                            x = initialXAxisStartPadding,
+                            y = yHighBound
+                        ),
+                        end = Offset(
+                            x = size.width,
+                            y = yHighBound
+                        )
+                    )
+                }
+
+                var lastX = 0f
+                var firstX = 0f
+                var maxY = 0f
+                val strokePath = Path()
+                    .apply {
+                        val height = size.height
+
+                        for (i in sensorItemData.indices) {
+                            val data = sensorItemData[i]
+
+                            val isDataOutOfBoundInXAxis = data.timeInMillis < lowerBoundDataX || data.timeInMillis > upperBoundDataX
+                            val isDataOutOfBoundInYAxis = data.value < lowerBoundDataY.minus(stepPerUnit / 2) || data.value > upperBoundDataY.plus(stepPerUnit / 2)
+
+                            val isDataOutOfBound = isDataOutOfBoundInYAxis || isDataOutOfBoundInXAxis
+                            if(isDataOutOfBound) continue
+
+                            val leftRatio = (1 - ((data.value - lowerBoundDataY.minus(stepPerUnit / 2)) / (upperBoundDataY.plus(stepPerUnit / 2) - lowerBoundDataY.minus(stepPerUnit / 2))))
+
+                            // 2.dp -> to slide it to the end a little
+                            val x1 = initialXAxisStartPadding + data.getDayInFraction() * spacePerDay + 2.dp.toPx()
+                            val y1 = (height - initialYAxisBottomPadding) * leftRatio
+
+                            if (i == 0) {
+                                moveTo(x1, y1)
+                                firstX = x1
+                            }
+                            lastX = x1
+
+                            lineTo(
+                                x1,
+                                y1,
+                            )
+
+                            if (y1 > maxY) maxY = y1
+                        }
+                    }
 
 //            sensorItemData.map { data ->
 //                val height = size.height
@@ -272,7 +349,6 @@ fun SensorDataGraph(
 //                        )
 //                    )
 //
-//                    if(this.last() != it) return@forEach
 //
 //                    drawLine(
 //                        color = Black10,
@@ -296,35 +372,38 @@ fun SensorDataGraph(
 //                )
 //            }
 
-            val fillPath = strokePath.copy()
-                .apply {
-                    lineTo(lastX, maxY)
-                    lineTo(firstX, maxY)
-                    close()
-                }
+                val fillPath = strokePath.copy()
+                    .apply {
+                        lineTo(lastX, maxY)
+                        lineTo(firstX, maxY)
+                        close()
+                    }
 
-            drawPath(
-                path = fillPath,
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Green55.copy(
-                            alpha = 0.3f
+                drawPath(
+                    path = fillPath,
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Green55.copy(
+                                alpha = 0.3f
+                            ),
+                            Color.Transparent
                         ),
-                        Color.Transparent
-                    ),
-                    endY = maxY
+                        endY = maxY
+                    )
                 )
-            )
 
-            drawPath(
-                path = strokePath,
-                color = Green55,
-                style = Stroke(
-                    width = 2.dp.toPx(),
-                    cap = StrokeCap.Round
+                drawPath(
+                    path = strokePath,
+                    color = Green55,
+                    style = Stroke(
+                        width = 2.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
                 )
-            )
+            }
         }
+
+
     }
 }
 
@@ -347,16 +426,14 @@ private fun SensorDataGraphPreview() {
 
         val temperatureSensorItemDatas = remember {
             List(168) { index ->
-                val randomAdditionalValue = Random.nextInt(-5, 5)
+                val randomAdditionalValue = Random.nextInt(-10, 10)
                 SensorItemData.Temperature(
-                    value = -5f + ((index / 167f) * 50) + randomAdditionalValue,
-                    timeString = getTimeString(
+                    value = 10f,//-5f + ((index / 167f) * 50) + randomAdditionalValue,
+                    timeInMillis = getTimeInMillis(
                         additionalTimesInMillis = (24f * 3600_000f * (index/24f)).toLong()
                     )
                 )
-            }.toImmutableList().onEach {
-                println(it)
-            }
+            }.toImmutableList().apply { this.forEach{ println(it)} }
 //            listOf(
 //                SensorItemData.Temperature(
 //                    value = 0.0f,
@@ -392,8 +469,8 @@ private fun SensorDataGraphPreview() {
                 .padding(16.dp)
         ) {
             SensorDataGraph(
-                sortedDescendingXAxis = sortedDescendingXAxis.toImmutableList(),
-                sensorItemData = temperatureSensorItemDatas.toImmutableList()
+                sortedDescendingXAxis = sortedDescendingXAxis,
+                sensorItemData = temperatureSensorItemDatas
             )
         }
 
@@ -656,37 +733,37 @@ private fun SensorDataGraphTestPreview() {
             listOf(
                 SensorItemData.Temperature(
                     value = 10.0f,
-                    timeString = getTimeString(
+                    timeInMillis = getTimeInMillis(
                         additionalTimesInMillis = 3600_000L * 24 * (0)
                     )
                 ), SensorItemData.Temperature(
                     value = 15.0f,
-                    timeString = getTimeString(
+                    timeInMillis = getTimeInMillis(
                         additionalTimesInMillis = 3600_000L * 24 * (1)
                     )
                 ), SensorItemData.Temperature(
                     value = 20.0f,
-                    timeString = getTimeString(
+                    timeInMillis = getTimeInMillis(
                         additionalTimesInMillis = 3600_000L * 24 * (2)
                     )
                 ), SensorItemData.Temperature(
                     value = 25.0f,
-                    timeString = getTimeString(
+                    timeInMillis = getTimeInMillis(
                         additionalTimesInMillis = 3600_000L * 24 * (3)
                     )
                 ), SensorItemData.Temperature(
                     value = 30.0f,
-                    timeString = getTimeString(
+                    timeInMillis = getTimeInMillis(
                         additionalTimesInMillis = 3600_000L * 24 * (4)
                     )
                 ), SensorItemData.Temperature(
                     value = 35.0f,
-                    timeString = getTimeString(
+                    timeInMillis = getTimeInMillis(
                         additionalTimesInMillis = 3600_000L * 24 * (5)
                     )
                 ), SensorItemData.Temperature(
                     value = 40.0f,
-                    timeString = getTimeString(
+                    timeInMillis = getTimeInMillis(
                         additionalTimesInMillis = 3600_000L * 24 * (6)
                     )
                 )

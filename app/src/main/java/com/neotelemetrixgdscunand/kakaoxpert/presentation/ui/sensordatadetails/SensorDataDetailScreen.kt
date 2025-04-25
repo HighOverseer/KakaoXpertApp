@@ -60,7 +60,7 @@ fun SensorDataDetailScreen(
             val randomAdditionalValue = Random.nextInt(0, 30)
             SensorItemData.Temperature(
                 value = 10.0f + randomAdditionalValue,
-                timeString = getTimeString(
+                timeInMillis = getTimeInMillis(
                     additionalTimesInMillis = 3600_000L * 24 * (index)
                 )
             )
