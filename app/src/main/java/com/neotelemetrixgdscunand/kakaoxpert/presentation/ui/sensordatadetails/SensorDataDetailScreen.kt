@@ -33,7 +33,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.util.getTimeString
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.random.Random
@@ -44,15 +43,6 @@ fun SensorDataDetailScreen(
     navigateUp: () -> Unit = {}
 ) {
 
-    val sortedDescendingYAxis = remember {
-        persistentListOf(
-            "40°C",
-            "30°C",
-            "20°C",
-            "10°C",
-            "0°C",
-        ).reversed().toImmutableList()
-    }
     val sortedDescendingXAxis = remember {
         persistentListOf(
             "1\nJan",
@@ -153,7 +143,6 @@ fun SensorDataDetailScreen(
 
             SensorDataGraph(
                 sortedDescendingXAxis = sortedDescendingXAxis,
-                sortedDescendingYAxis = sortedDescendingYAxis,
                 sensorItemData = temperatureSensorItemDatas
             )
 
@@ -186,7 +175,6 @@ fun SensorDataDetailScreen(
 
             SensorDataGraph(
                 sortedDescendingXAxis = sortedDescendingXAxis,
-                sortedDescendingYAxis = sortedDescendingYAxis,
                 sensorItemData = temperatureSensorItemDatas
             )
 
@@ -219,7 +207,6 @@ fun SensorDataDetailScreen(
 
             SensorDataGraph(
                 sortedDescendingXAxis = sortedDescendingXAxis,
-                sortedDescendingYAxis = sortedDescendingYAxis,
                 sensorItemData = temperatureSensorItemDatas
             )
 
