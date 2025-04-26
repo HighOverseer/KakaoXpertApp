@@ -55,7 +55,7 @@ fun getSevenPreviousDay(
     val list = mutableListOf<String>()
     val calendar = Calendar.getInstance()
 
-    (baseDayOfTheYear..baseDayOfTheYear+6).map { dayOfTheYear ->
+    (baseDayOfTheYear..baseDayOfTheYear + 6).map { dayOfTheYear ->
         calendar[Calendar.DAY_OF_YEAR] = dayOfTheYear
         val dateString = df.format(calendar.time)
         list.add(dateString)

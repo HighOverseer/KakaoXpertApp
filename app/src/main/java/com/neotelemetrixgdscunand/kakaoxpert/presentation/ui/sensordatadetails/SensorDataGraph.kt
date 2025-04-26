@@ -22,7 +22,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,11 +33,9 @@ import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.copy
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -70,10 +67,10 @@ fun SensorDataGraph(
     modifier: Modifier = Modifier,
     sortedDescendingXAxis: ImmutableList<String> = persistentListOf(),
     sensorItemData: ImmutableList<SensorItemData> = persistentListOf(),
-    onProcessSlidingGraphPointer:() -> Unit = { },
-    onFinishSlidingGraphPointer:() -> Unit = { },
-    onDelegateScroll:(Float) -> Unit = { },
-    baseDayOfTheYear:Int = 1,
+    onProcessSlidingGraphPointer: () -> Unit = { },
+    onFinishSlidingGraphPointer: () -> Unit = { },
+    onDelegateScroll: (Float) -> Unit = { },
+    baseDayOfTheYear: Int = 1,
 ) {
     Card(
         modifier = modifier,
@@ -194,130 +191,79 @@ fun SensorDataGraph(
             val density = LocalDensity.current
             val initialYAxisBottomPaddingDp = 32.dp
             val canvasModifier = remember {
-                Modifier.fillMaxWidth()
-                .aspectRatio(1.35f)
-                .padding(16.dp)
-                .onGloballyPositioned{
-                    with(density){
-                        mapHeight = it.size.height - initialYAxisBottomPaddingDp.toPx()
-                     }
+                Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.35f)
+                    .padding(16.dp)
+                    .onGloballyPositioned {
+                        with(density) {
+                            mapHeight = it.size.height - initialYAxisBottomPaddingDp.toPx()
+                        }
 
                     }
-                .pointerInput(Unit) {
-                    // TRANSIENT STATE
-                    var isScrollingBeingDelegatedToParent = false
+                    .pointerInput(Unit) {
+                        // TRANSIENT STATE
+                        var isScrollingBeingDelegatedToParent = false
 
-                    awaitEachGesture {
-                        awaitFirstDown()
+                        awaitEachGesture {
+                            awaitFirstDown()
 
-                        val dataPath = dataValuePath ?: return@awaitEachGesture
+                            val dataPath = dataValuePath ?: return@awaitEachGesture
 
-                        var currentEventChanges:PointerInputChange
-                        var currentRelativePosition:Offset
+                            var currentEventChanges: PointerInputChange
+                            var currentRelativePosition: Offset
 
-                        do {
-                            val event = awaitPointerEvent()
-                            currentEventChanges = event.changes.first()
-                            currentRelativePosition = currentEventChanges.position
-                            val isChangesInXGreaterThanY =
-                                abs(currentRelativePosition.x - currentEventChanges.previousPosition.x) > abs(
-                                    currentRelativePosition.y - currentEventChanges.previousPosition.y
-                                )
-
-                            job?.cancel()
-                            if ((isChangesInXGreaterThanY || isMovingPointer) && !isScrollingBeingDelegatedToParent) {
-                                job = coroutineScope.launch {
-                                    onProcessSlidingGraphPointer()
-                                    val nearestPointInPath = getNearestPointOffsetInPathWithMatchingX(
-                                        dataPath, currentRelativePosition
+                            do {
+                                val event = awaitPointerEvent()
+                                currentEventChanges = event.changes.first()
+                                currentRelativePosition = currentEventChanges.position
+                                val isChangesInXGreaterThanY =
+                                    abs(currentRelativePosition.x - currentEventChanges.previousPosition.x) > abs(
+                                        currentRelativePosition.y - currentEventChanges.previousPosition.y
                                     )
-                                    touchedPointInPath = nearestPointInPath
-                                    isMovingPointer = true
+
+                                job?.cancel()
+                                if ((isChangesInXGreaterThanY || isMovingPointer) && !isScrollingBeingDelegatedToParent) {
+                                    job = coroutineScope.launch {
+                                        onProcessSlidingGraphPointer()
+                                        val nearestPointInPath =
+                                            getNearestPointOffsetInPathWithMatchingX(
+                                                dataPath, currentRelativePosition
+                                            )
+                                        touchedPointInPath = nearestPointInPath
+                                        isMovingPointer = true
+                                    }
+                                } else {
+                                    touchedPointInPath = null
+                                    onDelegateScroll(currentEventChanges.scrollDelta.y)
+                                    isScrollingBeingDelegatedToParent = true
+                                    isMovingPointer = false
                                 }
-                            } else {
-                                touchedPointInPath = null
-                                onDelegateScroll(currentEventChanges.scrollDelta.y)
-                                isScrollingBeingDelegatedToParent = true
-                                isMovingPointer = false
-                            }
-                        }while (event.changes.any{ it.pressed })
+                            } while (event.changes.any { it.pressed })
 
-                        if (isMovingPointer) {
-                            job?.cancel()
-                            job = coroutineScope.launch {
-                                val nearestPointInPath =
-                                    getNearestPointOffsetInPathWithMatchingX(
-                                        dataPath,
-                                        currentRelativePosition
-                                    )
-                                touchedPointInPath = nearestPointInPath
-                                isMovingPointer = false
-                            }
-                        }else touchedPointInPath = null
+                            if (isMovingPointer) {
+                                job?.cancel()
+                                job = coroutineScope.launch {
+                                    val nearestPointInPath =
+                                        getNearestPointOffsetInPathWithMatchingX(
+                                            dataPath,
+                                            currentRelativePosition
+                                        )
+                                    touchedPointInPath = nearestPointInPath
+                                    isMovingPointer = false
+                                }
+                            } else touchedPointInPath = null
 
-                        onFinishSlidingGraphPointer()
-                        isScrollingBeingDelegatedToParent = false
+                            onFinishSlidingGraphPointer()
+                            isScrollingBeingDelegatedToParent = false
 
+                        }
                     }
-
-//                    awaitPointerEventScope {
-//                        while (true) {
-//                            val event = awaitPointerEvent()
-//                            val currentEventChanges = event.changes.first()
-//                            val currentRelativePosition = currentEventChanges.position
-//                            val isChangesInXGreaterThanY =
-//                                abs(currentRelativePosition.x - currentEventChanges.previousPosition.x) > abs(
-//                                    currentRelativePosition.y - currentEventChanges.previousPosition.y
-//                                )
-//
-//                            val dataPath = dataValuePath ?: continue
-//
-//                            when (event.type) {
-//                                PointerEventType.Move -> {
-//                                    job?.cancel()
-//                                    if ((isChangesInXGreaterThanY || isMovingPointer) && !isScrollingBeingDelegatedToParent) {
-//                                        job = coroutineScope.launch {
-//                                            onProcessSlidingGraphPointer()
-//                                            val nearestPointInPath = getNearestPointOffsetInPathWithMatchingX(
-//                                                dataPath, currentRelativePosition
-//                                            )
-//                                            touchedPointInPath = nearestPointInPath
-//                                            isMovingPointer = true
-//                                        }
-//                                    } else {
-//                                        touchedPointInPath = null
-//                                        onDelegateScroll(currentEventChanges.scrollDelta.y)
-//                                        isScrollingBeingDelegatedToParent = true
-//                                        isMovingPointer = false
-//                                    }
-//                                }
-//
-//                                PointerEventType.Release -> {
-//                                    if (isMovingPointer) {
-//                                        job?.cancel()
-//                                        job = coroutineScope.launch {
-//                                            val nearestPointInPath =
-//                                                getNearestPointOffsetInPathWithMatchingX(
-//                                                    dataPath,
-//                                                    currentRelativePosition
-//                                                )
-//                                            touchedPointInPath = nearestPointInPath
-//                                            isMovingPointer = false
-//                                        }
-//                                    }else touchedPointInPath = null
-//
-//                                    onFinishSlidingGraphPointer()
-//                                    isScrollingBeingDelegatedToParent = false
-//                                }
-//                            }
-//                        }
-//                    }
-                }
             }
 
             Canvas(
                 modifier = canvasModifier
-            ){
+            ) {
                 val contentXWidth = xTextMeasurables[0].size.width
                 val contentYHeight = yTextMeasurables[0].size.height
 
@@ -501,7 +447,8 @@ fun SensorDataGraph(
                         upperBoundDataY = upperBoundDataY,
                         stepPerUnit = stepPerUnit,
                         maxTouchYCoordinates = mapHeight,
-                        touchPointOffsetY = touchedPointInPath?.y?.toInt() ?: return@PointerPopUp null
+                        touchPointOffsetY = touchedPointInPath?.y?.toInt()
+                            ?: return@PointerPopUp null
                     )
                     "$value$sensorDataUnit"
                 }
@@ -514,11 +461,11 @@ fun SensorDataGraph(
 @Composable
 fun PointerPopUp(
     onDismissRequest: () -> Unit = {},
-    isVisibleProvider:() -> Boolean = { false },
-    textProvider:() -> String? = { "" }
+    isVisibleProvider: () -> Boolean = { false },
+    textProvider: () -> String? = { "" }
 ) {
     val text = textProvider()
-    if(isVisibleProvider() && text != null){
+    if (isVisibleProvider() && text != null) {
         Popup(
             alignment = Alignment.BottomEnd,
             onDismissRequest = onDismissRequest
@@ -533,12 +480,12 @@ fun PointerPopUp(
 }
 
 fun computeTouchedPointValue(
-    lowerBoundDataY:Int = 0,
-    upperBoundDataY:Int = 0,
-    stepPerUnit:Int = 0,
-    maxTouchYCoordinates:Float = 0f,
-    touchPointOffsetY:Int,
-):Float {
+    lowerBoundDataY: Int = 0,
+    upperBoundDataY: Int = 0,
+    stepPerUnit: Int = 0,
+    maxTouchYCoordinates: Float = 0f,
+    touchPointOffsetY: Int,
+): Float {
     val finalLowerBoundDataY =
         lowerBoundDataY.toFloat().minus(stepPerUnit / 2f)
     val finalUpperBoundDataY =

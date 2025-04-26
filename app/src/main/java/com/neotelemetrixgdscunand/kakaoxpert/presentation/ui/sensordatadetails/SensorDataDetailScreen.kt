@@ -80,23 +80,28 @@ fun SensorDataDetailScreen(
 
     val scrollState = rememberScrollState()
     var isScrollEnabled by remember { mutableStateOf(true) }
-    val onSlidingGraphPointer = remember { {
+    val onSlidingGraphPointer = remember {
+        {
             isScrollEnabled = false
         }
     }
 
-    val onFinishSlidingGraphPointer = remember { {
-        isScrollEnabled = true
-    }}
+    val onFinishSlidingGraphPointer = remember {
+        {
+            isScrollEnabled = true
+        }
+    }
 
     val coroutineScope = rememberCoroutineScope()
-    val onDelegateScroll:(Float) -> Unit= remember { {
-        coroutineScope.launch {
-            scrollState.scroll {
-                scrollBy(it)
+    val onDelegateScroll: (Float) -> Unit = remember {
+        {
+            coroutineScope.launch {
+                scrollState.scroll {
+                    scrollBy(it)
+                }
             }
         }
-    } }
+    }
 
     val baseDayOfTheYear = remember {
         val calendar = Calendar.getInstance()
