@@ -19,7 +19,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,6 +39,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
+import java.util.Calendar
 import kotlin.random.Random
 
 @Composable
@@ -71,13 +77,40 @@ fun SensorDataDetailScreen(
         }
     }
 
+
     val scrollState = rememberScrollState()
+    var isScrollEnabled by remember { mutableStateOf(true) }
+    val onSlidingGraphPointer = remember { {
+            isScrollEnabled = false
+        }
+    }
+
+    val onFinishSlidingGraphPointer = remember { {
+        isScrollEnabled = true
+    }}
+
+    val coroutineScope = rememberCoroutineScope()
+    val onDelegateScroll:(Float) -> Unit= remember { {
+        coroutineScope.launch {
+            scrollState.scroll {
+                scrollBy(it)
+            }
+        }
+    } }
+
+    val baseDayOfTheYear = remember {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -6)
+        calendar.get(Calendar.DAY_OF_YEAR)
+    }
+
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Grey90)
-            .verticalScroll(scrollState)
+            .verticalScroll(scrollState, isScrollEnabled)
+
     ) {
         Spacer(Modifier.height(24.dp))
 
@@ -143,7 +176,11 @@ fun SensorDataDetailScreen(
 
             SensorDataGraph(
                 sortedDescendingXAxis = sortedDescendingXAxis,
-                sensorItemData = temperatureSensorItemDatas
+                sensorItemData = temperatureSensorItemDatas,
+                onProcessSlidingGraphPointer = onSlidingGraphPointer,
+                onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
+                onDelegateScroll = onDelegateScroll,
+                baseDayOfTheYear = baseDayOfTheYear
             )
 
             Spacer(Modifier.height(32.dp))
@@ -175,7 +212,11 @@ fun SensorDataDetailScreen(
 
             SensorDataGraph(
                 sortedDescendingXAxis = sortedDescendingXAxis,
-                sensorItemData = temperatureSensorItemDatas
+                sensorItemData = temperatureSensorItemDatas,
+                onProcessSlidingGraphPointer = onSlidingGraphPointer,
+                onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
+                onDelegateScroll = onDelegateScroll,
+                baseDayOfTheYear = baseDayOfTheYear,
             )
 
             Spacer(Modifier.height(32.dp))
@@ -207,7 +248,11 @@ fun SensorDataDetailScreen(
 
             SensorDataGraph(
                 sortedDescendingXAxis = sortedDescendingXAxis,
-                sensorItemData = temperatureSensorItemDatas
+                sensorItemData = temperatureSensorItemDatas,
+                onProcessSlidingGraphPointer = onSlidingGraphPointer,
+                onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
+                onDelegateScroll = onDelegateScroll,
+                baseDayOfTheYear = baseDayOfTheYear
             )
 
         }

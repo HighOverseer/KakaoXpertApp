@@ -48,19 +48,19 @@ fun getTimeInMillis(additionalTimesInMillis: Long = 0L): Long {
         .plus(additionalTimesInMillis)
 }
 
-fun getSevenPreviousDay(): List<String> {
+fun getSevenPreviousDay(
+    baseDayOfTheYear: Int
+): List<String> {
     val df = SimpleDateFormat("d\nMMM", Locale.getDefault())
     val list = mutableListOf<String>()
     val calendar = Calendar.getInstance()
 
-    (0..6).map { index ->
-        val subtractor = if (index > 0) -1 else 0
-
-        calendar.add(Calendar.DAY_OF_YEAR, subtractor)
+    (baseDayOfTheYear..baseDayOfTheYear+6).map { dayOfTheYear ->
+        calendar[Calendar.DAY_OF_YEAR] = dayOfTheYear
         val dateString = df.format(calendar.time)
         list.add(dateString)
     }
-    return list.reversed()
+    return list
 }
 
 fun getCurrentDayInMillisSeconds(): String {
@@ -95,7 +95,7 @@ fun isPointInsidePath(path: Path, offset: Offset): Boolean {
     return region.contains(offset.x.toInt(), offset.y.toInt())
 }
 
-suspend fun getOffsetWithMatchingX(
+suspend fun getNearestPointOffsetInPathWithMatchingX(
     path: Path,
     touch: Offset,
     precision: Float = 0.5f
