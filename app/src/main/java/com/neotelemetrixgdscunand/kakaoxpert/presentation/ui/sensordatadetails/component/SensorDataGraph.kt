@@ -14,7 +14,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -73,7 +72,7 @@ fun SensorDataGraph(
     onFinishSlidingGraphPointer: () -> Unit = { },
     onDelegateScroll: (Float) -> Unit = { },
     baseDayOfTheYear: Int = 1,
-    isNavigatingUp:Boolean = false
+    isNavigatingUp: Boolean = false
 ) {
 
 
@@ -465,9 +464,6 @@ fun SensorDataGraph(
         }
     }
 }
-
-
-
 
 
 @Preview

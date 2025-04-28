@@ -44,8 +44,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.component
 fun AddIoTDeviceDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
-    isShownProvider:() -> Boolean = { true },
-    onSubmit:() -> Unit = { },
+    isShownProvider: () -> Boolean = { true },
+    onSubmit: () -> Unit = { },
 ) {
     if (isShownProvider()) {
         var deviceNameText by rememberSaveable {
@@ -135,7 +135,7 @@ fun AddIoTDeviceDialog(
                         isFocusedProvider = { isDeviceKeyTextFieldFocused },
                         interactionSource = deviceKeyTextFieldInteractionSource,
                         isBordered = false,
-                        visualTransformation = if(isKeyVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        visualTransformation = if (isKeyVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         trailingIcon = {
                             Icon(
                                 modifier = Modifier

@@ -38,7 +38,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.component.SensorDataGraph
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -56,7 +55,7 @@ fun SensorDataDetailScreen(
             SensorItemData.Temperature(
                 value = 10.0f + randomAdditionalValue,
                 timeInMillis = getTimeInMillis(
-                    additionalTimesInMillis = (3600_000L * 24f * (index/2f)).toLong()
+                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
                 )
             )
         }.toImmutableList().apply {
@@ -72,7 +71,7 @@ fun SensorDataDetailScreen(
             SensorItemData.Humidity(
                 value = 10.0f + randomAdditionalValue,
                 timeInMillis = getTimeInMillis(
-                    additionalTimesInMillis = (3600_000L * 24f * (index/2f)).toLong()
+                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
                 )
             )
         }.toImmutableList().apply {
@@ -88,7 +87,7 @@ fun SensorDataDetailScreen(
             SensorItemData.LightIntensity(
                 value = 10.0f + randomAdditionalValue,
                 timeInMillis = getTimeInMillis(
-                    additionalTimesInMillis = (3600_000L * 24f * (index/2f)).toLong()
+                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
                 )
             )
         }.toImmutableList().apply {

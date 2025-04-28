@@ -16,7 +16,7 @@ fun PointerPopup(
     textProvider: () -> String? = { "" }
 ) {
     val isVisible = isVisibleProvider()
-    val text = if(isVisible) textProvider() else null
+    val text = if (isVisible) textProvider() else null
 
     if (text != null) {
         Popup(
