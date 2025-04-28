@@ -111,6 +111,14 @@ fun TextFieldConfirmationDialog(
 @Composable
 private fun InputSessionNameDialogPreview() {
     KakaoXpertTheme {
-        TextFieldConfirmationDialog()
+        val coroutineScope = rememberCoroutineScope()
+        val textFieldConfirmationDialogState = remember {
+            TextFieldConfirmationDialogState(coroutineScope).apply {
+                setIsShown(true)
+            }
+        }
+        TextFieldConfirmationDialog(
+            state = textFieldConfirmationDialogState
+        )
     }
 }

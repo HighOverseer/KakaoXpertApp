@@ -216,5 +216,9 @@
     <string name="lihat_secara_waktu">Lihat Secara Waktu</string>
     <string name="perangkat_tersambung">Perangkat Tersambung</string>
     <string name="tambah_perangkat">Tambah Perangkat</string>
-    <string name="overview">Overview</string>
+    <string name="overview">Ringkasan</string>
+    <string name="nama_perangkat_baru">Nama Perangkat Baru</string>
+    <string name="masukan_device_id_disini">Masukan Device ID Disini</string>
+    <string name="masukan_device_key_disini">Masukan Device Key Disini</string>
+    <string name="visibilitas_kunci_perangkat">Visibilitas Kunci Perangkat</string>
 </resources>

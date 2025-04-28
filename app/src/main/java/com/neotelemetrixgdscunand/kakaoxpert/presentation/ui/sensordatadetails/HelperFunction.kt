@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.asAndroidPath
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.ensureActive
 import java.text.SimpleDateFormat
@@ -130,4 +131,22 @@ suspend fun getNearestPointOffsetInPathWithMatchingX(
     }
 
     nearestOffset
+}
+
+fun computeTouchedPointValue(
+    lowerBoundDataY: Int = 0,
+    upperBoundDataY: Int = 0,
+    stepPerUnit: Int = 0,
+    maxTouchYCoordinates: Float = 0f,
+    touchPointOffsetY: Int,
+): Float {
+    val finalLowerBoundDataY =
+        lowerBoundDataY.toFloat().minus(stepPerUnit / 2f)
+    val finalUpperBoundDataY =
+        upperBoundDataY.toFloat().plus(stepPerUnit / 2f)
+    val ratio = 1 - (touchPointOffsetY / maxTouchYCoordinates)
+
+    val value =
+        ratio * (finalUpperBoundDataY - finalLowerBoundDataY) + finalLowerBoundDataY
+    return value.roundOffDecimal(n = 2)
 }

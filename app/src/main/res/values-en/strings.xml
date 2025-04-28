@@ -207,4 +207,23 @@
     <string name="masukan_nama_kamu_disini">Insert your name here</string>
     <string name="nomor_handphone">Handphone Number</string>
     <string name="simpan">Save</string>
+
+    <string name="kakao_">Kakao</string>
+    <string name="xpert">Xpert</string>
+    <string name="suhu">Temperature</string>
+    <string name="intensitas_cahaya">Light Intensity</string>
+    <string name="overview_data_hari_ini">Today\'s Data Overview</string>
+    <string name="telah_terhubung_dengan_perangkat_iot">Connected To IoT Device</string>
+    <string name="belum_terhubung_dengan_perangkat_iot">Not Connected To IoT Device</string>
+    <string name="sedang_menghubungkan_dengan_perangkat_iot">Connecting To IoT Device</string>
+    <string name="perangkat">Device</string>
+    <string name="lebih_lengkap">See More</string>
+    <string name="lihat_secara_waktu">View By Time</string>
+    <string name="perangkat_tersambung">Connected Devices</string>
+    <string name="tambah_perangkat">Add New Device</string>
+    <string name="overview">Overview</string>
+    <string name="nama_perangkat_baru">New Device\'s Name</string>
+    <string name="masukan_device_id_disini">Enter Device ID Here</string>
+    <string name="masukan_device_key_disini">Enter Device Key Here</string>
+    <string name="visibilitas_kunci_perangkat">Device Key Visibility</string>
 </resources>

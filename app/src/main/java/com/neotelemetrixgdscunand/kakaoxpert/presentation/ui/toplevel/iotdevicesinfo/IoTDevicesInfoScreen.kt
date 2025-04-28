@@ -17,6 +17,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,6 +35,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.IoTDataOverviewMenu
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.AddIoTDeviceDialog
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.AddIoTDeviceSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.IoTDeviceItem
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.SeeMoreMenu
@@ -41,6 +46,10 @@ fun IoTDevicesInfoScreen(
     navigateToSensorDataDetails: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
+    var isAddDeviceDialogShown by remember {
+        mutableStateOf(false)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -152,7 +161,8 @@ fun IoTDevicesInfoScreen(
         Spacer(Modifier.height(16.dp))
 
         AddIoTDeviceSection(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { isAddDeviceDialogShown = true }
         )
 
         repeat(2) {
@@ -165,6 +175,14 @@ fun IoTDevicesInfoScreen(
         Spacer(Modifier.height(32.dp))
 
     }
+
+
+
+    AddIoTDeviceDialog(
+        isShownProvider = { isAddDeviceDialogShown },
+        onDismiss = { isAddDeviceDialogShown = false },
+        onSubmit = { isAddDeviceDialogShown = false },
+    )
 
 
 }

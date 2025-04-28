@@ -23,6 +23,6 @@ sealed interface SensorItemData {
         override val value: Float,
         override val timeInMillis: Long
     ) : SensorItemData {
-        override val unit: String = " Lux"
+        override val unit: String = " Lx"
     }
 }

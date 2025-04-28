@@ -37,6 +37,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.component.SensorDataGraph
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -49,25 +50,45 @@ fun SensorDataDetailScreen(
     navigateUp: () -> Unit = {}
 ) {
 
-    val sortedDescendingXAxis = remember {
-        persistentListOf(
-            "1\nJan",
-            "2\nJan",
-            "3\nJan",
-            "4\nJan",
-            "5\nJan",
-            "6\nJan",
-            "7\nJan",
-        ).toImmutableList()
-    }
-
     val temperatureSensorItemDatas = remember {
-        List(7) { index ->
+        List(14) { index ->
             val randomAdditionalValue = Random.nextInt(0, 30)
             SensorItemData.Temperature(
                 value = 10.0f + randomAdditionalValue,
                 timeInMillis = getTimeInMillis(
-                    additionalTimesInMillis = 3600_000L * 24 * (index)
+                    additionalTimesInMillis = (3600_000L * 24f * (index/2f)).toLong()
+                )
+            )
+        }.toImmutableList().apply {
+            this.forEach {
+                println(it)
+            }
+        }
+    }
+
+    val humiditySensorItemDatas = remember {
+        List(14) { index ->
+            val randomAdditionalValue = Random.nextInt(0, 30)
+            SensorItemData.Humidity(
+                value = 10.0f + randomAdditionalValue,
+                timeInMillis = getTimeInMillis(
+                    additionalTimesInMillis = (3600_000L * 24f * (index/2f)).toLong()
+                )
+            )
+        }.toImmutableList().apply {
+            this.forEach {
+                println(it)
+            }
+        }
+    }
+
+    val lightIntensitySensorItemDatas = remember {
+        List(14) { index ->
+            val randomAdditionalValue = Random.nextInt(0, 30)
+            SensorItemData.LightIntensity(
+                value = 10.0f + randomAdditionalValue,
+                timeInMillis = getTimeInMillis(
+                    additionalTimesInMillis = (3600_000L * 24f * (index/2f)).toLong()
                 )
             )
         }.toImmutableList().apply {
@@ -109,6 +130,10 @@ fun SensorDataDetailScreen(
         calendar.get(Calendar.DAY_OF_YEAR)
     }
 
+    var isNavigatingUp by remember {
+        mutableStateOf(false)
+    }
+
 
     Column(
         modifier = modifier
@@ -127,7 +152,10 @@ fun SensorDataDetailScreen(
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .align(Alignment.CenterStart),
-                onClick = navigateUp
+                onClick = {
+                    isNavigatingUp = true
+                    navigateUp()
+                }
             ) {
                 Icon(
                     modifier = Modifier
@@ -180,12 +208,12 @@ fun SensorDataDetailScreen(
             Spacer(Modifier.height(16.dp))
 
             SensorDataGraph(
-                sortedDescendingXAxis = sortedDescendingXAxis,
                 sensorItemData = temperatureSensorItemDatas,
                 onProcessSlidingGraphPointer = onSlidingGraphPointer,
                 onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
                 onDelegateScroll = onDelegateScroll,
-                baseDayOfTheYear = baseDayOfTheYear
+                baseDayOfTheYear = baseDayOfTheYear,
+                isNavigatingUp = isNavigatingUp
             )
 
             Spacer(Modifier.height(32.dp))
@@ -216,12 +244,12 @@ fun SensorDataDetailScreen(
             Spacer(Modifier.height(16.dp))
 
             SensorDataGraph(
-                sortedDescendingXAxis = sortedDescendingXAxis,
-                sensorItemData = temperatureSensorItemDatas,
+                sensorItemData = humiditySensorItemDatas,
                 onProcessSlidingGraphPointer = onSlidingGraphPointer,
                 onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
                 onDelegateScroll = onDelegateScroll,
                 baseDayOfTheYear = baseDayOfTheYear,
+                isNavigatingUp = isNavigatingUp
             )
 
             Spacer(Modifier.height(32.dp))
@@ -252,12 +280,12 @@ fun SensorDataDetailScreen(
             Spacer(Modifier.height(16.dp))
 
             SensorDataGraph(
-                sortedDescendingXAxis = sortedDescendingXAxis,
-                sensorItemData = temperatureSensorItemDatas,
+                sensorItemData = lightIntensitySensorItemDatas,
                 onProcessSlidingGraphPointer = onSlidingGraphPointer,
                 onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
                 onDelegateScroll = onDelegateScroll,
-                baseDayOfTheYear = baseDayOfTheYear
+                baseDayOfTheYear = baseDayOfTheYear,
+                isNavigatingUp = isNavigatingUp
             )
 
         }

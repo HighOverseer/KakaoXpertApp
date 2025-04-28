@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -13,8 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -22,8 +22,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -42,7 +42,6 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
@@ -51,7 +50,11 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey69
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey75
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.computeTouchedPointValue
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.getDayInFraction
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.getNearestPointOffsetInPathWithMatchingX
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.getSevenPreviousDay
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.getTimeInMillis
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -65,13 +68,15 @@ import kotlin.random.Random
 @Composable
 fun SensorDataGraph(
     modifier: Modifier = Modifier,
-    sortedDescendingXAxis: ImmutableList<String> = persistentListOf(),
     sensorItemData: ImmutableList<SensorItemData> = persistentListOf(),
     onProcessSlidingGraphPointer: () -> Unit = { },
     onFinishSlidingGraphPointer: () -> Unit = { },
     onDelegateScroll: (Float) -> Unit = { },
     baseDayOfTheYear: Int = 1,
+    isNavigatingUp:Boolean = false
 ) {
+
+
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -117,6 +122,8 @@ fun SensorDataGraph(
                     it.timeInMillis
                 }
         }
+
+        val xAxisParametersCount = 7
 
         val canDraw by remember {
             derivedStateOf {
@@ -166,24 +173,26 @@ fun SensorDataGraph(
 
         }
 
+        var touchedPointInPath by remember {
+            mutableStateOf<Offset?>(null)
+        }
+
+        var isMovingPointer by remember {
+            mutableStateOf(false)
+        }
+
+        var dataValuePath = remember<Path?> { null }
+
 
         if (canDraw) {
-            var touchedPointInPath by remember {
-                mutableStateOf<Offset?>(null)
-            }
-
-            var isMovingPointer by remember {
-                mutableStateOf(false)
-            }
-
-            var dataValuePath = remember<Path?> { null }
-
             val coroutineScope = rememberCoroutineScope()
             var job = remember<Job?> { (null) }
 
+            val isNavigatingUpUpdated by rememberUpdatedState(isNavigatingUp)
+
             val isPointerPopupVisible by remember {
                 derivedStateOf {
-                    !isMovingPointer && touchedPointInPath != null
+                    !isMovingPointer && touchedPointInPath != null && !isNavigatingUpUpdated
                 }
             }
 
@@ -271,7 +280,7 @@ fun SensorDataGraph(
                 val xAxisBottomPadding = 32.dp.toPx()
                 val initialYAxisBottomPadding = initialYAxisBottomPaddingDp.toPx()
                 val spacePerDay =
-                    (size.width - initialXAxisStartPadding) / sortedDescendingXAxis.size
+                    (size.width - initialXAxisStartPadding) / xAxisParametersCount
                 val spacePerStepCelcius =
                     (size.height - initialYAxisBottomPadding) / 5
 
@@ -438,7 +447,7 @@ fun SensorDataGraph(
                 }
             }
 
-            PointerPopUp(
+            PointerPopup(
                 isVisibleProvider = { isPointerPopupVisible },
                 textProvider = {
                     val sensorDataUnit = sensorItemData.firstOrNull()?.unit ?: ""
@@ -448,7 +457,7 @@ fun SensorDataGraph(
                         stepPerUnit = stepPerUnit,
                         maxTouchYCoordinates = mapHeight,
                         touchPointOffsetY = touchedPointInPath?.y?.toInt()
-                            ?: return@PointerPopUp null
+                            ?: return@PointerPopup null
                     )
                     "$value$sensorDataUnit"
                 }
@@ -458,44 +467,8 @@ fun SensorDataGraph(
 }
 
 
-@Composable
-fun PointerPopUp(
-    onDismissRequest: () -> Unit = {},
-    isVisibleProvider: () -> Boolean = { false },
-    textProvider: () -> String? = { "" }
-) {
-    val text = textProvider()
-    if (isVisibleProvider() && text != null) {
-        Popup(
-            alignment = Alignment.BottomEnd,
-            onDismissRequest = onDismissRequest
-        ) {
-            Column(
-                Modifier.background(Grey69)
-            ) {
-                Text(text)
-            }
-        }
-    }
-}
 
-fun computeTouchedPointValue(
-    lowerBoundDataY: Int = 0,
-    upperBoundDataY: Int = 0,
-    stepPerUnit: Int = 0,
-    maxTouchYCoordinates: Float = 0f,
-    touchPointOffsetY: Int,
-): Float {
-    val finalLowerBoundDataY =
-        lowerBoundDataY.toFloat().minus(stepPerUnit / 2f)
-    val finalUpperBoundDataY =
-        upperBoundDataY.toFloat().plus(stepPerUnit / 2f)
-    val ratio = 1 - (touchPointOffsetY / maxTouchYCoordinates)
 
-    val value =
-        ratio * (finalUpperBoundDataY - finalLowerBoundDataY) + finalLowerBoundDataY
-    return value.roundOffDecimal(n = 2)
-}
 
 @Preview
 @Composable
@@ -551,6 +524,12 @@ private fun SensorDataGraphPreview() {
 //
 //            ).toImmutableList()
         }
+
+        val baseDayOfTheYear = remember {
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_YEAR, -6)
+            calendar.get(Calendar.DAY_OF_YEAR)
+        }
         Column(
             Modifier
                 .fillMaxSize()
@@ -558,8 +537,8 @@ private fun SensorDataGraphPreview() {
                 .padding(16.dp)
         ) {
             SensorDataGraph(
-                sortedDescendingXAxis = sortedDescendingXAxis,
-                sensorItemData = temperatureSensorItemDatas
+                sensorItemData = temperatureSensorItemDatas,
+                baseDayOfTheYear = baseDayOfTheYear
             )
         }
 
