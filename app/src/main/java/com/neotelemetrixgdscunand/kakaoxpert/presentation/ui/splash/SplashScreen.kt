@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui
+package com.neotelemetrixgdscunand.kamekapp.presentation.ui.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,23 +21,50 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
+import com.neotelemetrixgdscunand.kamekapp.presentation.utils.collectChannelWhenStarted
 import kotlinx.coroutines.delay
+
 
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
-    navigateToAuthPage: () -> Unit = {}
+    navigateToAuthPage: () -> Unit = {},
+    navigateToMainPage: () -> Unit = {},
+    navigateToOnBoarding: () -> Unit = {},
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
 
+    val lifecycle = LocalLifecycleOwner.current
     LaunchedEffect(true) {
         delay(2000L)
-        navigateToAuthPage()
+
+        lifecycle.collectChannelWhenStarted(viewModel.isReadyEvent) {
+            val (isAlreadyLoggedIn, isFirstTime) = it
+            if (!isAlreadyLoggedIn) {
+                navigateToAuthPage()
+            } else {
+                if (isFirstTime) {
+                    navigateToOnBoarding()
+                } else navigateToMainPage()
+            }
+        }
     }
 
+    SplashContent(
+        modifier = modifier
+    )
+}
+
+@Composable
+fun SplashContent(
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -78,7 +105,7 @@ fun SplashScreen(
 @Preview(showBackground = true)
 @Composable
 private fun SplashScreenPreview() {
-    KakaoXpertTheme {
+    KakaoXpertTheme{
         SplashScreen()
     }
 }

@@ -1,7 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util
 
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCacao
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSession
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSession
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList

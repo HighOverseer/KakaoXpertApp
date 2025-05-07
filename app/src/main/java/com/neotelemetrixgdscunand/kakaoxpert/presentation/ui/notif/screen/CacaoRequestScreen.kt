@@ -40,7 +40,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getSupplierCacaoDummies
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black30
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
@@ -50,13 +49,14 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey80
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.component.CacaoProfileContent
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.component.CacaoTechnicalSpec
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.component.InputFulfillAmountCacaoDialog
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.component.SupplierItem
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
+import com.neotelemetrixgdscunand.kamekapp.domain.model.getSupplierCacaoDummies
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component.PrimaryButton
 
 @Composable
 fun CacaoRequestScreen(

@@ -221,4 +221,54 @@
     <string name="masukan_device_id_disini">Masukan Device ID Disini</string>
     <string name="masukan_device_key_disini">Masukan Device Key Disini</string>
     <string name="visibilitas_kunci_perangkat">Visibilitas Kunci Perangkat</string>
+
+    <string name="username_is_already_registered">Username is already registered..</string>
+    <string name="email_no_hp_atau_password_salah">Email/No Hp atau Password Salah</string>
+    <string name="sesi_tidak_valid_mohon_coba_lagi">Sesi tidak valid, mohon coba lagi..</string>
+    <string name="telah_terjadi_kesalahan_mohon_coba_lagi">Telah terjadi kesalahan, mohon coba lagi..</string>
+    <string name="terdapat_kesalahan_coba_periksa_konektivitas_anda">Terdapat kesalahan, coba periksa konektivitas anda..</string>
+    <string name="maaf_sepertinya_ada_kesalahan_coba_periksa_koneksi_anda">Maaf sepertinya ada kesalahan, coba periksa koneksi anda..</string>
+    <string name="terjadi_kesalahan_periska_konektivitas_anda_atau_coba_lagi_nanti">Terjadi kesalahan, periksa konektivitas anda atau coba lagi nanti..</string>
+    <string name="telah_terjadi_kesalahan_mohon_coba_lagi_nanti">Telah terjadi kesalahan mohon coba lagi nanti..</string>
+    <string name="login_berhasil_halo">Login Berhasil, Halo %1$s!</string>
+    <string name="daftar_berhasil_selamat_datang">Daftar Berhasil, Selamat Datang %1$s</string>
+    <string name="username_harus_lebih_dari_6_karakter">Username harus lebih dari 6 karakter</string>
+    <string name="username_harus_diisi_dengan_email_atau_nomor_handphone_yang_valid">Username harus diisi dengan email atau nomor handphone yang valid</string>
+    <string name="password_harus_lebih_dari_8_karakter">Password harus lebih dari 8 karakter</string>
+    <string name="password_harus_mengandung_setidaknya_satu_huruf_kapital">Password harus mengandung setidaknya satu huruf kapital</string>
+    <string name="password_harus_mengandung_setidaknya_satu_angka">Password harus mengandung setidaknya satu angka</string>
+    <string name="nama_tidak_boleh_kosong">Nama tidak boleh kosong.</string>
+    <string name="password_konfirmasi_tidak_cocok_periksa_lagi">Password Konfirmasi Tidak Cocok, Periksa Lagi!</string>
+    <string name="username_dan_password_tidak_boleh_kosong">Username dan password tidak boleh kosong</string>
+    <string name="belum_punya_akun_ayo_daftar">Belum Punya Akun? Yuk Daftar!</string>
+    <string name="sudah_punya_akun_login_yuk">Sudah Punya Akun? Login yuk!</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="email_no_hp_tidak_boleh_kosong">Email/No Hp tidak boleh kosong.</string>
+    <string name="password_tidak_boleh_kosong">Password tidak boleh kosong.</string>
+    <string name="kamu_telah_logout">Kamu Telah Logout..</string>
+    <string name="maaf_sepertinya_server_sedang_sibuk_coba_lagi_nanti">Maaf, sepertinya server sedang sibuk, coba lagi nanti..</string>
+    <string name="suhu_format">%1$s°C</string>
+    <string name="wind_velocity_format">%1$s Km/Jam</string>
+    <string name="humidity_format">%1$s%%</string>
+    <string name="rainfall_format">%1$smm</string>
+
+    <string name="cuaca_hujan_lebat">Hujan Lebat</string>
+    <string name="cuaca_berawan">Berawan</string>
+    <string name="cuaca_cerah">Cerah</string>
+    <string name="cuaca_sebagian_besar_berawan">Sebagian Besar Berawan</string>
+    <string name="cuaca_badai_petir">Badai Petir</string>
+    <string name="cuaca_hujan_gerimis">Hujan Gerimis</string>
+    <string name="fitur_prediksi_cuaca_tidak_bisa">Fitur Prediksi Cuaca tidak bisa dijalankan tanpa izin akses ke lokasi anda..</string>
+    <string name="maaf_sepertinya_anda_perlu_mengaktifkan_beberapa_pengaturan_lokasi">Maaf, sepertinya anda perlu mengaktifkan beberapa pengaturan lokasi..</string>
+    <string name="maaf_pengaturan_lokasi_perlu_anda_aktifkan">Maaf, pengaturan lokasi perlu anda aktifkan..</string>
+    <string name="tidak_diketahui">Tidak Diketahui</string>
+    <string name="maaf_detail_berita_tidak_ditemukan">Maaf, sepertinya konten berita tidak ditemukan..</string>
+    <string name="tidak_ditemukan_berita_yang_cocok">Tidak ditemukan berita yang cocok</string>
+    <string name="tidak_ada_berita_yang_tersedia">Tidak ada berita yang tersedia</string>
+    <string name="agrikultur">Agrikultur</string>
+    <string name="penyakit_tanaman">Penyakit Tanaman</string>
+    <string name="belum_ada_barang_yang_tersedia">Belum ada barang yang tersedia</string>
+    <string name="barang_yang_anda_cari_tidak_ditemukan">Barang yang anda cari tidak ditemukan..</string>
+    <string name="lihat_selengkapnya">Lihat Selengkapnya</string>
+
 </resources>

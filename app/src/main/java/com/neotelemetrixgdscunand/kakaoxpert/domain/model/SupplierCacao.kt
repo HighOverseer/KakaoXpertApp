@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.domain.model
+package com.neotelemetrixgdscunand.kamekapp.domain.model
 
 data class SupplierCacao(
     val id: Int,

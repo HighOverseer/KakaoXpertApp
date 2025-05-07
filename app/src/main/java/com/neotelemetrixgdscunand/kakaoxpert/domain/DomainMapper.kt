@@ -1,9 +1,9 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain
 
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSession
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSession
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
 
-object Mapper {
+object DomainMapper {
     fun mapDiagnosisSessionToPreview(
         diagnosisSession: DiagnosisSession
     ): DiagnosisSessionPreview {

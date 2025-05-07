@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -11,6 +13,16 @@ android {
     namespace = "com.neotelemetrixgdscunand.kakaoxpert"
     compileSdk = 35
 
+    fun getLocalProperties(): Properties {
+        return Properties().apply {
+            val localPropertiesFile = rootProject.file("local.properties")
+            if(localPropertiesFile.exists()){
+                this.load(localPropertiesFile.inputStream())
+            }
+        }
+
+    }
+
     defaultConfig {
         applicationId = "com.neotelemetrixgdscunand.kakaoxpert"
         minSdk = 24
@@ -22,6 +34,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val localProperties = getLocalProperties()
+        val baseUrl = localProperties.getProperty("BASE_URL", "")
+
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
     buildTypes {
@@ -52,6 +69,7 @@ android {
     buildFeatures {
         compose = true
         mlModelBinding = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.7"
@@ -109,5 +127,20 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.collections.immutable)
 
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    //DataStore
+    implementation(libs.datastore.preferences)
+
+    //logging
+    implementation(libs.logging.interceptor)
+
+    //phone number validator
+    implementation (libs.libphonenumber)
+
+    //fused location
+    implementation(libs.play.services.location)
 }
 

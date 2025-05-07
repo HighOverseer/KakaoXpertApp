@@ -1,10 +1,14 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui
 
 import android.Manifest
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,6 +24,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.neotelemetrixgdscunand.kakaoxpert.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -55,6 +62,9 @@ class KakaoXpertAppState(
     private var isCameraPermissionGranted by mutableStateOf<Boolean?>(null)
     val isCameraPermissionGrantedProvider = { isCameraPermissionGranted }
 
+    private var isLocationPermissionGranted by mutableStateOf<Boolean?>(null)
+    val isLocationPermissionGrantedProvider = { isLocationPermissionGranted }
+
     private fun hideStatusBar() {
         windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
     }
@@ -64,27 +74,106 @@ class KakaoXpertAppState(
     }
 
     @Composable
-    fun rememberCameraPermissionRequest(): ManagedActivityResultLauncher<String, Boolean> =
-        rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            isCameraPermissionGranted = isGranted
+    fun rememberCameraPermissionRequest(): ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>> {
+        return rememberPermissionRequest(
+            onResult = { isGranted ->
+                isCameraPermissionGranted = isGranted
+            }
+        )
+    }
+
+    @Composable
+    fun rememberLocationPermissionRequest(): ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>> {
+        return rememberPermissionRequest(
+            onResult = { isGranted ->
+                isLocationPermissionGranted = isGranted
+            }
+        )
+    }
+
+    @Composable
+    fun rememberLocationSettingResolutionLauncher(
+        context: Context,
+        showSnackbar: (String) -> Unit,
+        locationPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
+    ): ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult> {
+        return rememberLauncherForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult()
+        ) { result ->
+            when (result.resultCode) {
+                RESULT_OK -> {
+                    checkLocationPermission(
+                        context = context,
+                        locationPermissionRequest
+                    )
+                }
+
+                RESULT_CANCELED -> {
+                    showSnackbar(context.getString(R.string.maaf_pengaturan_lokasi_perlu_anda_aktifkan))
+                }
+            }
         }
+    }
+
+    @Composable
+    private fun rememberPermissionRequest(
+        onResult: (Boolean) -> Unit
+    ): ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>> {
+        return rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { mapResult ->
+            val isGranted = mapResult.values.all { it }
+            onResult(isGranted)
+        }
+    }
 
     fun checkCameraPermission(
         context: Context,
-        cameraPermissionRequest: ManagedActivityResultLauncher<String, Boolean>
+        cameraPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
     ) {
-        val isAlreadyGranted = ContextCompat.checkSelfPermission(
+        checkPermission(
+            context = context,
+            permissionRequest = cameraPermissionRequest,
+            permissions = persistentListOf(Manifest.permission.CAMERA),
+            onAlreadyGranted = {
+                isCameraPermissionGranted = true
+            }
+        )
+    }
+
+    fun checkLocationPermission(
+        context: Context,
+        locationPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
+    ) {
+        checkPermission(
+            context = context,
+            permissionRequest = locationPermissionRequest,
+            permissions = persistentListOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+            onAlreadyGranted = {
+                isLocationPermissionGranted = true
+            }
+        )
+    }
+
+    private fun isPermissionGranted(context: Context, permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
             context,
-            Manifest.permission.CAMERA
+            permission
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun checkPermission(
+        context: Context,
+        permissions: ImmutableList<String>,
+        permissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
+        onAlreadyGranted: () -> Unit
+    ) {
+        val permissionsResults = permissions.map { isPermissionGranted(context, it) }
+        val isAlreadyGranted = permissionsResults.all { it }
 
         if (!isAlreadyGranted) {
-            cameraPermissionRequest.launch(
-                Manifest.permission.CAMERA
-            )
-        } else isCameraPermissionGranted = true
+            permissionRequest.launch(permissions.toTypedArray())
+        } else onAlreadyGranted()
     }
 
     private val currentRouteStringVal: StateFlow<String?> =
@@ -98,17 +187,6 @@ class KakaoXpertAppState(
                 null
             )
 
-//    private val currentRouteStringVal:StateFlow<Navigation.Route?> =
-//        rootNavHostController.currentBackStackEntryFlow
-//            .map { value: NavBackStackEntry ->
-//                value.toRoute<Navigation.Route>()
-//            }
-//            .stateIn(
-//                coroutineScope,
-//                SharingStarted.WhileSubscribed(5000L),
-//                null
-//            )
-
     val shouldShowStatusBar: StateFlow<Boolean> =
         currentRouteStringVal
             .map { value ->
@@ -120,6 +198,7 @@ class KakaoXpertAppState(
                 SharingStarted.WhileSubscribed(5000L),
                 true
             )
+
 
     @Composable
     fun HandleStatusBarVisibilityEffect(shouldShowStatusBar: Boolean) {

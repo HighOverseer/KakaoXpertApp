@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component
+package com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer

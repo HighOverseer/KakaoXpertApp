@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto
 
 import com.dicoding.asclepius.domain.common.StringRes
 

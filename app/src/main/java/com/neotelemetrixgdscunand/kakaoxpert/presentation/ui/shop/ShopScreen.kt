@@ -45,9 +45,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getShopItemDataDummies
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news.NewsCategory
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchBar
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchCategory
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.news.NewsCategory
 
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component
+package com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,6 +25,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey70
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.KakaoXpertApp
 
 @Composable
 fun PrimaryTextField(
@@ -47,7 +48,7 @@ fun PrimaryTextField(
     val isFocused = isFocusedProvider()
     val value = valueProvider()
 
-    val textFieldModifier = remember {
+    val textFieldModifier = remember(isFocused) {
         modifier
             .fillMaxWidth()
             .then(
@@ -120,7 +121,7 @@ fun PrimaryTextField(
 @Preview(showBackground = true)
 @Composable
 private fun PrimaryTextFieldPreview() {
-    KakaoXpertTheme {
+    KakaoXpertTheme{
         PrimaryTextField()
     }
 }

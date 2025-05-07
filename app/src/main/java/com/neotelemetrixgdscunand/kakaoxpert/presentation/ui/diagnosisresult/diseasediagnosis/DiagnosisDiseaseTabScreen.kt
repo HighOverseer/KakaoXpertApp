@@ -16,12 +16,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CacaoDisease
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCacao
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DetectedCacaoDiseasePreviewSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DiagnosisBottomContent
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DiagnosisDiseaseDetails
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.DiagnosisSessionComposeStable
+import com.neotelemetrixgdscunand.kamekapp.domain.model.CacaoDisease
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf

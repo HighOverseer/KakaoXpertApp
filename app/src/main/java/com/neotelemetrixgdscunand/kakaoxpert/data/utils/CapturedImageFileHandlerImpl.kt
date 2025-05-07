@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util
+package com.neotelemetrixgdscunand.kamekapp.data.utils
 
 import android.content.Context
 import android.net.Uri
@@ -6,14 +6,13 @@ import android.webkit.MimeTypeMap
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CaptureImageFileHandler
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util.createCustomTempFile
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class CapturedImageFileHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : CaptureImageFileHandler {

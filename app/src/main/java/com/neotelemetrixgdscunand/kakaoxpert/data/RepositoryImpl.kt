@@ -1,10 +1,10 @@
-package com.neotelemetrixgdscunand.kakaoxpert.data
+package com.neotelemetrixgdscunand.kamekapp.data
 
-import com.neotelemetrixgdscunand.kakaoxpert.domain.Mapper
-import com.neotelemetrixgdscunand.kakaoxpert.domain.data.Repository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSession
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getDetectedDiseaseCacaos
+import com.neotelemetrixgdscunand.kakaoxpert.domain.DomainMapper
+import com.neotelemetrixgdscunand.kamekapp.domain.data.Repository
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSession
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kamekapp.domain.model.getDetectedDiseaseCacaos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +59,7 @@ class RepositoryImpl @Inject constructor() : Repository {
     override fun getAllSavedDiagnosisSessionPreviews(): Flow<List<DiagnosisSessionPreview>> {
         return savedDiagnosisSession.map { diagnosisSessions ->
             withContext(Dispatchers.Default) {
-                diagnosisSessions.map { Mapper.mapDiagnosisSessionToPreview(it) }
+                diagnosisSessions.map { DomainMapper.mapDiagnosisSessionToPreview(it) }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui
 
 
 import androidx.compose.runtime.Immutable
+import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
 import kotlinx.serialization.Serializable
 
 @Immutable
@@ -46,10 +47,10 @@ sealed interface Navigation {
         data object Home : MainRoute
 
         @Serializable
-        data object Diagnosis : MainRoute
+        data object IoTDevicesInfo:MainRoute
 
         @Serializable
-        data object IoTDevicesInfo : MainRoute
+        data object Diagnosis : MainRoute
 
         @Serializable
         data object Account : MainRoute
@@ -69,7 +70,10 @@ sealed interface Navigation {
     data object News : Route
 
     @Serializable
-    data object NewsDetail : Route
+    data class NewsDetail(
+        val newsId: Int,
+        val newsType: NewsType,
+    ) : Route
 
     @Serializable
     data object Shop : Route

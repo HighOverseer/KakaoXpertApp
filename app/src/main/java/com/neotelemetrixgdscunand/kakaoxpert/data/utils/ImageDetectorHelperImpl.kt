@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util
+package com.neotelemetrixgdscunand.kamekapp.data.utils
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -29,9 +29,7 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class ImageDetectorHelperImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageConverter: ImageConverter,

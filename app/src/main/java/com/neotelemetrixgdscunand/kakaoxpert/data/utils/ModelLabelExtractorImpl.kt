@@ -1,9 +1,9 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util
+package com.neotelemetrixgdscunand.kamekapp.data.utils
 
 import android.content.Context
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorHelper.Companion.MODEL_PATH
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ModelLabelExtractor
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
 import org.tensorflow.lite.support.common.FileUtil
 import org.tensorflow.lite.support.metadata.MetadataExtractor
 import java.io.BufferedReader
@@ -11,15 +11,14 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ViewModelScoped
 class ModelLabelExtractorImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ModelLabelExtractor {
 
     override fun extractNamesFromMetadata(modelPath: String): List<String> {
-        val model = FileUtil.loadMappedFile(context, MODEL_PATH)
+        val model = FileUtil.loadMappedFile(context, modelPath)
         try {
             val metadataExtractor = MetadataExtractor(model)
             val inputStream = metadataExtractor.getAssociatedFile("temp_meta.txt")

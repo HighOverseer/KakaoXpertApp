@@ -26,9 +26,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryTextField
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util.TextFieldConfirmationDialogState
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component.PrimaryButton
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component.PrimaryTextField
 
 @Composable
 fun TextFieldConfirmationDialog(

@@ -2,18 +2,19 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui
 
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.exclude
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,22 +22,26 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.LoginScreen
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.RegisterScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.CacaoImageDetailScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.DiagnosisResultScreen
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news.NewsDetailScreen
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news.NewsScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.screen.CacaoRequestScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.screen.NotificationScreen
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.onboarding.OnBoardingScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.profile.ProfileScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.SensorDataDetailScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.shop.ShopScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.TakePhotoScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.MainPage
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.rememberMainPageState
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.weather.WeatherScreen
+import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.LoginScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.RegisterScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.news.NewsDetailsScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.news.NewsScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.onboarding.OnBoardingScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.splash.SplashScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.weather.WeatherScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.utils.MessageSnackbar
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
@@ -45,17 +50,30 @@ fun KakaoXpertApp(
     rootNavHostController: NavHostController = rememberNavController(),
     appState: KakaoXpertAppState,
 ) {
+    val context = LocalContext.current
     val snackbarHostState = remember {
         SnackbarHostState()
     }
     val coroutineScope = rememberCoroutineScope()
+    var showingSnackbarJob: Job? = remember {
+        null
+    }
     val showSnackbar: (String) -> Unit = remember {
         { message: String ->
-            coroutineScope.launch {
+            showingSnackbarJob?.cancel()
+            showingSnackbarJob = coroutineScope.launch {
                 snackbarHostState.showSnackbar(message)
             }
         }
     }
+
+
+    val locationPermissionRequest = appState.rememberLocationPermissionRequest()
+    val locationSettingResolutionLauncher = appState.rememberLocationSettingResolutionLauncher(
+        context = context,
+        showSnackbar = showSnackbar,
+        locationPermissionRequest = locationPermissionRequest
+    )
 
     val shouldShowStatusBar by appState.shouldShowStatusBar.collectAsStateWithLifecycle()
     appState.HandleStatusBarVisibilityEffect(shouldShowStatusBar)
@@ -69,7 +87,11 @@ fun KakaoXpertApp(
             SnackbarHost(
                 hostState = snackbarHostState,
                 snackbar = { data ->
-                    Text(data.visuals.message)
+                    MessageSnackbar(
+                        message = data.visuals.message,
+                        modifier = Modifier
+                            .fillMaxHeight(0.15f),
+                    )
                 }
             )
         }
@@ -85,6 +107,20 @@ fun KakaoXpertApp(
                 SplashScreen(
                     navigateToAuthPage = {
                         rootNavHostController.navigate(Navigation.Auth) {
+                            popUpTo<Navigation.Splash> {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    navigateToOnBoarding = {
+                        rootNavHostController.navigate(Navigation.OnBoarding) {
+                            popUpTo<Navigation.Splash> {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    navigateToMainPage = {
+                        rootNavHostController.navigate(Navigation.Main) {
                             popUpTo<Navigation.Splash> {
                                 inclusive = true
                             }
@@ -111,8 +147,19 @@ fun KakaoXpertApp(
             ) {
                 composable<Navigation.Auth.Login> {
                     LoginScreen(
+                        showSnackbar = showSnackbar,
                         navigateToOnBoarding = {
                             rootNavHostController.navigate(Navigation.OnBoarding) {
+                                popUpTo<Navigation.Auth> {
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        navigateToRegister = {
+                            rootNavHostController.navigate(Navigation.Auth.Register)
+                        },
+                        navigateToMainPage = {
+                            rootNavHostController.navigate(Navigation.Main) {
                                 popUpTo<Navigation.Auth> {
                                     inclusive = true
                                 }
@@ -121,7 +168,17 @@ fun KakaoXpertApp(
                     )
                 }
                 composable<Navigation.Auth.Register> {
-                    RegisterScreen()
+                    RegisterScreen(
+                        showSnackbar = showSnackbar,
+                        navigateToOnBoarding = {
+                            rootNavHostController.navigate(Navigation.OnBoarding) {
+                                popUpTo<Navigation.Auth> {
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        navigateBackToLogin = rootNavHostController::navigateUp
+                    )
                 }
             }
 
@@ -137,6 +194,10 @@ fun KakaoXpertApp(
                 MainPage(
                     state = state,
                     mainNavHostController = mainNavController,
+                    isLocationPermissionGrantedProvider = appState.isLocationPermissionGrantedProvider,
+                    checkLocationPermission = appState::checkLocationPermission,
+                    rememberLocationPermissionRequest = { locationPermissionRequest },
+                    rememberLocationSettingResolutionLauncher = { locationSettingResolutionLauncher },
                     navigateToNews = {
                         rootNavHostController.navigate(
                             Navigation.News
@@ -152,9 +213,9 @@ fun KakaoXpertApp(
                             Navigation.Weather
                         )
                     },
-                    navigateToNewsDetail = {
+                    navigateToNewsDetail = { newsId ->
                         rootNavHostController.navigate(
-                            Navigation.NewsDetail
+                            Navigation.NewsDetail(newsId, NewsType.COCOA)
                         )
                     },
                     navigateToDiagnosisResult = { sessionId ->
@@ -180,6 +241,17 @@ fun KakaoXpertApp(
                         rootNavHostController.navigate(
                             Navigation.Profile
                         )
+                    },
+                    navigateToAuth = { message ->
+                        showSnackbar(message)
+
+                        rootNavHostController.navigate(
+                            Navigation.Auth
+                        ) {
+                            popUpTo<Navigation.Main> {
+                                inclusive = true
+                            }
+                        }
                     },
                     navigateToSensorDataDetails = {
                         rootNavHostController.navigate(
@@ -232,21 +304,28 @@ fun KakaoXpertApp(
             composable<Navigation.News> {
                 NewsScreen(
                     navigateUp = rootNavHostController::navigateUp,
-                    navigateToDetail = {
-                        rootNavHostController.navigate(Navigation.NewsDetail)
+                    navigateToDetail = { newsId, newsType ->
+                        rootNavHostController.navigate(
+                            Navigation.NewsDetail(newsId, newsType = newsType)
+                        )
                     }
                 )
             }
 
             composable<Navigation.NewsDetail> {
-                NewsDetailScreen(
-                    navigateUp = rootNavHostController::navigateUp
+                NewsDetailsScreen(
+                    navigateUp = rootNavHostController::navigateUp,
+                    showSnackbar = showSnackbar
                 )
             }
 
             composable<Navigation.Weather> {
                 WeatherScreen(
-                    navigateUp = rootNavHostController::navigateUp
+                    navigateUp = rootNavHostController::navigateUp,
+                    isLocationPermissionGrantedProvider = appState.isLocationPermissionGrantedProvider,
+                    checkLocationPermission = appState::checkLocationPermission,
+                    rememberLocationPermissionRequest = { locationPermissionRequest },
+                    rememberLocationSettingResolutionLauncher = { locationSettingResolutionLauncher },
                 )
             }
 

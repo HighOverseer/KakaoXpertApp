@@ -1,6 +1,7 @@
-package com.neotelemetrixgdscunand.kakaoxpert.domain.model
+package com.neotelemetrixgdscunand.kamekapp.domain.model
 
 import com.neotelemetrixgdscunand.kakaoxpert.R
+
 
 abstract class DamageLevelCategory(
     val titleResId: Int,

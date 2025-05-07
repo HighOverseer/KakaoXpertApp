@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component
+package com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -45,23 +45,28 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green58
+import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Maroon50
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Pink
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
+import com.neotelemetrixgdscunand.kamekapp.presentation.dui.WeatherForecastOverviewDui
+import com.neotelemetrixgdscunand.kamekapp.presentation.utils.AsyncImagePainterStable
+import com.neotelemetrixgdscunand.kamekapp.presentation.utils.ImagePainterStable
 
 @Composable
 fun HomeHeaderSection(
     modifier: Modifier = Modifier,
-    navigateToNotification: () -> Unit = {}
+    navigateToNotification: () -> Unit = {},
+    weatherForecastOverview: WeatherForecastOverviewDui? = null,
+    currentLocationProvider: () -> String? = { null },
+    navigateToWeather: () -> Unit = {},
 ) {
 
     var inflatedCardHeight by remember { mutableStateOf(0.dp) }
@@ -70,8 +75,8 @@ fun HomeHeaderSection(
         modifier
             .background(
                 brush = Brush.linearGradient(
-                    Pair(1f, Green55),
-                    Pair(1f, Maroon50)
+                    Pair(1f, Green58),
+                    Pair(1f, Green55)
                 ),
                 shape = RoundedCornerShape(
                     bottomStart = 16.dp,
@@ -180,7 +185,8 @@ fun HomeHeaderSection(
                         contentDescription = null
                     )
                     Text(
-                        text = stringResource(R.string.padang),
+                        text = currentLocationProvider()
+                            ?: stringResource(R.string.tidak_diketahui),
                         style = MaterialTheme.typography.titleMedium,
                         color = Color.White
                     )
@@ -247,34 +253,42 @@ fun HomeHeaderSection(
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text = stringResource(R.string._17),
+                            text = weatherForecastOverview?.currentTemperature?.getValue() ?: "-°",
                             style = MaterialTheme.typography.displayMedium,
                             color = Color.White
                         )
                         Spacer(modifier = Modifier.width(24.dp))
                         Column {
                             Text(
-                                stringResource(R.string.hujan_lebat),
+                                weatherForecastOverview?.name?.getValue() ?: "",
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White
                             )
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                stringResource(R.string.h_24),
+                                stringResource(
+                                    R.string.h_24,
+                                    weatherForecastOverview?.maxTemperature?.getValue() ?: "-"
+                                ),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                stringResource(R.string.l_17),
+                                stringResource(
+                                    R.string.l_17,
+                                    weatherForecastOverview?.minTemperature?.getValue() ?: "-"
+                                ),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White
                             )
                         }
 
                         Spacer(Modifier.weight(1f))
-                        ImagePainterStable(
-                            drawableResId = R.drawable.ic_weather,
+                        AsyncImagePainterStable(
+                            imageDrawableResId = weatherForecastOverview?.iconResourceId
+                                ?: R.drawable.ic_weather_cloudy,
+                            contentScale = ContentScale.Fit,
                             contentDescription = stringResource(R.string.gambar_cuaca)
                         )
                     }
@@ -301,7 +315,7 @@ fun HomeHeaderSection(
                             )
                             Spacer(Modifier.height(7.dp))
                             Text(
-                                stringResource(R.string._87),
+                                weatherForecastOverview?.humidity?.getValue() ?: "-",
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White
                             )
@@ -316,7 +330,7 @@ fun HomeHeaderSection(
                             )
                             Spacer(Modifier.height(7.dp))
                             Text(
-                                stringResource(R.string._2_km_jam),
+                                weatherForecastOverview?.windVelocity?.getValue() ?: "-",
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White
                             )
@@ -331,7 +345,7 @@ fun HomeHeaderSection(
                             )
                             Spacer(Modifier.height(7.dp))
                             Text(
-                                stringResource(R.string._100mm),
+                                weatherForecastOverview?.rainfall?.getValue() ?: "-",
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White
                             )
@@ -353,7 +367,7 @@ fun HomeHeaderSection(
                     colors = CardDefaults.cardColors(
                         containerColor = Orange85
                     ),
-                    onClick = {},
+                    onClick = navigateToWeather,
                 ) {
                     Row(
                         Modifier
@@ -362,7 +376,7 @@ fun HomeHeaderSection(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Lihat Selengkapnya",
+                            text = stringResource(R.string.lihat_selengkapnya),
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = FontWeight.W300
                             ),

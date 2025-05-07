@@ -226,4 +226,52 @@
     <string name="masukan_device_id_disini">Enter Device ID Here</string>
     <string name="masukan_device_key_disini">Enter Device Key Here</string>
     <string name="visibilitas_kunci_perangkat">Device Key Visibility</string>
+
+    <string name="username_is_already_registered">Username is already registered.</string>
+    <string name="email_no_hp_atau_password_salah">Email/Phone number or password is incorrect.</string>
+    <string name="sesi_tidak_valid_mohon_coba_lagi">Session is not valid, please try again.</string>
+    <string name="telah_terjadi_kesalahan_mohon_coba_lagi">An error occurred, please try again.</string>
+    <string name="terdapat_kesalahan_coba_periksa_konektivitas_anda">An error occurred, please check your connectivity.</string>
+    <string name="maaf_sepertinya_ada_kesalahan_coba_periksa_koneksi_anda">Sorry, something went wrong. Please check your connection.</string>
+    <string name="terjadi_kesalahan_periska_konektivitas_anda_atau_coba_lagi_nanti">An error occurred. Check your connectivity or try again later.</string>
+    <string name="telah_terjadi_kesalahan_mohon_coba_lagi_nanti">An error occurred, please try again later.</string>
+    <string name="login_berhasil_halo">Login successful, Hello %1$s!</string>
+    <string name="daftar_berhasil_selamat_datang">Registration successful, welcome %1$s!</string>
+    <string name="username_harus_lebih_dari_6_karakter">Username must be more than 6 characters.</string>
+    <string name="username_harus_diisi_dengan_email_atau_nomor_handphone_yang_valid">Username must be a valid email or phone number.</string>
+    <string name="password_harus_lebih_dari_8_karakter">Password must be more than 8 characters.</string>
+    <string name="password_harus_mengandung_setidaknya_satu_huruf_kapital">Password must contain at least one uppercase letter.</string>
+    <string name="password_harus_mengandung_setidaknya_satu_angka">Password must contain at least one number.</string>
+    <string name="nama_tidak_boleh_kosong">Name cannot be empty.</string>
+    <string name="password_konfirmasi_tidak_cocok_periksa_lagi">Password confirmation does not match. Please check again!</string>
+    <string name="username_dan_password_tidak_boleh_kosong">Username and password cannot be empty.</string>
+    <string name="belum_punya_akun_ayo_daftar">Don\'t have an account? Sign up now!</string>
+    <string name="sudah_punya_akun_login_yuk">Already have an account? Let\'s log in!</string>
+    <string name="konfirmasi_password">Confirm Password</string>
+    <string name="email_no_hp_tidak_boleh_kosong">Email/Phone number cannot be empty.</string>
+    <string name="password_tidak_boleh_kosong">Password cannot be empty.</string>
+    <string name="kamu_telah_logout">You have been logged out.</string>
+    <string name="maaf_sepertinya_server_sedang_sibuk_coba_lagi_nanti">Sorry, the server seems to be busy. Please try again later.</string>
+    <string name="suhu_format">%1$s°C</string>
+    <string name="wind_velocity_format">%1$s Km/Hour</string>
+    <string name="humidity_format">%1$s%%</string>
+    <string name="rainfall_format">%1$smm</string>
+
+
+    <string name="cuaca_hujan_lebat">Heavy Rain</string>
+    <string name="cuaca_berawan">Cloudy</string>
+    <string name="cuaca_cerah">Clear</string>
+    <string name="cuaca_sebagian_besar_berawan">Mostly Cloudy</string>
+    <string name="cuaca_badai_petir">Thunderstorm</string>
+    <string name="cuaca_hujan_gerimis">Drizzle</string>
+
+    <string name="fitur_prediksi_cuaca_tidak_bisa">The Weather Prediction feature cannot be used without access to your location.</string>
+    <string name="maaf_sepertinya_anda_perlu_mengaktifkan_beberapa_pengaturan_lokasi">Sorry, it seems you need to enable some location settings.</string>
+    <string name="maaf_pengaturan_lokasi_perlu_anda_aktifkan">Sorry, you need to enable location settings.</string>
+    <string name="tidak_diketahui">Unknown</string>
+    <string name="maaf_detail_berita_tidak_ditemukan">Sorry, it seems the news content could not be found.</string>
+    <string name="tidak_ditemukan_berita_yang_cocok">No matching news found</string>
+    <string name="tidak_ada_berita_yang_tersedia">No news available</string>
+    <string name="agrikultur">Agriculture</string>
+    <string name="penyakit_tanaman">Plant Disease</string>
 </resources>

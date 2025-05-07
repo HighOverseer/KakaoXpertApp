@@ -7,7 +7,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CaptureImageFileHandler
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util.CameraState
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util.ImageCaptureResult
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util.TakePhotoUIEvent
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util.TextFieldConfirmationDialogEvent
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util.TextFieldConfirmationDialogState
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImageCompressor

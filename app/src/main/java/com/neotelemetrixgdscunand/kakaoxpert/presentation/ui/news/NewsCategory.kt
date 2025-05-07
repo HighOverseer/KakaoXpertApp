@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news
+package com.neotelemetrixgdscunand.kamekapp.presentation.ui.news
 
 import com.neotelemetrixgdscunand.kakaoxpert.R
 

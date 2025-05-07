@@ -3,7 +3,7 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.c
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kamekapp.domain.model.BoundingBox
 
 @Composable
 fun OverlayCompose(

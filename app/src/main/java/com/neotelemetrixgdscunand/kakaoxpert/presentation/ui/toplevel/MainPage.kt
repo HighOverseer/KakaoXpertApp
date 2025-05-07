@@ -1,6 +1,13 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel
 
+import android.content.Context
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -23,10 +30,12 @@ import androidx.navigation.compose.rememberNavController
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.account.AccountScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.DiagnosisScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.HomeScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDevicesInfoScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.account.AccountScreen
+import com.neotelemetrixgdscunand.kamekapp.presentation.utils.MessageSnackbar
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
@@ -37,25 +46,43 @@ fun MainPage(
     navigateToNews: () -> Unit = {},
     navigateToShop: () -> Unit = {},
     navigateToWeather: () -> Unit = {},
-    navigateToNewsDetail: () -> Unit = {},
+    navigateToNewsDetail: (Int) -> Unit = {},
     navigateToDiagnosisResult: (Int) -> Unit = {},
     navigateToNotification: () -> Unit = {},
     navigateToTakePhoto: () -> Unit = {},
     navigateToProfile: () -> Unit = {},
-    navigateToSensorDataDetails: () -> Unit = {}
+    navigateToSensorDataDetails: () -> Unit = {},
+    navigateToAuth: (String) -> Unit = {},
+    isLocationPermissionGrantedProvider: () -> Boolean? = { false },
+    checkLocationPermission: (Context, ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>) -> Unit = { _, _ -> },
+    rememberLocationPermissionRequest: @Composable () -> ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>> = {
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { }
+    },
+    rememberLocationSettingResolutionLauncher: @Composable () -> ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult> = {
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult()
+        ) {}
+    }
 ) {
 
     val snackbarHostState = remember {
         SnackbarHostState()
     }
     val coroutineScope = rememberCoroutineScope()
+    var showingSnackbarJob: Job? = remember {
+        null
+    }
     val showSnackbar: (String) -> Unit = remember {
-        {
-            coroutineScope.launch {
-                snackbarHostState.showSnackbar(it)
+        { message: String ->
+            showingSnackbarJob?.cancel()
+            showingSnackbarJob = coroutineScope.launch {
+                snackbarHostState.showSnackbar(message)
             }
         }
     }
+
 
     var bottomBarHeightPx by remember {
         mutableIntStateOf(0)
@@ -68,7 +95,11 @@ fun MainPage(
             SnackbarHost(
                 hostState = snackbarHostState,
                 snackbar = { data ->
-                    Text(data.visuals.message)
+                    MessageSnackbar(
+                        message = data.visuals.message,
+                        modifier = Modifier
+                            .fillMaxHeight(0.08f),
+                    )
                 }
             )
         },
@@ -103,6 +134,10 @@ fun MainPage(
             ) {
                 composable<Navigation.Main.Home> {
                     HomeScreen(
+                        isLocationPermissionGrantedProvider = isLocationPermissionGrantedProvider,
+                        checkLocationPermission = checkLocationPermission,
+                        rememberLocationPermissionRequest = rememberLocationPermissionRequest,
+                        rememberLocationSettingResolutionLauncher = rememberLocationSettingResolutionLauncher,
                         navigateToNews = navigateToNews,
                         navigateToShop = navigateToShop,
                         navigateToWeather = navigateToWeather,
@@ -129,7 +164,8 @@ fun MainPage(
 
                 composable<Navigation.Main.Account> {
                     AccountScreen(
-                        navigateToProfile = navigateToProfile
+                        navigateToProfile = navigateToProfile,
+                        navigateToAuth = navigateToAuth,
                     )
                 }
 

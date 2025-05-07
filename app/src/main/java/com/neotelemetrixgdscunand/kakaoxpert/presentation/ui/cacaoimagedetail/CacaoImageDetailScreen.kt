@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.components.OverlayCompose
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.NavigateUpButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.collectChannelWhenStarted
+import com.neotelemetrixgdscunand.kamekapp.domain.model.BoundingBox
 
 @Composable
 fun CacaoImageDetailScreen(

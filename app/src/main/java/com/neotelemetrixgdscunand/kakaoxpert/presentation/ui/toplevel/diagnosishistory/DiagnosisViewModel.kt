@@ -2,8 +2,8 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neotelemetrixgdscunand.kakaoxpert.domain.data.Repository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kamekapp.domain.data.Repository
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

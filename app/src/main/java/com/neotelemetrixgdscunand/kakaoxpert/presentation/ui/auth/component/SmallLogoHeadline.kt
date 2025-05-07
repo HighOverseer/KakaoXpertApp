@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component
+package com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
@@ -17,9 +17,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.montserratFamily
 
 
@@ -42,18 +40,10 @@ fun SmallLogoHeadline(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = stringResource(R.string.kakao_),
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.headlineSmall.copy(
                 fontFamily = montserratFamily
-            ),
-            color = Green55
-        )
-        Text(
-            text = stringResource(R.string.xpert),
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontFamily = montserratFamily
-            ),
-            color = Orange85
+            )
         )
     }
 }
