@@ -9,13 +9,13 @@ import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
     private val authPreference: AuthPreference
-):Interceptor {
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val origin = chain.request()
-        val token:String
+        val token: String
         return runBlocking {
             token = authPreference.getToken().first()
-            if (token.isNotEmpty()){
+            if (token.isNotEmpty()) {
                 val authorized = origin.newBuilder()
                     .addHeader("Authorization", "Bearer $token")
                     .build()

@@ -56,7 +56,7 @@ fun MessageSnackbar(
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 private fun MessageSnackbarPreview() {
-    KakaoXpertTheme{
+    KakaoXpertTheme {
         MessageSnackbar(message = "Hello")
     }
 }

@@ -25,8 +25,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
@@ -233,7 +233,7 @@ private fun WeatherPredictionItemPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun WeatherPredictionItemLoadingPreview() {
-    KakaoXpertTheme{
+    KakaoXpertTheme {
         WeatherPredictionItemLoading(
             modifier = Modifier
         )

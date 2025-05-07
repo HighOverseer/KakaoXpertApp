@@ -105,7 +105,7 @@ fun SplashContent(
 @Preview(showBackground = true)
 @Composable
 private fun SplashScreenPreview() {
-    KakaoXpertTheme{
+    KakaoXpertTheme {
         SplashScreen()
     }
 }

@@ -47,7 +47,7 @@ sealed interface Navigation {
         data object Home : MainRoute
 
         @Serializable
-        data object IoTDevicesInfo:MainRoute
+        data object IoTDevicesInfo : MainRoute
 
         @Serializable
         data object Diagnosis : MainRoute

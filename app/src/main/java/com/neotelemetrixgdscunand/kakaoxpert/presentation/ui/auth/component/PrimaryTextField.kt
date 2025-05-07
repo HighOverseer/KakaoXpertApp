@@ -25,7 +25,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey70
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.KakaoXpertApp
 
 @Composable
 fun PrimaryTextField(
@@ -121,7 +120,7 @@ fun PrimaryTextField(
 @Preview(showBackground = true)
 @Composable
 private fun PrimaryTextFieldPreview() {
-    KakaoXpertTheme{
+    KakaoXpertTheme {
         PrimaryTextField()
     }
 }

@@ -1,7 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home
 
 import android.content.Context
-import android.content.res.Configuration
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -47,13 +46,10 @@ import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.compone
 import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.HomeHeaderSection
 import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.PriceInfoSection
 import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.SectionHeadline
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.WeeklyNewsItem
 import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.WeeklyNewsPreviewSection
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.getDummyWeeklyNewsItems
 import com.neotelemetrixgdscunand.kamekapp.presentation.utils.collectChannelWhenStarted
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeScreen(

@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.dicoding.asclepius.domain.common.StringRes
-import com.neotelemetrixgdscunand.kamekapp.domain.model.CacaoDisease
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorResult
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.DiagnosisSessionComposeStable
 import com.neotelemetrixgdscunand.kamekapp.domain.data.Repository
+import com.neotelemetrixgdscunand.kamekapp.domain.model.CacaoDisease
+import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
 import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSession
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
