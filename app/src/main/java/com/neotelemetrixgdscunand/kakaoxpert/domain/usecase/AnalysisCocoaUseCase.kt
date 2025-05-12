@@ -6,7 +6,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 
 interface AnalysisCocoaUseCase {
     suspend operator fun invoke(
-        sessionName:String,
-        imagePath:String
+        sessionName: String,
+        imagePath: String
     ): Result<AnalysisSession, CocoaAnalysisError>
 }

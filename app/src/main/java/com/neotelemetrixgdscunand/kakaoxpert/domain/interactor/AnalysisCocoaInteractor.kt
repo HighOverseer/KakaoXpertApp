@@ -2,28 +2,28 @@ package com.neotelemetrixgdscunand.kakaoxpert.domain.interactor
 
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorResult
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
-import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import kotlinx.coroutines.ensureActive
 import kotlin.coroutines.coroutineContext
 
 class AnalysisCocoaInteractor(
     private val cacaoImageDetectorHelper: CocoaImageDetectorHelper,
     private val cocoaAnalysisRepository: CocoaAnalysisRepository
-):AnalysisCocoaUseCase {
+) : AnalysisCocoaUseCase {
 
     override suspend fun invoke(
-        sessionName:String,
+        sessionName: String,
         imagePath: String
     ): Result<AnalysisSession, CocoaAnalysisError> {
         val result = try {
             cacaoImageDetectorHelper.detect(imagePath)
-        }finally {
+        } finally {
             cacaoImageDetectorHelper.clearResource()
         }
 
@@ -58,7 +58,7 @@ class AnalysisCocoaInteractor(
                     detectedCocoas = detectedCocoas
                 )
 
-               val newSavedAnalysis = cocoaAnalysisRepository.getDiagnosisSession(newSessionId)
+                val newSavedAnalysis = cocoaAnalysisRepository.getDiagnosisSession(newSessionId)
 
                 return Result.Success(newSavedAnalysis)
             }

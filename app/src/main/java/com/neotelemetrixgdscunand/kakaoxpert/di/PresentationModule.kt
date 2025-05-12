@@ -1,8 +1,5 @@
 package com.neotelemetrixgdscunand.kakaoxpert.di
 
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CaptureImageFileHandler
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ModelLabelExtractor
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CapturedImageFileHandlerImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaImageDetectorHelperImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.LocationManagerImpl
@@ -10,6 +7,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.utils.ModelLabelExtractorImpl
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.PasswordValidator
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.UsernameValidator
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CaptureImageFileHandler
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ModelLabelExtractor
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.PasswordValidatorImpl
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UsernameValidatorImpl
 import dagger.Binds

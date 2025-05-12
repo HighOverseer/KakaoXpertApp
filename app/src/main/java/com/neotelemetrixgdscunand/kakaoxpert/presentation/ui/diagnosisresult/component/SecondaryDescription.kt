@@ -19,7 +19,7 @@ fun SecondaryDescription(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    descriptionTextAlign:TextAlign? = null
+    descriptionTextAlign: TextAlign? = null
 ) {
     Text(
         modifier = modifier,

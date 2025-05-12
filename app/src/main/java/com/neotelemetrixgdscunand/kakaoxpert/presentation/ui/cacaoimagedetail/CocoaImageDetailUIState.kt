@@ -5,6 +5,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class CocoaImageDetailUIState(
-    val imagePath:String = "",
+    val imagePath: String = "",
     val boundingBox: ImmutableList<BoundingBox> = persistentListOf()
 )

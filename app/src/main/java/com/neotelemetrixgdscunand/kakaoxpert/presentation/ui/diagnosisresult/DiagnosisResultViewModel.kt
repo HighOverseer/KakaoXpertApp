@@ -8,8 +8,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -28,7 +28,7 @@ class DiagnosisResultViewModel @Inject constructor(
     private val analysisCocoaUseCase: AnalysisCocoaUseCase,
     private val getCocoaAnalysisSessionUseCase: GetCocoaAnalysisSessionUseCase,
     private val savedStateHandle: SavedStateHandle,
-    private val duiMapper:DuiMapper
+    private val duiMapper: DuiMapper
 ) : ViewModel() {
 
     // Backup new diagnosis session id that just has been saved, in case process death happens
@@ -60,11 +60,14 @@ class DiagnosisResultViewModel @Inject constructor(
         if (isNewDiagnosisSessionSavedFromProcessDeathDueToSystemKills) {
             backupNewDiagnosisSessionIdThatJustSaved?.let { sessionId ->
                 viewModelScope.launch {
-                    val theNewDiagnosisSessionThatHasJustBeenSaved = getCocoaAnalysisSessionUseCase(sessionId)
+                    val theNewDiagnosisSessionThatHasJustBeenSaved =
+                        getCocoaAnalysisSessionUseCase(sessionId)
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(theNewDiagnosisSessionThatHasJustBeenSaved),
+                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(
+                                theNewDiagnosisSessionThatHasJustBeenSaved
+                            ),
                             imagePreviewPath = theNewDiagnosisSessionThatHasJustBeenSaved.imageUrlOrPath
                         )
                     }
@@ -77,7 +80,10 @@ class DiagnosisResultViewModel @Inject constructor(
             extras.newSessionName != null && extras.newUnsavedSessionImagePath != null
 
         if (isFromNewSession) {
-            detectImage(extras.newSessionName as String, extras.newUnsavedSessionImagePath as String)
+            detectImage(
+                extras.newSessionName as String,
+                extras.newUnsavedSessionImagePath as String
+            )
         } else {
             extras.sessionId?.let { sessionId ->
                 viewModelScope.launch {
@@ -86,7 +92,9 @@ class DiagnosisResultViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(selectedDiagnosisSession),
+                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(
+                                selectedDiagnosisSession
+                            ),
                             imagePreviewPath = selectedDiagnosisSession.imageUrlOrPath
                         )
                     }
@@ -98,7 +106,7 @@ class DiagnosisResultViewModel @Inject constructor(
 
     private fun detectImage(
         sessionName: String,
-        imagePath:String
+        imagePath: String
     ) {
         if (detectImageJob != null) return
 
@@ -107,12 +115,13 @@ class DiagnosisResultViewModel @Inject constructor(
 
             when (val result = analysisCocoaUseCase(sessionName, imagePath)) {
                 is Result.Error -> {
-                    when(result.error){
+                    when (result.error) {
                         CocoaAnalysisError.FAILED_TO_DETECT_COCOA -> {
                             _event.send(
                                 AnalysisResultUIEvent.OnFailedToAnalyseImage
                             )
                         }
+
                         CocoaAnalysisError.NO_COCOA_DETECTED -> {
                             _event.send(
                                 AnalysisResultUIEvent.OnInputImageInvalid

@@ -97,7 +97,8 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
             ensureActive()
             val imageBitmap = imageConverter.convertImageUriToBitmap(imageUri)
             ensureActive()
-            val resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, tensorWidth, tensorHeight, false)
+            val resizedBitmap =
+                Bitmap.createScaledBitmap(imageBitmap, tensorWidth, tensorHeight, false)
 
             ensureActive()
             val tensorImage = TensorImage(DataType.FLOAT32)
@@ -128,7 +129,7 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
 
                 ensureActive()
                 if (bestBoxes != null) {
-                    return@withContext  ImageDetectorResult.Success(bestBoxes)
+                    return@withContext ImageDetectorResult.Success(bestBoxes)
                 } else return@withContext ImageDetectorResult.NoObjectDetected
             } catch (e: Exception) {
                 if (e is CancellationException) throw e

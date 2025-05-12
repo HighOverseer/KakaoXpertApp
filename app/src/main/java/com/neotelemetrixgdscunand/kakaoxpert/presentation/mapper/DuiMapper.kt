@@ -1,10 +1,10 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper
 
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.DiagnosisSessionDui
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.DiagnosisSessionDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsDetailsDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.ShopItemDui

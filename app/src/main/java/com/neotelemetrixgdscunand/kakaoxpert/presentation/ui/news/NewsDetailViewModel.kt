@@ -4,10 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel

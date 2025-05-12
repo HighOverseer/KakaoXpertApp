@@ -3,8 +3,8 @@ package com.neotelemetrixgdscunand.kakaoxpert.data
 import android.icu.util.Calendar
 import com.neotelemetrixgdscunand.kakaoxpert.domain.DomainMapper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getDetectedDiseaseCacaos
 import kotlinx.coroutines.Dispatchers
@@ -52,14 +52,14 @@ class CocoaAnalysisRepositoryImpl @Inject constructor() : CocoaAnalysisRepositor
         imageOrUrlPath: String,
         predictedPrice: Float,
         detectedCocoas: List<DetectedCocoa>
-    ):Int {
+    ): Int {
         mutex.withLock {
             val formatDate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
             val dateString = formatDate.format(
                 Calendar.getInstance().time
             )
 
-            val id = Random.nextInt(0,1000_000)
+            val id = Random.nextInt(0, 1000_000)
 
             savedAnalysisSession.update {
                 (it + listOf(

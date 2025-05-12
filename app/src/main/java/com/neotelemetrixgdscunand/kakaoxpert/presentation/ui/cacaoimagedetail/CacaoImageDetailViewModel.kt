@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
@@ -32,7 +32,8 @@ class CacaoImageDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val extras = savedStateHandle.toRoute<Navigation.CacaoImageDetail>()
-            val selectedDiagnosisSession = cocoaAnalysisRepository.getDiagnosisSession(extras.diagnosisSessionId)
+            val selectedDiagnosisSession =
+                cocoaAnalysisRepository.getDiagnosisSession(extras.diagnosisSessionId)
 
             val boundingBoxes = mutableListOf<BoundingBox>()
 

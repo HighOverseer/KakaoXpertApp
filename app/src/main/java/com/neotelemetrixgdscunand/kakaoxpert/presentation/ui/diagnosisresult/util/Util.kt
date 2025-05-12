@@ -18,10 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey63
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey67
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey63
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey67
 import kotlinx.collections.immutable.ImmutableList
 
 fun Modifier.shimmeringEffect(

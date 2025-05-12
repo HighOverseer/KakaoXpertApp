@@ -36,14 +36,14 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDataOverviewSection
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDevicesConnectivityStatusSection
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastOverviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.HomeDiagnosisHistory
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.HomeHeaderSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDataOverviewSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDevicesConnectivityStatusSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.PriceInfoSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.SectionHeadline
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.WeeklyNewsPreviewSection

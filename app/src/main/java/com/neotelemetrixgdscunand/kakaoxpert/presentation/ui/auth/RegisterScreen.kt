@@ -35,11 +35,11 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.component.SecondaryButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.AuthHeaderSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.AuthTextField
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.SmallLogoHeadline
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.component.SecondaryButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 
 

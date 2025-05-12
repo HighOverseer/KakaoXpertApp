@@ -26,14 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.CocoaDiseaseMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.PrimaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.SecondaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.TitleShimmeringLoading
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
@@ -57,10 +57,15 @@ fun DiagnosisDiseaseDetails(
 
     } else groupedDetectedDiseaseKeys.forEachIndexed { index, diseaseKey ->
         key(diseaseKey) {
-            val diseaseName = CocoaDiseaseMapper.mapToNameResId[diseaseKey]?.let{ stringResource(it) } ?: "-"
-            val diseaseCause = CocoaDiseaseMapper.mapToCauseResId[diseaseKey]?.let{ stringResource(it) } ?: "-"
-            val diseaseSymptoms = CocoaDiseaseMapper.mapToSymptomResId[diseaseKey]?.let{ stringResource(it) } ?: "-"
-            val diseaseSeedCondition = CocoaDiseaseMapper.mapToSeedConditionResId[diseaseKey]?.let{ stringResource(it) } ?: "-"
+            val diseaseName =
+                CocoaDiseaseMapper.mapToNameResId[diseaseKey]?.let { stringResource(it) } ?: "-"
+            val diseaseCause =
+                CocoaDiseaseMapper.mapToCauseResId[diseaseKey]?.let { stringResource(it) } ?: "-"
+            val diseaseSymptoms =
+                CocoaDiseaseMapper.mapToSymptomResId[diseaseKey]?.let { stringResource(it) } ?: "-"
+            val diseaseSeedCondition =
+                CocoaDiseaseMapper.mapToSeedConditionResId[diseaseKey]?.let { stringResource(it) }
+                    ?: "-"
 
             DiagnosisDiseaseDetailItem(
                 isExpandProvider = { isItemExpandProvider(index) },
