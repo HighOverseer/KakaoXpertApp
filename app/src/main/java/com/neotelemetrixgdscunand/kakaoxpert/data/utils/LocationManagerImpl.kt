@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.data.utils
+package com.neotelemetrixgdscunand.kakaoxpert.data.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,10 +11,10 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
-import com.neotelemetrixgdscunand.kamekapp.domain.common.LocationError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.data.LocationManager
-import com.neotelemetrixgdscunand.kamekapp.domain.model.Location
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.LocationError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.Location
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose

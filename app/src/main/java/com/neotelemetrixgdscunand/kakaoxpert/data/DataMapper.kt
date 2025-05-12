@@ -1,11 +1,11 @@
-package com.neotelemetrixgdscunand.kamekapp.data
+package com.neotelemetrixgdscunand.kakaoxpert.data
 
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.NewsDetailsDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.NewsItemDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.ShopItemDto
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsDetails
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsItem
-import com.neotelemetrixgdscunand.kamekapp.domain.model.ShopItem
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsDetailsDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsItemDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.ShopItemDto
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale

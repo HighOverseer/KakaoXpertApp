@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.data.utils
+package com.neotelemetrixgdscunand.kakaoxpert.data.utils
 
 import android.content.Context
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ModelLabelExtractor

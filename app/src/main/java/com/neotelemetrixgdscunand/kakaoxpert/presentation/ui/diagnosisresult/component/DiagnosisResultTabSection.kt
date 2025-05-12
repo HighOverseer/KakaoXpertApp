@@ -52,7 +52,7 @@ fun DiagnosisResultTabSection(
             )
         ) {
             Text(
-                stringResource(R.string.diagnosis),
+                stringResource(R.string.info_penyakit),
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontWeight = FontWeight.Bold
                 ),

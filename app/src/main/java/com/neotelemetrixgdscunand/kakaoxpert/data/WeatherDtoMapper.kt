@@ -1,11 +1,11 @@
-package com.neotelemetrixgdscunand.kamekapp.data
+package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.WeatherForecastItemDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.WeatherForecastOverviewDto
-import com.neotelemetrixgdscunand.kamekapp.domain.model.WeatherForecastItem
-import com.neotelemetrixgdscunand.kamekapp.domain.model.WeatherForecastOverview
-import com.neotelemetrixgdscunand.kamekapp.domain.model.WeatherType
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.WeatherForecastItemDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.WeatherForecastOverviewDto
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherForecastItem
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherForecastOverview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherType
 import kotlinx.coroutines.CancellationException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -48,7 +48,7 @@ object WeatherDtoMapper {
             currentTemperature = weatherForecastOverviewDto.currentTemperature?.toInt() ?: 0,
             windVelocity = weatherForecastOverviewDto.windVelocity?.toInt() ?: 0,
             humidity = weatherForecastOverviewDto.humidity ?: 0,
-            rainfall = weatherForecastOverviewDto.rainfall ?: 0,
+            rainfall = weatherForecastOverviewDto.rainfall?.toInt() ?: 0,
             type = mapWeatherTypeIdToWeatherType(weatherForecastOverviewDto.typeId ?: 0)
         )
     }

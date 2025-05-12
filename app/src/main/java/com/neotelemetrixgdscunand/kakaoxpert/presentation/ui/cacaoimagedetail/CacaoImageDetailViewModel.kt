@@ -5,50 +5,60 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
-import com.neotelemetrixgdscunand.kamekapp.domain.data.Repository
-import com.neotelemetrixgdscunand.kamekapp.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CacaoImageDetailViewModel @Inject constructor(
-    val repository: Repository,
+    val cocoaAnalysisRepository: CocoaAnalysisRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val imagePath: String
-    val boundingBoxes: List<BoundingBox>
+    private val _uiState = MutableStateFlow(CocoaImageDetailUIState())
+    val uiState = _uiState.asStateFlow()
 
     private val _invalidSessionEvent = Channel<Unit>()
     val invalidSession = _invalidSessionEvent.receiveAsFlow()
 
     init {
-        val extras = savedStateHandle.toRoute<Navigation.CacaoImageDetail>()
-        val selectedDiagnosisSession = repository.getDiagnosisSession(extras.diagnosisSessionId)
+        viewModelScope.launch {
+            val extras = savedStateHandle.toRoute<Navigation.CacaoImageDetail>()
+            val selectedDiagnosisSession = cocoaAnalysisRepository.getDiagnosisSession(extras.diagnosisSessionId)
 
-        imagePath = selectedDiagnosisSession.imageUrlOrPath
-        val boundingBoxes = mutableListOf<BoundingBox>()
+            val boundingBoxes = mutableListOf<BoundingBox>()
 
-        if (extras.detectedCacaoId == null) {
-            boundingBoxes.addAll(
-                selectedDiagnosisSession.detectedCacaos.map {
-                    it.boundingBox
+            if (extras.detectedCacaoId == null) {
+                boundingBoxes.addAll(
+                    selectedDiagnosisSession.detectedCocoas.map {
+                        it.boundingBox
+                    }
+                )
+            } else {
+                selectedDiagnosisSession
+                    .detectedCocoas
+                    .find { it.id == extras.detectedCacaoId }
+                    ?.boundingBox?.let {
+                        boundingBoxes.add(it)
+                    } ?: viewModelScope.launch {
+                    _invalidSessionEvent.send(Unit)
                 }
-            )
-        } else {
-            selectedDiagnosisSession
-                .detectedCacaos
-                .find { it.id == extras.detectedCacaoId }
-                ?.boundingBox?.let {
-                    boundingBoxes.add(it)
-                } ?: viewModelScope.launch {
-                _invalidSessionEvent.send(Unit)
+            }
+
+            _uiState.update {
+                CocoaImageDetailUIState(
+                    imagePath = selectedDiagnosisSession.imageUrlOrPath,
+                    boundingBox = boundingBoxes.toImmutableList()
+                )
             }
         }
-
-        this.boundingBoxes = boundingBoxes
     }
 }

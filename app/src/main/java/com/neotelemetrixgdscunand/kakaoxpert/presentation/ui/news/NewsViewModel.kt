@@ -1,14 +1,14 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.news
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.data.NewsRepository
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.NewsItemDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.mapper.DuiMapper
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.UIText
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.toErrorUIText
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -96,7 +96,7 @@ class NewsViewModel @Inject constructor(
             is Result.Success -> {
                 coroutineContext.ensureActive()
                 val newsItemsDui = result.data.map {
-                    duiMapper.mapNewsItemToNewsItemDui(it)
+                    duiMapper.mapNewsItemToDui(it)
                 }.toImmutableList()
 
                 _newsItems.update { newsItemsDui }

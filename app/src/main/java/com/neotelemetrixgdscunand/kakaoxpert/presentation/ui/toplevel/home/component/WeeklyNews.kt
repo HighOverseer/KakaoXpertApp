@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,8 +35,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey65
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.shimmeringEffect
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.NewsItemDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.AsyncImagePainterStable
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.AsyncImagePainterStable
 
 @Composable
 fun WeeklyNews(

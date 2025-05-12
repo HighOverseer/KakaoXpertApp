@@ -1,6 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data.remote
 
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthPreference
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor

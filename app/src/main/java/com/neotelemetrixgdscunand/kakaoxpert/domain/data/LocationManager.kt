@@ -1,8 +1,8 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.data
+package com.neotelemetrixgdscunand.kakaoxpert.domain.data
 
-import com.neotelemetrixgdscunand.kamekapp.domain.common.LocationError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.model.Location
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.LocationError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.Location
 import kotlinx.coroutines.flow.Flow
 
 interface LocationManager {

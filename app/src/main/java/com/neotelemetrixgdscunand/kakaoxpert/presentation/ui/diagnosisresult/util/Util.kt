@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.IntSize
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey63
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey67
-import com.neotelemetrixgdscunand.kamekapp.domain.model.BoundingBox
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import kotlinx.collections.immutable.ImmutableList
 
 fun Modifier.shimmeringEffect(
@@ -194,7 +194,7 @@ fun Float.roundOffDecimal(n: Int = 3): Float {
     return Math.round(this * rounder) / rounder
 }
 
-fun DetectedCacao.getBoundingBoxWithItsNameAsTheLabel(
+fun DetectedCocoa.getBoundingBoxWithItsNameAsTheLabel(
     context: Context
 ): BoundingBox {
     return boundingBox.run {

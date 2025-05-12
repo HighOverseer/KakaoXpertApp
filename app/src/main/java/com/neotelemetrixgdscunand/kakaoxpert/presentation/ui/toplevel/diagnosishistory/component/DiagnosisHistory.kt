@@ -33,7 +33,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey65
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.formatSellPriceEstimationForHistory
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
 
 @Composable
 fun DiagnosisHistory(

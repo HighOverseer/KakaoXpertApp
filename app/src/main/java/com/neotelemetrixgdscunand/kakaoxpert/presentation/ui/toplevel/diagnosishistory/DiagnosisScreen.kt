@@ -51,7 +51,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosish
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchBar
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchCategory
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchHistoryCategory
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList

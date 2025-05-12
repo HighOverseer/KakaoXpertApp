@@ -100,7 +100,7 @@ fun IoTDevicesInfoScreen(
                     .aspectRatio(1.17f),
                 iconResId = R.drawable.ic_thermometer,
                 label = stringResource(R.string.suhu),
-                value = "15-16°C",
+                value = "24°C",
             )
             Spacer(Modifier.width(16.dp))
             IoTDataOverviewMenu(
@@ -109,7 +109,7 @@ fun IoTDevicesInfoScreen(
                     .aspectRatio(1.17f),
                 iconResId = R.drawable.ic_drop,
                 label = stringResource(R.string.kelembapan),
-                value = "96%",
+                value = "38%",
             )
         }
 
@@ -123,7 +123,7 @@ fun IoTDevicesInfoScreen(
                     .aspectRatio(1.17f),
                 iconResId = R.drawable.ic_sun,
                 label = stringResource(R.string.intensitas_cahaya),
-                value = "100 Lux",
+                value = "30 Lux",
             )
             Spacer(Modifier.width(16.dp))
 
@@ -165,7 +165,7 @@ fun IoTDevicesInfoScreen(
             onClick = { isAddDeviceDialogShown = true }
         )
 
-        repeat(2) {
+        repeat(1) {
             Spacer(Modifier.height(16.dp))
 
             IoTDeviceItem()

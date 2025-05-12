@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.model
+package com.neotelemetrixgdscunand.kakaoxpert.domain.model
 
 enum class NewsType(val id: Int) {
     //Alias All

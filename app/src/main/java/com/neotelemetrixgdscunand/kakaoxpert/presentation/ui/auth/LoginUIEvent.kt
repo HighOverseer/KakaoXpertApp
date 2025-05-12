@@ -1,6 +1,6 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth
 
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.UIText
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 
 sealed interface LoginUIEvent {
     data class OnLoginFailed(val messageUIText: UIText) : LoginUIEvent

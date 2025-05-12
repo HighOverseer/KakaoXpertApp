@@ -2,20 +2,20 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neotelemetrixgdscunand.kamekapp.domain.common.LocationError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.data.LocationManager
-import com.neotelemetrixgdscunand.kamekapp.domain.data.NewsRepository
-import com.neotelemetrixgdscunand.kamekapp.domain.data.Repository
-import com.neotelemetrixgdscunand.kamekapp.domain.data.WeatherRepository
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
-import com.neotelemetrixgdscunand.kamekapp.domain.model.Location
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.NewsItemDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.mapper.DuiMapper
-import com.neotelemetrixgdscunand.kamekapp.presentation.mapper.WeatherDuiMapper
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.UIText
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.toErrorUIText
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.LocationError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.WeatherRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.Location
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.WeatherDuiMapper
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -40,7 +40,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: Repository,
+    private val cocoaAnalysisRepository: CocoaAnalysisRepository,
     private val weatherRepository: WeatherRepository,
     private val locationManager: LocationManager,
     private val weatherMapper: WeatherDuiMapper,
@@ -52,7 +52,7 @@ class HomeViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     val diagnosisHistory: StateFlow<ImmutableList<DiagnosisSessionPreview>> =
-        repository.getAllSavedDiagnosisSessionPreviews()
+        cocoaAnalysisRepository.getAllSavedDiagnosisSessionPreviews()
             .map {
                 it.toImmutableList()
             }
@@ -168,7 +168,7 @@ class HomeViewModel @Inject constructor(
 
                 is Result.Success -> {
                     val newsItemsDui = result.data.map {
-                        duiMapper.mapNewsItemToNewsItemDui(it)
+                        duiMapper.mapNewsItemToDui(it)
                     }.toImmutableList()
 
                     _newsItems.update { newsItemsDui }

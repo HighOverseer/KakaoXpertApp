@@ -1,10 +1,10 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.data
+package com.neotelemetrixgdscunand.kakaoxpert.domain.data
 
-import com.neotelemetrixgdscunand.kamekapp.domain.common.DataError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsDetails
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsItem
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
 
 interface NewsRepository {
 

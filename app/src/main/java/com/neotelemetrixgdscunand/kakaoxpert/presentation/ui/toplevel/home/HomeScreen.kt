@@ -39,15 +39,15 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDataOverviewSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.IoTDevicesConnectivityStatusSection
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.NewsItemDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.WeatherForecastOverviewDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.HomeDiagnosisHistory
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.HomeHeaderSection
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.PriceInfoSection
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.SectionHeadline
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.WeeklyNewsPreviewSection
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.collectChannelWhenStarted
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastOverviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.HomeDiagnosisHistory
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.HomeHeaderSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.PriceInfoSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.SectionHeadline
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.WeeklyNewsPreviewSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

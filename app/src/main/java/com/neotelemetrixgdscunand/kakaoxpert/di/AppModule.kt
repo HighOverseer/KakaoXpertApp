@@ -1,11 +1,11 @@
-package com.neotelemetrixgdscunand.kamekapp.di
+package com.neotelemetrixgdscunand.kakaoxpert.di
 
 import android.content.Context
 import android.location.Geocoder
-import com.neotelemetrixgdscunand.kamekapp.data.DataMapper
-import com.neotelemetrixgdscunand.kamekapp.data.WeatherDtoMapper
-import com.neotelemetrixgdscunand.kamekapp.presentation.mapper.DuiMapper
-import com.neotelemetrixgdscunand.kamekapp.presentation.mapper.WeatherDuiMapper
+import com.neotelemetrixgdscunand.kakaoxpert.data.DataMapper
+import com.neotelemetrixgdscunand.kakaoxpert.data.WeatherDtoMapper
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.WeatherDuiMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

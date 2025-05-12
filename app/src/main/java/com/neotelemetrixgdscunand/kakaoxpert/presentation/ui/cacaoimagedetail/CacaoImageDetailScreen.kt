@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,12 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.components.OverlayCompose
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.NavigateUpButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.collectChannelWhenStarted
-import com.neotelemetrixgdscunand.kamekapp.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 
 @Composable
 fun CacaoImageDetailScreen(
@@ -38,20 +41,20 @@ fun CacaoImageDetailScreen(
         }
     }
 
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     CacaoImageDetailContent(
         modifier = modifier,
-        boundingBoxes = viewModel.boundingBoxes,
         navigateUp = navigateUp,
-        imagePath = viewModel.imagePath
+        uiState = uiState
     )
 }
 
 @Composable
 fun CacaoImageDetailContent(
     modifier: Modifier = Modifier,
-    imagePath: String = "",
+    uiState: CocoaImageDetailUIState = CocoaImageDetailUIState(),
     navigateUp: () -> Unit = { },
-    boundingBoxes: List<BoundingBox>
 ) {
     val configuration = LocalConfiguration.current
     val topToArrowMargin = remember {
@@ -64,7 +67,7 @@ fun CacaoImageDetailContent(
             modifier = modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
-            imageUrlOrPath = imagePath,
+            imageUrlOrPath = uiState.imagePath,
             placeholderResId = R.drawable.ic_camera,
             contentScale = ContentScale.FillBounds,
             contentDescription = null,
@@ -75,7 +78,7 @@ fun CacaoImageDetailContent(
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
-            boundingBoxes = boundingBoxes
+            boundingBoxes = uiState.boundingBox
         )
 
         NavigateUpButton(

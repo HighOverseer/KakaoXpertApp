@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.news
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -69,13 +69,13 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.ScrollUpButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchBar
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchCategory
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.NewsItemDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.WeeklyNews
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component.WeeklyNewsLoading
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.ImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.collectChannelWhenStarted
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.toUIText
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.WeeklyNews
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.WeeklyNewsLoading
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.ImagePainterStable
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toUIText
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch

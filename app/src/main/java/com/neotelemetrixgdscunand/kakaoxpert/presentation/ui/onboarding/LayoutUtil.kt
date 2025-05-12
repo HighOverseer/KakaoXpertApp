@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.onboarding
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.onboarding
 
 object LayoutUtil {
     const val ON_BOARDING_IMAGE_ID = "onBoardingImage"

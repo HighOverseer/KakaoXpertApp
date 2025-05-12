@@ -126,7 +126,7 @@ fun ContentTopAppBar(
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    text = stringResource(R.string.diagnosis),
+                    text = stringResource(R.string.analisis),
                     style = MaterialTheme.typography.headlineSmall,
                     color = Black10
                 )

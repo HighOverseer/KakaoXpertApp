@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.utils
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.utils
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable

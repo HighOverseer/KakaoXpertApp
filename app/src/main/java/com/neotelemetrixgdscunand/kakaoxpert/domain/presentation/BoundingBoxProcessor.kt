@@ -1,8 +1,8 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.presentation
 
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorHelper.Companion.CONFIDENCE_THRESHOLD
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorHelper.Companion.IOU_THRESHOLD
-import com.neotelemetrixgdscunand.kamekapp.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper.Companion.CONFIDENCE_THRESHOLD
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper.Companion.IOU_THRESHOLD
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 
 object BoundingBoxProcessor {
 

@@ -1,8 +1,8 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.account
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel

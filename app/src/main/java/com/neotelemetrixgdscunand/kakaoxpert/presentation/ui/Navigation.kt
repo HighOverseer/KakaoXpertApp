@@ -2,7 +2,7 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui
 
 
 import androidx.compose.runtime.Immutable
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
 import kotlinx.serialization.Serializable
 
 @Immutable

@@ -1,6 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.presentation
 
-import com.neotelemetrixgdscunand.kamekapp.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 
 
 sealed interface ImageDetectorResult {

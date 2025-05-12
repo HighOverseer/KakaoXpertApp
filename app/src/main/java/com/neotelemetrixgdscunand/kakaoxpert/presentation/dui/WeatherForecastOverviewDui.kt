@@ -1,6 +1,6 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.dui
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.dui
 
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.UIText
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 
 
 data class WeatherForecastOverviewDui(

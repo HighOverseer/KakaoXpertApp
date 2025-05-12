@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.common
+package com.neotelemetrixgdscunand.kakaoxpert.domain.common
 
 
 typealias RootError = Error

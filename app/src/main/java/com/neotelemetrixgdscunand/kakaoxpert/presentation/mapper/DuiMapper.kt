@@ -1,11 +1,14 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.mapper
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper
 
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsDetails
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsItem
-import com.neotelemetrixgdscunand.kamekapp.domain.model.ShopItem
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.NewsDetailsDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.NewsItemDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.ShopItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.DiagnosisSessionDui
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsDetailsDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.ShopItemDui
+import kotlinx.collections.immutable.toImmutableList
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -13,7 +16,7 @@ import java.util.Locale
 object DuiMapper {
     private const val NEWS_ITEM_DATE_FORMAT = "d MMM yyyy"
 
-    fun mapNewsItemToNewsItemDui(
+    fun mapNewsItemToDui(
         newsItem: NewsItem
     ): NewsItemDui {
         val calendar = Calendar.getInstance()
@@ -31,7 +34,7 @@ object DuiMapper {
         )
     }
 
-    fun mapNewsDetailsToNewsDetailsDui(
+    fun mapNewsDetailsToDui(
         newsDetails: NewsDetails
     ): NewsDetailsDui {
         val calendar = Calendar.getInstance()
@@ -59,4 +62,16 @@ object DuiMapper {
             targetUrl = shopItem.targetUrl
         )
     }
+
+    fun mapDiagnosisSessionToDui(analysisSession: AnalysisSession): DiagnosisSessionDui {
+        return DiagnosisSessionDui(
+            id = analysisSession.id,
+            title = analysisSession.title,
+            imageUrlOrPath = analysisSession.imageUrlOrPath,
+            date = analysisSession.date,
+            predictedPrice = analysisSession.predictedPrice,
+            detectedCocoas = analysisSession.detectedCocoas.toImmutableList()
+        )
+    }
+
 }

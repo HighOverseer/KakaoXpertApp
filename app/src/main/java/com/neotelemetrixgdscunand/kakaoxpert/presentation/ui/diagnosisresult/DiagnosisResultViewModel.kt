@@ -1,38 +1,34 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult
 
-import android.icu.util.Calendar
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.dicoding.asclepius.domain.common.StringRes
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorHelper
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorResult
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
+import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.DiagnosisSessionComposeStable
-import com.neotelemetrixgdscunand.kamekapp.domain.data.Repository
-import com.neotelemetrixgdscunand.kamekapp.domain.model.CacaoDisease
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSession
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Locale
 import javax.inject.Inject
-import kotlin.random.Random
 
 
 @HiltViewModel
 class DiagnosisResultViewModel @Inject constructor(
-    private val repository: Repository,
-    private val imageClassifierHelper: ImageDetectorHelper,
-    private val savedStateHandle: SavedStateHandle
+    private val analysisCocoaUseCase: AnalysisCocoaUseCase,
+    private val getCocoaAnalysisSessionUseCase: GetCocoaAnalysisSessionUseCase,
+    private val savedStateHandle: SavedStateHandle,
+    private val duiMapper:DuiMapper
 ) : ViewModel() {
 
     // Backup new diagnosis session id that just has been saved, in case process death happens
@@ -45,7 +41,7 @@ class DiagnosisResultViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(DiagnosisResultUIState())
     val uiState = _uiState.asStateFlow()
 
-    private val _event = Channel<DiagnosisResultUIEvent>()
+    private val _event = Channel<AnalysisResultUIEvent>()
     val event = _event
         .receiveAsFlow()
 
@@ -54,7 +50,6 @@ class DiagnosisResultViewModel @Inject constructor(
     private val extras = savedStateHandle.toRoute<Navigation.DiagnosisResult>()
 
     init {
-        listenToImageDetectorResult()
         initFromExtras()
     }
 
@@ -64,17 +59,15 @@ class DiagnosisResultViewModel @Inject constructor(
             backupNewDiagnosisSessionIdThatJustSaved != null
         if (isNewDiagnosisSessionSavedFromProcessDeathDueToSystemKills) {
             backupNewDiagnosisSessionIdThatJustSaved?.let { sessionId ->
-                val theNewDiagnosisSessionThatHasJustBeenSaved = repository.getDiagnosisSession(
-                    sessionId
-                )
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        diagnosisSession = DiagnosisSessionComposeStable.getFromDomainModel(
-                            theNewDiagnosisSessionThatHasJustBeenSaved
-                        ),
-                        imagePreviewPath = theNewDiagnosisSessionThatHasJustBeenSaved.imageUrlOrPath
-                    )
+                viewModelScope.launch {
+                    val theNewDiagnosisSessionThatHasJustBeenSaved = getCocoaAnalysisSessionUseCase(sessionId)
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(theNewDiagnosisSessionThatHasJustBeenSaved),
+                            imagePreviewPath = theNewDiagnosisSessionThatHasJustBeenSaved.imageUrlOrPath
+                        )
+                    }
                 }
             }
             return
@@ -84,137 +77,76 @@ class DiagnosisResultViewModel @Inject constructor(
             extras.newSessionName != null && extras.newUnsavedSessionImagePath != null
 
         if (isFromNewSession) {
-            detectImage(extras.newUnsavedSessionImagePath as String)
+            detectImage(extras.newSessionName as String, extras.newUnsavedSessionImagePath as String)
         } else {
             extras.sessionId?.let { sessionId ->
-                val selectedDiagnosisSession = repository.getDiagnosisSession(sessionId)
+                viewModelScope.launch {
+                    val selectedDiagnosisSession = getCocoaAnalysisSessionUseCase(sessionId)
 
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        diagnosisSession = DiagnosisSessionComposeStable.getFromDomainModel(
-                            selectedDiagnosisSession
-                        ),
-                        imagePreviewPath = selectedDiagnosisSession.imageUrlOrPath
-                    )
-                }
-            }
-
-        }
-    }
-
-    private fun listenToImageDetectorResult() {
-        viewModelScope.launch {
-            imageClassifierHelper.result.collect { result ->
-                when (result) {
-                    ImageDetectorResult.NoObjectDetected -> {
-                        viewModelScope.launch {
-                            _event.send(
-                                DiagnosisResultUIEvent.OnInputImageInvalid
-                            )
-                        }
-                    }
-
-                    is ImageDetectorResult.Error -> {
-                        viewModelScope.launch {
-                            _event.send(
-                                DiagnosisResultUIEvent.OnToastMessage(
-                                    StringRes.Dynamic(
-                                        result.exception.message.toString()
-                                    )
-                                )
-                            )
-                            _event.send(
-                                DiagnosisResultUIEvent.OnInputImageInvalid
-                            )
-                        }
-                    }
-
-                    is ImageDetectorResult.Success -> {
-                        val extras = this@DiagnosisResultViewModel.extras
-                        if (extras.newSessionName == null || extras.newUnsavedSessionImagePath == null) return@collect
-
-                        val detectedCacaos = result.boundingBoxes.mapIndexed { index, item ->
-                            if (detectImageJob?.isActive == false) return@collect
-
-                            DetectedCacao(
-                                cacaoNumber = index.plus(1).toShort(),
-                                boundingBox = item,
-                                disease = CacaoDisease.getDiseaseFromName(
-                                    name = item.label
-                                ) ?: return@collect
-                            )
-                        }
-
-                        if (detectImageJob?.isActive == false) return@collect
-
-                        val newSessionId = saveDiagnosisResult(
-                            sessionName = extras.newSessionName,
-                            imagePath = extras.newUnsavedSessionImagePath,
-                            predictedPrice = 1680f,
-                            detectedCacaos = detectedCacaos
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(selectedDiagnosisSession),
+                            imagePreviewPath = selectedDiagnosisSession.imageUrlOrPath
                         )
-
-                        backupNewDiagnosisSessionIdThatJustSaved = newSessionId
-
-                        _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                diagnosisSession = DiagnosisSessionComposeStable.getFromDomainModel(
-                                    repository.getDiagnosisSession(newSessionId)
-                                )
-                            )
-                        }
-
                     }
                 }
             }
+
         }
     }
 
-    private fun saveDiagnosisResult(
+    private fun detectImage(
         sessionName: String,
-        imagePath: String,
-        predictedPrice: Float,
-        detectedCacaos: List<DetectedCacao>
-    ): Int {
-
-        val formatDate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val dateString = formatDate.format(
-            Calendar.getInstance().time
-        )
-        val newDiagnosisSession = DiagnosisSession(
-            id = Random.nextInt(0, 1000_000_000),
-            title = sessionName,
-            imageUrlOrPath = imagePath,
-            date = dateString,
-            predictedPrice = predictedPrice,
-            detectedCacaos = detectedCacaos
-        )
-
-        repository.saveDiagnosis(
-            newDiagnosisSession = newDiagnosisSession
-        )
-        return newDiagnosisSession.id
-    }
-
-    private fun detectImage(imagePath: String) {
+        imagePath:String
+    ) {
         if (detectImageJob != null) return
 
-        _uiState.update { it.copy(isLoading = true, imagePreviewPath = imagePath) }
-        detectImageJob = viewModelScope.launch {
-            imageClassifierHelper.detect(imagePath)
+        detectImageJob = viewModelScope.launch(Dispatchers.IO) {
+            _uiState.update { it.copy(isLoading = true, imagePreviewPath = imagePath) }
+
+            when (val result = analysisCocoaUseCase(sessionName, imagePath)) {
+                is Result.Error -> {
+                    when(result.error){
+                        CocoaAnalysisError.FAILED_TO_DETECT_COCOA -> {
+                            _event.send(
+                                AnalysisResultUIEvent.OnFailedToAnalyseImage
+                            )
+                        }
+                        CocoaAnalysisError.NO_COCOA_DETECTED -> {
+                            _event.send(
+                                AnalysisResultUIEvent.OnInputImageInvalid
+                            )
+                        }
+                    }
+                }
+
+                is Result.Success -> {
+                    val extras = this@DiagnosisResultViewModel.extras
+                    if (extras.newSessionName == null || extras.newUnsavedSessionImagePath == null) return@launch
+
+                    val newSessionId = result.data.id
+                    backupNewDiagnosisSessionIdThatJustSaved = newSessionId
+
+                    coroutineContext.ensureActive()
+
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(
+                                getCocoaAnalysisSessionUseCase(newSessionId)
+                            )
+                        )
+                    }
+
+                }
+            }
         }.apply {
             invokeOnCompletion {
                 _uiState.update { it.copy(isLoading = false) }
                 detectImageJob = null
             }
         }
-    }
-
-    override fun onCleared() {
-        imageClassifierHelper.clearResource()
-        super.onCleared()
     }
 
     companion object {

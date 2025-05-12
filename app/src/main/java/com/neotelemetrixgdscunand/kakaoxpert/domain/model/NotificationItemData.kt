@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.model
+package com.neotelemetrixgdscunand.kakaoxpert.domain.model
 
 data class NotificationItemData(
     val id: Int,

@@ -1,7 +1,7 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.utils
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.utils
 
-import com.neotelemetrixgdscunand.kamekapp.domain.common.PasswordValidator
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.PasswordValidator
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import javax.inject.Inject
 
 class PasswordValidatorImpl @Inject constructor() : PasswordValidator {

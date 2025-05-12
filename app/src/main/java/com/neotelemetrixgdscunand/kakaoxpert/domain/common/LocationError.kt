@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.common
+package com.neotelemetrixgdscunand.kakaoxpert.domain.common
 
 sealed interface LocationError : Error {
     data class ResolvableSettingsError(val exception: Exception) : LocationError

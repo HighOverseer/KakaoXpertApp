@@ -1,6 +1,6 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.weather
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.weather
 
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.UIText
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 
 sealed interface WeatherUIEvent {
     data class OnLocationResolvableError(val exception: Exception) : WeatherUIEvent

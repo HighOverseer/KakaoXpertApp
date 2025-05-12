@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

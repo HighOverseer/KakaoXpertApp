@@ -1,8 +1,8 @@
-package com.neotelemetrixgdscunand.kamekapp.data.utils
+package com.neotelemetrixgdscunand.kakaoxpert.data.utils
 
-import com.neotelemetrixgdscunand.kamekapp.domain.common.DataError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.common.RootNetworkError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">KakaoXpert</string>
     <string name="logo">Logo</string>
-    <string name="buat_akun">Create Account</string>
+    <string name="buat_akun">Sign Up</string>
     <string name="masuk">Sign In</string>
     <string name="masuk_untuk_akses_fitur_deteksi_penyakit">Sign In to Access Disease Detection Features!</string>
     <string name="masukan_email_kamu_disini">Enter Your Email Here</string>
@@ -35,12 +35,12 @@
     <string name="berita">News</string>
     <string name="toko">Store</string>
     <string name="tanaman">Plants</string>
-    <string name="riwayat_diagnosis">Diagnosis History</string>
+    <string name="riwayat_diagnosis">Analysis History</string>
     <string name="kalender">Calendar</string>
     <string name="berita_mingguan_kamek">Our Weekly News</string>
     <string name="ambil_foto_penyakit_pada_tanaman">Take Photos of Plant Diseases</string>
     <string name="tekan_gambar_di_atas">Tap the Above Image to Take a Photo of the Plant and Let the App Analyze and Provide Solutions.</string>
-    <string name="cari_histori_hasil_diagnosis">Search Diagnosis Results and Selling Prices Here</string>
+    <string name="cari_histori_hasil_diagnosis">Search Analysis Results and Selling Prices Here</string>
     <string name="masukkan_password_kamu_disini">Enter Your Password Here</string>
     <string name="semua">All</string>
     <string name="hari_ini">Today</string>
@@ -204,7 +204,7 @@
 
     <string name="ubah_profil">Edit Profile</string>
     <string name="nama">Name</string>
-    <string name="masukan_nama_kamu_disini">Insert your name here</string>
+    <string name="masukan_nama_kamu_disini">Enter your name here</string>
     <string name="nomor_handphone">Handphone Number</string>
     <string name="simpan">Save</string>
 
@@ -274,4 +274,77 @@
     <string name="tidak_ada_berita_yang_tersedia">No news available</string>
     <string name="agrikultur">Agriculture</string>
     <string name="penyakit_tanaman">Plant Disease</string>
+
+    <string name="belum_ada_barang_yang_tersedia">No items available yet</string>
+    <string name="barang_yang_anda_cari_tidak_ditemukan">The item you are looking for was not found..</string>
+    <string name="lihat_selengkapnya">See More</string>
+    <string name="sepertinya_ada_kesalahan_coba_lagi_nanti">Something went wrong, please try again later..</string>
+    <string name="penggerek_buah_kakao">Cocoa Pod Borer</string>
+
+    <string name="cause_pod_borer">Conopomorpha Cramerella pest infestation</string>
+    <string name="symptom_pod_borer">Cocoa pods that are infested generally show signs of premature ripening, characterized by greenish-yellow or yellow-orange spots. The affected cocoa pods become heavier, and when shaken, no sound is heard from the seeds knocking against the pod walls. This occurs due to the presence of slime, debris in the fruit flesh, seeds sticking to the flesh, and the damage to the seeds inside the pod. The infestation is marked by small holes or black spots on the cocoa pod\'s skin, indicating the entry points of the borer larvae.</string>
+    <string name="seedcond_pod_borer">Cocoa pod borer infestation significantly affects the quality of cocoa beans. When the pod is split open, the inside reveals damaged tissue caused by the larvae\'s bites. The cocoa beans become deformed, often sticking together due to the sticky secretion from the larvae. The beans become small, underdeveloped, and often damaged by the larvae feeding on both the fruit flesh and the beans. Infested pods are often not suitable for harvesting due to the internal damage caused by the larvae.</string>
+    <string name="control_pod_borer">Control Pod Borer</string>
+
+    <string name="default_solution_all_disease">
+        Immediately remove and destroy infected pods, apply fungicides or insecticides based on the disease type, and regularly clean the area around the tree.
+    </string>
+
+    <string name="default_prevention_all_disease">
+        Blackpod: Use disease-resistant varieties, keep the plantation clean, and sanitize by pruning dense branches. Apply copper-based fungicides during rainy season.\nPod Borer: Use pheromone traps, conserve natural predators like black ants, and wrap young pods with protective bags.\nHelopeltis: Apply selective insecticides when population rises, grow ground cover plants to reduce pest populations, and routinely inspect for early symptoms.
+    </string>
+
+
+    <string name="blackpod_podborer_default_solution_disease">
+        Buang dan musnahkan buah yang menunjukkan gejala busuk hitam atau lubang kecil akibat larva. Semprotkan fungisida berbahan tembaga untuk mengatasi Blackpod dan gunakan insektisida selektif untuk mengendalikan Pod Borer. Lakukan pembersihan dan pengawasan rutin untuk mencegah penyebaran lebih lanjut.
+    </string>
+
+    <string name="blackpod_podborer_default_prevention_disease">
+        Blackpod: Use disease-resistant cocoa varieties, prune dense branches to reduce humidity, and maintain plantation cleanliness. Apply copper-based fungicides especially during rainy seasons.\nPod Borer: Install pheromone traps to monitor pest levels, preserve natural enemies like black ants to control larvae, and wrap young pods with protective bags to prevent egg-laying by pests.
+    </string>
+
+
+    <string name="blackpod_helopeltis_default_solution_disease">
+        For Blackpod, remove rotting pods and apply copper-based fungicide. For Helopeltis, spray selective insecticides on pods and shoots showing puncture marks or dark spots. Clean the plantation regularly.
+    </string>
+
+    <string name="blackpod_helopeltis_default_prevention_disease">
+        Blackpod: Use disease-resistant cocoa varieties, prune overcrowded branches to reduce humidity, and clean the plantation regularly. Apply copper-based fungicides during the rainy season to prevent fungal infection.\nHelopeltis: Apply selective insecticides when population starts to rise. Plant ground cover crops to disrupt insect life cycles, conserve natural enemies like spiders and ants, and regularly inspect plants for early signs of attack.
+    </string>
+
+    <string name="podborer_helopeltis_default_solution_disease">
+        For Pod Borer, wrap young cocoa pods and apply insecticides when larvae activity begins. For Helopeltis, spray selective insecticides on punctured pods and shoots. Maintain field hygiene and monitor pest levels regularly.
+    </string>
+
+    <string name="podborer_helopeltis_default_prevention_disease">
+        Pod Borer: Wrap young pods with protective bags to prevent egg-laying. Install pheromone traps to monitor pest activity. Conserve natural enemies like black ants and regularly sanitize the plantation.\nHelopeltis: Spray selective insecticides when the population rises. Grow ground cover crops to interrupt pest life cycles. Preserve natural predators such as spiders and ants. Regularly inspect plants to detect and respond to early signs of attack.
+    </string>
+
+    <string name="blackpod_default_solution_disease">
+        Remove and destroy cocoa pods infected by Blackpod. Apply copper-based fungicide evenly on pods and branches. Prune overly dense branches to reduce humidity, and keep the plantation clean.
+    </string>
+
+    <string name="blackpod_default_prevention_disease">Use cocoa varieties resistant to Blackpod disease.\nPrune overcrowded branches to improve air circulation and reduce humidity that promotes infection.\nRegularly clean the plantation from rotten pods and organic debris.\nSpray copper-based fungicides especially during rainy seasons or high humidity periods.\nMonitor crops regularly for early signs of infection to ensure quick response.
+    </string>
+
+    <string name="helopeltis_default_solution_disease">
+        Spray selective insecticides on pods and shoots showing puncture marks or dark spots caused by Helopeltis. Keep the plantation clean and regularly monitor for early signs of infestation.
+    </string>
+
+    <string name="helopeltis_default_prevention_disease">Plant ground cover crops to disrupt the life cycle of Helopeltis.\nApply selective insecticides when pest population increases or when signs of attack appear on pods or shoots.\nConserve natural predators like spiders and ants to help control the pest.\nRegularly inspect the plantation and promptly address any detected infestation.\nEnsure the plantation is kept clean and free of plant debris that could serve as shelter for Helopeltis.
+    </string>
+
+    <string name="podborer_default_solution_disease">
+        Use protective bags to wrap young pods to prevent Pod Borer eggs. Apply insecticides when larvae become active. Regularly inspect the plantation to detect early signs of infestation.
+    </string>
+
+    <string name="podborer_default_prevention_disease">Use protective bags to wrap young pods to protect them from Pod Borer eggs.\nInstall pheromone traps to monitor pest populations and respond immediately if detected.\nSpray insecticides on plants when larvae become active, focusing on newly growing pods.\nKeep the plantation clean by removing damaged or infested pods to reduce the spread.\nConserve natural enemies like black ants to help control pest attacks.
+    </string>
+
+    <string name="control_none">Orchard Sanitation: Regularly clean the orchard, remove infected fruits and dead plant parts.\nRegular Pruning: Trim excess branches to improve air circulation and reduce humidity around the pods.\nGood Drainage: Ensure the plantation has a proper drainage system to prevent waterlogging that supports fungal growth.\nVariety Selection: Plant cocoa varieties that are more resistant to Phytophthora attacks, such as hybrid varieties.
+    </string>
+
+    <string name="info_penyakit">Diseases Info</string>
+
+    <string name="analisis">Analysis</string>
 </resources>

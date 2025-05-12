@@ -28,7 +28,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.component.NotificationItem
-import com.neotelemetrixgdscunand.kamekapp.domain.model.getNotificationItemDummies
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getNotificationItemDummies
 
 @Composable
 fun NotificationScreen(

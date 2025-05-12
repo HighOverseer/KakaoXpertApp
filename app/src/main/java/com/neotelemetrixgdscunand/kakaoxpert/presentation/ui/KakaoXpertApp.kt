@@ -32,15 +32,15 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.shop.ShopScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.TakePhotoScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.MainPage
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.rememberMainPageState
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.LoginScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.RegisterScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.news.NewsDetailsScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.news.NewsScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.onboarding.OnBoardingScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.splash.SplashScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.weather.WeatherScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.MessageSnackbar
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.LoginScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.RegisterScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news.NewsDetailsScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news.NewsScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.onboarding.OnBoardingScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.splash.SplashScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.weather.WeatherScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.MessageSnackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

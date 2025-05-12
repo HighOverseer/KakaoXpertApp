@@ -17,9 +17,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component.PriceAnalysisContent
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component.PriceAnalysisInformationPreviewSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component.PriceAnalysisOverview
-import com.neotelemetrixgdscunand.kamekapp.domain.model.CacaoDisease
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DamageLevelCategory
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DamageLevelCategory
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
@@ -28,8 +28,8 @@ import kotlinx.collections.immutable.toImmutableMap
 fun PriceAnalysisTabScreen(
     modifier: Modifier = Modifier,
     isLoadingProvider: () -> Boolean = { false },
-    groupedDetectedDisease: ImmutableMap<CacaoDisease, ImmutableList<DetectedCacao>> =
-        emptyMap<CacaoDisease, ImmutableList<DetectedCacao>>().toImmutableMap(),
+    groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
+        emptyMap<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
     navigateToCacaoImageDetail: (Int) -> Unit = { }
 ) {
     if (isLoadingProvider()) {

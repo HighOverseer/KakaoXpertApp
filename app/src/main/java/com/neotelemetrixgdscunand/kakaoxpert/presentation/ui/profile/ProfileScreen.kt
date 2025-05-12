@@ -41,8 +41,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component.AuthTextField
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component.PrimaryButton
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.AuthTextField
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
 
 @Composable
 fun ProfileScreen(

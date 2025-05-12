@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.weather
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.weather
 
 import android.content.Context
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -49,12 +49,12 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.WeatherForecastItemDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.WeatherForecastOverviewDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.weather.component.CardWeatherOverview
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.weather.component.WeatherPredictionItem
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.weather.component.WeatherPredictionItemLoading
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.collectChannelWhenStarted
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastOverviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.weather.component.CardWeatherOverview
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.weather.component.WeatherPredictionItem
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.weather.component.WeatherPredictionItemLoading
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

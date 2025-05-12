@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.di
+package com.neotelemetrixgdscunand.kakaoxpert.di
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import dagger.Module

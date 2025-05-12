@@ -1,13 +1,13 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain
 
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSession
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
 
 object DomainMapper {
     fun mapDiagnosisSessionToPreview(
-        diagnosisSession: DiagnosisSession
+        analysisSession: AnalysisSession
     ): DiagnosisSessionPreview {
-        return diagnosisSession.run {
+        return analysisSession.run {
             DiagnosisSessionPreview(
                 id, title, imageUrlOrPath, date, predictedPrice
             )

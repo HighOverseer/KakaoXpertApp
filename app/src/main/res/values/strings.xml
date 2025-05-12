@@ -35,12 +35,12 @@
     <string name="berita">Berita</string>
     <string name="toko">Toko</string>
     <string name="tanaman">Tanaman</string>
-    <string name="riwayat_diagnosis">Riwayat Diagnosis</string>
+    <string name="riwayat_diagnosis">Riwayat Analisis</string>
     <string name="kalender">Kalender</string>
     <string name="berita_mingguan_kamek">Berita Mingguan KakaoXpert</string>
     <string name="ambil_foto_penyakit_pada_tanaman">Ambil Foto Penyakit Pada tanaman</string>
     <string name="tekan_gambar_di_atas">Tekan Gambar di Atas untuk memfoto tanaman dan biarkan aplikasi menganalisis serta memberikan solusinya.</string>
-    <string name="cari_histori_hasil_diagnosis">Cari Histori Hasil Diagnosis dan Harga Jual Disini</string>
+    <string name="cari_histori_hasil_diagnosis">Cari Histori Hasil Analisis dan Harga Jual Disini</string>
     <string name="masukkan_password_kamu_disini">Masukkan Password Kamu disini</string>
     <string name="semua">Semua</string>
     <string name="hari_ini">Hari Ini</string>
@@ -270,5 +270,68 @@
     <string name="belum_ada_barang_yang_tersedia">Belum ada barang yang tersedia</string>
     <string name="barang_yang_anda_cari_tidak_ditemukan">Barang yang anda cari tidak ditemukan..</string>
     <string name="lihat_selengkapnya">Lihat Selengkapnya</string>
+    <string name="sepertinya_ada_kesalahan_coba_lagi_nanti">Sepertinya ada kesalahan, coba lagi nanti..</string>
+    <string name="penggerek_buah_kakao">Penggerek Buah Kakao</string>
+    <string name="cause_pod_borer">Serangan Hama Conopomorpha Cramerella</string>
+    <string name="symptom_pod_borer">Buah kakao yang terserang umumnya menunjukkan gejala masak lebih awal, yaitu belang kuning hijau atau kuning jingga. Buah kakao terserang menjadi lebih berat dan bila diguncang tidak terdengar suara ketukan antara biji dengan dinding buah. Hal ini terjadi karena timbulnya lender, kotoran pada daging buah, biji lengket pada daging buah dan rusaknya bijian di dalam buah. Serangan ditandai adanya lubang kecil atau bintik hitam pada kulit buah kakao, yang menunjukkan tempat masuk larva penggerek.</string>
+    <string name="seedcond_pod_borer">Serangan penggerek buah kakao secara signifikan mempengaruhi kualitas biji kakao.  Jika buah dibelah, bagian dalam akan terlihat jaringan yang rusak akibat gigitan larva. Biji kakao mengalami deformasi, sering kali menempel satu sama lain karena sekresi lengket dari larva. Biji menjadi kecil, kurang berkembang, dan sering kali rusak akibat larva yang memakan daging buah serta biji. Buah yang terserang sering tidak layak dipanen karena kerusakan internal yang disebabkan oleh larva.</string>
 
+    <string name="control_pod_borer">Control Pod Borer</string>
+
+    <string name="default_solution_all_disease">
+        Segera buang dan musnahkan buah yang terinfeksi, semprotkan fungisida atau insektisida sesuai jenis penyakit, dan bersihkan area sekitar pohon secara rutin.
+    </string>
+
+    <string name="default_prevention_all_disease">Buah Busuk: Gunakan varietas tahan penyakit, jaga kebersihan kebun, dan lakukan sanitasi dengan memangkas cabang yang terlalu rimbun. Aplikasikan fungisida berbahan tembaga saat musim hujan.\nPBK: Gunakan perangkap feromon, pelihara musuh alami seperti semut hitam, dan bungkus buah muda dengan kantong pelindung.\nHelopeltis: Semprot insektisida selektif saat populasi mulai meningkat, tanam tanaman penutup tanah untuk menekan populasi serangga, serta periksa rutin gejala serangan dini.
+    </string>
+
+
+    <string name="blackpod_podborer_default_solution_disease">
+        Buang dan musnahkan buah yang menunjukkan gejala busuk hitam atau lubang kecil akibat larva. Semprotkan fungisida berbahan tembaga untuk mengatasi Blackpod dan gunakan insektisida selektif untuk mengendalikan PBK. Lakukan pembersihan dan pengawasan rutin untuk mencegah penyebaran lebih lanjut.
+    </string>
+
+    <string name="blackpod_podborer_default_prevention_disease">Busuk Buah: Gunakan varietas kakao tahan penyakit, pangkas cabang yang rimbun untuk mengurangi kelembapan, dan jaga kebersihan kebun secara berkala. Aplikasikan fungisida berbahan tembaga terutama saat musim hujan.\nPBK: Pasang perangkap feromon untuk memonitor populasi hama, pelihara musuh alami seperti semut hitam untuk mengontrol larva, dan bungkus buah muda dengan kantong pelindung guna mencegah telur hama menetas di dalam buah.
+    </string>
+
+
+    <string name="blackpod_helopeltis_default_solution_disease">
+        Untuk Busuk Buah, buang buah yang membusuk dan semprotkan fungisida berbahan tembaga. Untuk Helopeltis, semprotkan insektisida selektif pada bagian buah dan pucuk yang menunjukkan bekas tusukan atau bercak hitam. Lakukan pembersihan kebun secara berkala.
+    </string>
+
+    <string name="blackpod_helopeltis_default_prevention_disease">Busuk Buah: Gunakan varietas kakao tahan penyakit, pangkas cabang yang terlalu rimbun untuk mengurangi kelembapan, dan bersihkan kebun secara rutin. Aplikasikan fungisida berbahan tembaga saat musim hujan untuk mencegah infeksi jamur.\nHelopeltis: Semprotkan insektisida selektif saat populasi mulai meningkat. Tanam tanaman penutup tanah untuk mengganggu siklus hidup serangga, pelihara musuh alami seperti laba-laba dan semut, serta lakukan pengamatan rutin untuk mendeteksi gejala awal serangan.
+    </string>
+
+
+    <string name="podborer_helopeltis_default_solution_disease">
+        Untuk PBK, bungkus buah kakao muda dan gunakan insektisida saat larva mulai aktif. Untuk Helopeltis, semprotkan insektisida selektif pada bagian buah dan pucuk yang terlihat tertusuk. Jaga kebersihan kebun dan pantau perkembangan hama secara rutin.
+    </string>
+
+    <string name="podborer_helopeltis_default_prevention_disease">PBK: Gunakan kantong pelindung untuk membungkus buah sejak muda guna mencegah peletakan telur. Pasang perangkap feromon untuk pemantauan hama. Pertahankan populasi musuh alami seperti semut hitam dan lakukan sanitasi kebun secara berkala.\nHelopeltis: Semprotkan insektisida selektif pada tanaman saat populasi mulai meningkat. Tanam tanaman penutup untuk mengganggu siklus hidup serangga. Pelihara predator alami seperti laba-laba dan semut. Lakukan pengamatan rutin untuk deteksi dini dan respon cepat terhadap serangan.
+    </string>
+
+    <string name="blackpod_default_solution_disease">
+        Buang dan musnahkan buah kakao yang membusuk akibat Blackpod. Semprotkan fungisida berbahan tembaga secara merata pada buah dan batang. Pangkas cabang yang terlalu rimbun untuk mengurangi kelembapan, dan pastikan kebun tetap bersih.
+    </string>
+
+    <string name="blackpod_default_prevention_disease">Gunakan varietas kakao yang tahan terhadap penyakit Blackpod.\nPangkas cabang-cabang yang terlalu rapat untuk memperbaiki sirkulasi udara dan mengurangi kelembapan yang dapat memicu infeksi.\nBersihkan kebun secara rutin dari buah busuk dan sampah organik.\nSemprotkan fungisida berbahan tembaga terutama saat musim hujan atau saat kelembapan tinggi.\nLakukan pemantauan rutin terhadap gejala awal infeksi untuk penanganan cepat.
+    </string>
+
+    <string name="helopeltis_default_solution_disease">
+        Semprotkan insektisida selektif pada buah dan pucuk yang tertusuk atau memiliki bercak hitam akibat serangan Helopeltis. Jaga kebersihan kebun dan lakukan pengamatan rutin untuk mendeteksi serangan lebih awal.
+    </string>
+
+    <string name="helopeltis_default_prevention_disease">Tanam tanaman penutup tanah untuk mengganggu siklus hidup Helopeltis.\nSemprotkan insektisida selektif saat populasi serangga meningkat atau saat tanda serangan terlihat pada buah atau pucuk.\nPelihara predator alami seperti laba-laba dan semut untuk membantu mengendalikan serangga.\nLakukan pengamatan rutin pada kebun dan segera tangani serangan yang terdeteksi.\nPastikan kebun tetap bersih dan bebas dari sisa-sisa tanaman yang bisa menjadi tempat persembunyian Helopeltis.
+    </string>
+
+    <string name="podborer_default_solution_disease">
+        Gunakan kantong pelindung untuk membungkus buah muda agar terhindar dari telur Pod Borer. Semprotkan insektisida pada saat larva mulai aktif. Periksa kebun secara rutin untuk mengidentifikasi serangan lebih awal.
+    </string>
+
+    <string name="podborer_default_prevention_disease">Gunakan kantong pelindung untuk membungkus buah muda agar terlindungi dari telur Pod Borer.\nPasang perangkap feromon untuk memantau populasi hama dan segera tangani jika terdeteksi.\nSemprotkan insektisida pada tanaman saat larva mulai aktif, fokuskan pada bagian buah yang baru tumbuh.\nJaga kebersihan kebun dan hilangkan buah yang rusak atau terserang untuk mengurangi penyebaran.\nPertahankan musuh alami seperti semut hitam untuk membantu mengontrol serangan hama.
+    </string>
+
+    <string name="control_none">Sanitasi Kebun: Lakukan pembersihan kebun secara rutin, singkirkan buah yang terinfeksi dan bagian tanaman yang mati.\nPangkas Pohon Secara Teratur: Pangkas cabang-cabang berlebih agar sirkulasi udara meningkat dan kelembapan di sekitar buah berkurang.\nDrainase yang Baik: Pastikan area perkebunan memiliki sistem drainase yang baik untuk mencegah genangan air yang mendukung pertumbuhan jamur.\nPemilihan Varietas: Tanam varietas kakao yang lebih tahan terhadap serangan Phytophthora, seperti varietas hibrida.</string>
+
+    <string name="info_penyakit">Info Penyakit</string>
+    <string name="analisis">Analisis</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.dicoding.asclepius.domain.common
+package com.neotelemetrixgdscunand.kakaoxpert.domain.common
 
 sealed class Resource<out T> private constructor() {
     data class Success<T>(val data: T, val message: StringRes? = null) : Resource<T>()

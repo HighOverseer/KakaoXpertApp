@@ -92,7 +92,7 @@ class MainPageState(
                 route = Navigation.Main.Home
             ),
             NavigationBarItemData(
-                titleRestId = R.string.diagnosis,
+                titleRestId = R.string.analisis,
                 iconResId = R.drawable.ic_camera,
                 route = Navigation.Main.Diagnosis
             ),

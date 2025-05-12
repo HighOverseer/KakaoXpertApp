@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
@@ -16,7 +17,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 fun PrimaryDescription(
     modifier: Modifier = Modifier,
     title: String,
-    description: String
+    description: String,
+    descriptionTextAlign: TextAlign? = null
 ) {
     Text(
         modifier = modifier,
@@ -30,7 +32,8 @@ fun PrimaryDescription(
     Text(
         description,
         style = MaterialTheme.typography.labelMedium,
-        color = Grey60
+        color = Grey60,
+        textAlign = descriptionTextAlign
     )
 }
 

@@ -1,12 +1,12 @@
-package com.neotelemetrixgdscunand.kamekapp.data
+package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ApiService
-import com.neotelemetrixgdscunand.kamekapp.data.utils.fetchFromNetwork
-import com.neotelemetrixgdscunand.kamekapp.domain.common.DataError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.common.RootNetworkError
-import com.neotelemetrixgdscunand.kamekapp.domain.data.ShopRepository
-import com.neotelemetrixgdscunand.kamekapp.domain.model.ShopItem
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.fetchFromNetwork
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.ShopRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
 import javax.inject.Inject
 import javax.inject.Singleton
 

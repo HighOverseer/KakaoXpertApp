@@ -1,13 +1,13 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data.remote
 
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.LoginDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.NewsDetailsDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.NewsItemDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.RegisterDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.Response
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.ShopItemDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.WeatherForecastItemDto
-import com.neotelemetrixgdscunand.kamekapp.data.remote.dto.WeatherForecastOverviewDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.LoginDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsDetailsDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsItemDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.RegisterDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.Response
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.ShopItemDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.WeatherForecastItemDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.WeatherForecastOverviewDto
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET

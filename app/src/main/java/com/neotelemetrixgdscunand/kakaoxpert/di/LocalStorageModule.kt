@@ -1,10 +1,10 @@
-package com.neotelemetrixgdscunand.kamekapp.di
+package com.neotelemetrixgdscunand.kakaoxpert.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthPreference
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

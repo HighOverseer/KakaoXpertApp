@@ -2,7 +2,7 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.asclepius.domain.common.StringRes
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.StringRes
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CaptureImageFileHandler
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.util.CameraState

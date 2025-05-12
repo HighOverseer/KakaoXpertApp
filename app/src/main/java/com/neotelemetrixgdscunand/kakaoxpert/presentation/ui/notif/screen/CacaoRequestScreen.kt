@@ -55,8 +55,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.component.Inp
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.component.SupplierItem
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.domain.model.getSupplierCacaoDummies
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component.PrimaryButton
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getSupplierCacaoDummies
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
 
 @Composable
 fun CacaoRequestScreen(

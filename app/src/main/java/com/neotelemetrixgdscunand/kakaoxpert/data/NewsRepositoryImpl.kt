@@ -1,14 +1,14 @@
-package com.neotelemetrixgdscunand.kamekapp.data
+package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ApiService
-import com.neotelemetrixgdscunand.kamekapp.data.utils.fetchFromNetwork
-import com.neotelemetrixgdscunand.kamekapp.domain.common.DataError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.common.RootNetworkError
-import com.neotelemetrixgdscunand.kamekapp.domain.data.NewsRepository
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsDetails
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsItem
-import com.neotelemetrixgdscunand.kamekapp.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.fetchFromNetwork
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext

@@ -8,7 +8,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.neotelemetrixgdscunand.kamekapp.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 
 class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 

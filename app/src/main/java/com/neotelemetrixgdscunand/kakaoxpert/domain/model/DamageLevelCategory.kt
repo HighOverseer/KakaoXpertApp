@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.model
+package com.neotelemetrixgdscunand.kakaoxpert.domain.model
 
 import com.neotelemetrixgdscunand.kakaoxpert.R
 

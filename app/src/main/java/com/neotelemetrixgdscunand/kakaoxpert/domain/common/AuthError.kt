@@ -1,4 +1,6 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.common
+package com.neotelemetrixgdscunand.kakaoxpert.domain.common
+
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 
 enum class AuthError : DataError.NetworkError {
     INVALID_TOKEN,

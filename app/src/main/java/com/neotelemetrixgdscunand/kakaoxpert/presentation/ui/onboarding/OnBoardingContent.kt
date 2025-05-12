@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.onboarding
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.onboarding
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
@@ -59,9 +59,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey45
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey71
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component.PrimaryButton
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.ImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.collectChannelWhenStarted
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.ImagePainterStable
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlin.math.roundToInt

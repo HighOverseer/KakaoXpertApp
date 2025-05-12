@@ -1,6 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto
 
-import com.dicoding.asclepius.domain.common.StringRes
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.StringRes
 
 interface TakePhotoUIEvent {
     data class OnToastMessage(val message: StringRes) : TakePhotoUIEvent

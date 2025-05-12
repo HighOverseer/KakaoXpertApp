@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.news
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,9 +41,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black50
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey53
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.shimmeringEffect
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.NewsDetailsDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.AsyncImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.collectChannelWhenStarted
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsDetailsDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.AsyncImagePainterStable
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 
 @Composable
 fun NewsDetailsScreen(

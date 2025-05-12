@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.home.component
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,9 +55,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Pink
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.WeatherForecastOverviewDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.AsyncImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.ImagePainterStable
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastOverviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.AsyncImagePainterStable
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.ImagePainterStable
 
 @Composable
 fun HomeHeaderSection(

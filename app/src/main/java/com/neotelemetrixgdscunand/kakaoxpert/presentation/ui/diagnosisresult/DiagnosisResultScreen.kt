@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.DiagnosisSessionDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.components.OverlayCompose
@@ -45,14 +46,12 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.com
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.DiagnosisDiseaseTabScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DiagnosisResultHeaderSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.PriceAnalysisTabScreen
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.DiagnosisSessionComposeStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.getBoundingBoxWithItsNameAsTheLabel
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.collectChannelWhenStarted
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.getValue
-import com.neotelemetrixgdscunand.kamekapp.domain.model.CacaoDisease
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
-import com.neotelemetrixgdscunand.kamekapp.domain.model.getDetectedDiseaseCacaos
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getDetectedDiseaseCacaos
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
@@ -78,11 +77,14 @@ fun DiagnosisResultScreen(
             viewModel.event
         ) { event ->
             when (event) {
-                is DiagnosisResultUIEvent.OnToastMessage -> {
-                    showSnackbar(event.message.getValue(context))
+                is AnalysisResultUIEvent.OnFailedToAnalyseImage -> {
+                    val message =
+                        context.getString(R.string.sepertinya_ada_kesalahan_coba_lagi_nanti)
+                    showSnackbar(message)
+                    navigateUp()
                 }
 
-                DiagnosisResultUIEvent.OnInputImageInvalid -> {
+                AnalysisResultUIEvent.OnInputImageInvalid -> {
                     val message =
                         context.getString(R.string.input_image_is_invalid_no_cocoa_detected)
                     showSnackbar(message)
@@ -176,7 +178,7 @@ fun DiagnosisResultContent(
 
                         val context = LocalContext.current
                         val adjustedBoundingBox = remember(uiState.diagnosisSession) {
-                            uiState.diagnosisSession.detectedCacaos.map {
+                            uiState.diagnosisSession.detectedCocoas.map {
                                 it.getBoundingBoxWithItsNameAsTheLabel(context)
                             }
                         }
@@ -205,7 +207,7 @@ fun DiagnosisResultContent(
         ) {
 
             DiagnosisResultContentBody(
-                diagnosisSessionComposeStable = uiState.diagnosisSession,
+                diagnosisSessionDui = uiState.diagnosisSession,
                 isLoadingProvider = { uiState.isLoading },
                 navigateToCacaoImageDetail = navigateToCacaoImageDetail,
                 isLocalNavigateUpButtonVisibleProvider = { isLocalNavigateUpButtonVisible },
@@ -242,20 +244,20 @@ fun TopAppBarNavigateUpButtonWrapper(
 
 @Composable
 fun DiagnosisResultContentBody(
-    diagnosisSessionComposeStable: DiagnosisSessionComposeStable = DiagnosisSessionComposeStable(),
+    diagnosisSessionDui: DiagnosisSessionDui = DiagnosisSessionDui(),
     isLoadingProvider: () -> Boolean = { false },
     isLocalNavigateUpButtonVisibleProvider: () -> Boolean = { false },
     navigateToCacaoImageDetail: (Int?) -> Unit,
     navigateUp: () -> Unit = {}
 ) {
-    val groupedDetectedDisease: ImmutableMap<CacaoDisease, ImmutableList<DetectedCacao>> =
-        remember(diagnosisSessionComposeStable) {
-            val map = mutableMapOf<CacaoDisease, ImmutableList<DetectedCacao>>()
-            diagnosisSessionComposeStable.detectedCacaos.groupBy {
+    val groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
+        remember(diagnosisSessionDui) {
+            val map = mutableMapOf<CocoaDisease, ImmutableList<DetectedCocoa>>()
+            diagnosisSessionDui.detectedCocoas.groupBy {
                 it.disease
             }.map {
-                val (cacaoDisease, list) = it.toPair()
-                map[cacaoDisease] = list.toImmutableList()
+                val (cocoaDisease, list) = it.toPair()
+                map[cocoaDisease] = list.toImmutableList()
             }
             map.toImmutableMap()
         }
@@ -273,7 +275,7 @@ fun DiagnosisResultContentBody(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, top = 16.dp, end = 16.dp),
-        sessionName = diagnosisSessionComposeStable.title,
+        sessionName = diagnosisSessionDui.title,
         isLoadingProvider = isLoadingProvider,
         isLocalNavigateUpButtonVisibleProvider = isLocalNavigateUpButtonVisibleProvider,
         navigateUp = navigateUp
@@ -317,7 +319,7 @@ fun DiagnosisResultContentBody(
                 },
                 isLoadingProvider = isLoadingProvider,
                 navigateToCacaoImageDetail = navigateToCacaoImageDetail,
-                diagnosisSessionComposeStable = diagnosisSessionComposeStable
+                diagnosisSessionDui = diagnosisSessionDui
             )
         }
 
@@ -341,13 +343,13 @@ private fun DiagnosisResultScreenPreview() {
     KakaoXpertTheme {
         DiagnosisResultContent(
             uiState = DiagnosisResultUIState(
-                diagnosisSession = DiagnosisSessionComposeStable(
+                diagnosisSession = DiagnosisSessionDui(
                     id = 0,
                     title = "Sampel Kakao Pak Tono",
                     imageUrlOrPath = "https://lh3.googleusercontent.com/fife/ALs6j_FBmyzFhcT48JsWTnlztAKHZJVIxq_KWTNbYFRO8aOkqiJtsH0HDNSDjaqO-1SrWvE8AR85sU2QcU93FD_OWlJ_xZQsL4JpmKESvrTSvPr37FzRfsudWwBrs6HPawtN9qXiqM6JRd4htsh1cuv4SUajVBpjwkIuUVFhfdmMgV-qlZsqn7Ui_W2zj3Kf2Z6BuAeQ-rxzhVoMWxsiXxZL1OVHRz4permiV_G8nOHZLLLbJ_hwKLNHpnFPH15efQarYQtdrfiTXwcYSC_F5_sEasYb-IgUrr1o-_T-__wrnZSc6GEF9YUxQcv2urAt5EqcPdGumJ9GWToq9AtYz9XfD5zB0rsBNl2GhHn23p8DIkq3NCJNUM4hGXSVBLIi5GmBxZXnKlox4vKRarRvtzipvfCpd-iCm6i-66uvx31ghCU2LH5DrqjaPB5-hL30W20F7vbzmHHf2j78Hd6wM7xlhptZChs7_AzZxq9fZ_D9dAAkXaZ9uWuKvKddSFiaajWNapI2mcOae_QKEraLv2t41uxjxAhz1kEhgERN_ZQXAuTpaCudlpaqZRa88LkVwdrmEsfcgAcLAWiEnvcwWJNhjD-B7hWMOx4NvxC_Nz3MAhflOI4-i1u4HDkY6GsZ3mBpzaWiKY6Po6tkjJx1UMTozff4YmDK1W59wqd-YZ8ZQkLCjrRJO_FIkVo9RTaQm-kY_4pCz2f4PjWPbVxsUUiHVQJEB-nus4cK2kGS3DMheO11j2i_EcnuEBXH69fazqZFTU9ahQ4_fARXMxn_k30h5Nkl7YiLMW_R3YK4huwaJUCxwhTTv3vWMeQDkSWOTI2lnks1soQyPRRaBCn3tFYY0BlaR9Gdz__3OrXtFECyGcqVfOEuY-tvGtqwQfHBXNG5XqN8e28CM7Pt2f0gFk3ha9K1m6DOJR2dkLy9monvnx_L4UEPfGWIMa2pnSPOORePp9v_nK380f2t15GPjtpznc4ezON3dHidJV3pkwXpsgXQf0gOjSBWdSf8GtIDoHALK0BpPb5nW0nTMkw7bunhDhk9BCB11WjzbsTLi-Tlau17NQAcFaJE6EQlz0ujZsKMK6oshGveVET6gt7480hPoiGo0LCarO8gDXR8Y6QQDY6mearThrt9xquxCwff-SS-sleeJMk9hqahiAHiureTtT_lwKOJIscCZA7PkDy22tx-gCyquIIh0N3layVLsKX-y07p3Bu18y7KFU1Ld9-RA7IfX6aaOyGyqJMDswpiIytQyQXh9cRlCX0Qjn81YNKmQurktSRZ7c99ht17JBo5dGdmXlVk87kHVthwjqygGU9slR6OhgNW0nOHEgDVS-RDv_7Cy3sA55Vs9P82RO8qC1WW7zlUV5gIETD0o_mgy5zBKEgWRhKixYnSoAuXodVNvUNpG4u7Df29GJkq_exP_iOL0OGS3qPMneG_OC6V9Uez4Jd9nVrNpCnySAXksOGNYUiwt_KkOsc98VRAsb5jV5qrd3ad-bziRcIci09WjDNbMjKJ89bO8yZV8DMCJd0uOVRp3DDHRLh8l5vCha8gtLQqLcMV8htomJtJy7hME1v-C8v9iXt6rIGoRRgYOfnnDNQCwBnRhUxA4WSNMbqnw_qQ2F6LEAODfhJfXfR_di9OyPh2q3K9h3mS=w1920-h927",
                     date = "9-11-2024",
                     predictedPrice = 1200f,
-                    detectedCacaos = getDetectedDiseaseCacaos().toImmutableList()
+                    detectedCocoas = getDetectedDiseaseCacaos().toImmutableList()
                 )
             )
         )

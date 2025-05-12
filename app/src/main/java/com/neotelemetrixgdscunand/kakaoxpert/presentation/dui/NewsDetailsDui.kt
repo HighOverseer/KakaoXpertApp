@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.dui
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.dui
 
 data class NewsDetailsDui(
     val date: String,

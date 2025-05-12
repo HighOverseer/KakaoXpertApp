@@ -2,8 +2,8 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neotelemetrixgdscunand.kamekapp.domain.data.Repository
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -21,11 +21,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiagnosisViewModel @Inject constructor(
-    private val repository: Repository
+    private val cocoaAnalysisRepository: CocoaAnalysisRepository
 ) : ViewModel() {
 
     val diagnosisHistoryPreview: StateFlow<ImmutableList<DiagnosisSessionPreview>> =
-        repository.getAllSavedDiagnosisSessionPreviews()
+        cocoaAnalysisRepository.getAllSavedDiagnosisSessionPreviews()
             .map { it.toImmutableList() }
             .flowOn(Dispatchers.Default)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())

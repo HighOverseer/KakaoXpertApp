@@ -1,12 +1,12 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthRepository
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.UIText
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.toErrorUIText
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.splash
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,7 +27,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.collectChannelWhenStarted
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 import kotlinx.coroutines.delay
 
 

@@ -1,4 +1,4 @@
-package com.dicoding.asclepius.domain.common
+package com.neotelemetrixgdscunand.kakaoxpert.domain.common
 
 sealed class StringRes {
     class Static(val resId: Int, vararg val args: Any) : StringRes()

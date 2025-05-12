@@ -33,7 +33,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.SecondaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.auth.component.PrimaryTextField
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryTextField
 
 @Composable
 fun PriceAnalysisOverview(modifier: Modifier = Modifier) {

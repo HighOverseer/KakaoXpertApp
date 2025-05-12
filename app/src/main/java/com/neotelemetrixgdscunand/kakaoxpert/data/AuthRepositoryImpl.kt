@@ -1,12 +1,12 @@
-package com.neotelemetrixgdscunand.kamekapp.data
+package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ApiService
-import com.neotelemetrixgdscunand.kamekapp.data.utils.fetchFromNetwork
-import com.neotelemetrixgdscunand.kamekapp.domain.common.AuthError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.DataError
-import com.neotelemetrixgdscunand.kamekapp.domain.common.Result
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthPreference
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthRepository
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.fetchFromNetwork
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.AuthError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.joinAll

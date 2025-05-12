@@ -32,8 +32,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.DiagnosisScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.HomeScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDevicesInfoScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.ui.toplevel.account.AccountScreen
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.MessageSnackbar
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.account.AccountScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.MessageSnackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

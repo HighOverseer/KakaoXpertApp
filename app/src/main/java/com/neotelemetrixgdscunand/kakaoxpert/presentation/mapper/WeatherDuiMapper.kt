@@ -1,12 +1,12 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.mapper
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper
 
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kamekapp.domain.model.WeatherForecastItem
-import com.neotelemetrixgdscunand.kamekapp.domain.model.WeatherForecastOverview
-import com.neotelemetrixgdscunand.kamekapp.domain.model.WeatherType
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.WeatherForecastItemDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.dui.WeatherForecastOverviewDui
-import com.neotelemetrixgdscunand.kamekapp.presentation.utils.UIText
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherForecastItem
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherForecastOverview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherType
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastOverviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 import kotlinx.coroutines.CancellationException
 import java.text.SimpleDateFormat
 import java.util.Calendar

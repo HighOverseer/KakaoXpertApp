@@ -26,8 +26,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
-import com.neotelemetrixgdscunand.kamekapp.domain.model.getDetectedDiseaseCacaos
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getDetectedDiseaseCacaos
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun DetectedCacaoImageGrid(
     modifier: Modifier = Modifier,
-    detectedCacaos: ImmutableList<DetectedCacao> = persistentListOf(),
+    detectedCacaos: ImmutableList<DetectedCocoa> = persistentListOf(),
     onItemClicked: (Int) -> Unit = { }
 ) {
 

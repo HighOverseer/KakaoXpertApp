@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.preferencesDataStore
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthPreference
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 
 val Context.dataStore by preferencesDataStore(AuthPreference.NAME)
 

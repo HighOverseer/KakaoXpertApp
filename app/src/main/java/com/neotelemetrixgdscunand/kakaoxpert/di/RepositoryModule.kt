@@ -1,17 +1,17 @@
-package com.neotelemetrixgdscunand.kamekapp.di
+package com.neotelemetrixgdscunand.kakaoxpert.di
 
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.AuthPreferenceImpl
-import com.neotelemetrixgdscunand.kamekapp.data.AuthRepositoryImpl
-import com.neotelemetrixgdscunand.kamekapp.data.NewsRepositoryImpl
-import com.neotelemetrixgdscunand.kamekapp.data.RepositoryImpl
-import com.neotelemetrixgdscunand.kamekapp.data.ShopRepositoryImpl
-import com.neotelemetrixgdscunand.kamekapp.data.WeatherRepositoryImpl
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthPreference
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthRepository
-import com.neotelemetrixgdscunand.kamekapp.domain.data.NewsRepository
-import com.neotelemetrixgdscunand.kamekapp.domain.data.Repository
-import com.neotelemetrixgdscunand.kamekapp.domain.data.ShopRepository
-import com.neotelemetrixgdscunand.kamekapp.domain.data.WeatherRepository
+import com.neotelemetrixgdscunand.kakaoxpert.data.AuthRepositoryImpl
+import com.neotelemetrixgdscunand.kakaoxpert.data.NewsRepositoryImpl
+import com.neotelemetrixgdscunand.kakaoxpert.data.CocoaAnalysisRepositoryImpl
+import com.neotelemetrixgdscunand.kakaoxpert.data.ShopRepositoryImpl
+import com.neotelemetrixgdscunand.kakaoxpert.data.WeatherRepositoryImpl
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.ShopRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.WeatherRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,7 +24,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindRepository(repository: RepositoryImpl): Repository
+    abstract fun bindRepository(repository: CocoaAnalysisRepositoryImpl): CocoaAnalysisRepository
 
     @Binds
     @Singleton

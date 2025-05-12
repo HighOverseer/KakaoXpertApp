@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kamekapp.domain.data
+package com.neotelemetrixgdscunand.kakaoxpert.domain.data
 
 import kotlinx.coroutines.flow.Flow
 

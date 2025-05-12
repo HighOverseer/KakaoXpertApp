@@ -32,10 +32,10 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.PrimaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DetectedCacaoImageGrid
-import com.neotelemetrixgdscunand.kamekapp.domain.model.CacaoDisease
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DamageLevelCategory
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DamageLevelSubCategory
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DamageLevelCategory
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DamageLevelSubCategory
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
@@ -45,8 +45,8 @@ import kotlinx.collections.immutable.toImmutableMap
 fun PriceAnalysisDetails(
     modifier: Modifier = Modifier,
     isInitiallyExpanded: Boolean = false,
-    groupedDetectedDisease: ImmutableMap<CacaoDisease, ImmutableList<DetectedCacao>> =
-        mutableMapOf<CacaoDisease, ImmutableList<DetectedCacao>>().toImmutableMap(),
+    groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
+        emptyMap<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
     subDamageLevelSubCategory: DamageLevelSubCategory = DamageLevelCategory.Low.secondSubLevelCategory,
     onDetectedCacaoImageClicked: (Int) -> Unit = { }
 ) {

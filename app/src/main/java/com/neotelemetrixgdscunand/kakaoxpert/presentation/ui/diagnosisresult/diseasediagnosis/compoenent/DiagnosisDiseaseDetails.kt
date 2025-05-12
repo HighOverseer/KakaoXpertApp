@@ -22,16 +22,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.CocoaDiseaseMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.PrimaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.SecondaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.TitleShimmeringLoading
-import com.neotelemetrixgdscunand.kamekapp.domain.model.CacaoDisease
-import com.neotelemetrixgdscunand.kamekapp.domain.model.DetectedCacao
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
@@ -40,8 +42,8 @@ import kotlinx.collections.immutable.toImmutableMap
 @Composable
 fun DiagnosisDiseaseDetails(
     modifier: Modifier = Modifier,
-    groupedDetectedDisease: ImmutableMap<CacaoDisease, ImmutableList<DetectedCacao>> =
-        mutableMapOf<CacaoDisease, ImmutableList<DetectedCacao>>().toImmutableMap(),
+    groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
+        emptyMap<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
     isItemExpandProvider: (index: Int) -> Boolean = { false },
     toggleItemExpand: (index: Int) -> Unit = { },
     navigateToCacaoImageDetail: (Int) -> Unit = { },
@@ -55,16 +57,21 @@ fun DiagnosisDiseaseDetails(
 
     } else groupedDetectedDiseaseKeys.forEachIndexed { index, diseaseKey ->
         key(diseaseKey) {
+            val diseaseName = CocoaDiseaseMapper.mapToNameResId[diseaseKey]?.let{ stringResource(it) } ?: "-"
+            val diseaseCause = CocoaDiseaseMapper.mapToCauseResId[diseaseKey]?.let{ stringResource(it) } ?: "-"
+            val diseaseSymptoms = CocoaDiseaseMapper.mapToSymptomResId[diseaseKey]?.let{ stringResource(it) } ?: "-"
+            val diseaseSeedCondition = CocoaDiseaseMapper.mapToSeedConditionResId[diseaseKey]?.let{ stringResource(it) } ?: "-"
+
             DiagnosisDiseaseDetailItem(
                 isExpandProvider = { isItemExpandProvider(index) },
                 toggleExpand = { toggleItemExpand(index) },
                 modifier = modifier.padding(bottom = 8.dp),
-                diseaseName = stringResource(diseaseKey.nameResId),
+                diseaseName = diseaseName,
                 detectedCacaos = groupedDetectedDisease[diseaseKey]
                     ?: persistentListOf(),
-                diseaseCause = stringResource(diseaseKey.causeStringResId),
-                diseaseSymptoms = stringResource(diseaseKey.symptomStringResId),
-                seedCondition = stringResource(diseaseKey.seedConditionStringResId),
+                diseaseCause = diseaseCause,
+                diseaseSymptoms = diseaseSymptoms,
+                seedCondition = diseaseSeedCondition,
                 onDetectedCacaoImageClicked = navigateToCacaoImageDetail
             )
         }
@@ -78,7 +85,7 @@ fun DiagnosisDiseaseDetailItem(
     diseaseCause: String = "-",
     diseaseSymptoms: String = "-",
     seedCondition: String = "-",
-    detectedCacaos: ImmutableList<DetectedCacao> = persistentListOf(),
+    detectedCacaos: ImmutableList<DetectedCocoa> = persistentListOf(),
     onDetectedCacaoImageClicked: (Int) -> Unit = { },
     isExpandProvider: () -> Boolean = { false },
     toggleExpand: () -> Unit = { }
@@ -137,21 +144,24 @@ fun DiagnosisDiseaseDetailItem(
 
             PrimaryDescription(
                 title = stringResource(R.string.penyebab),
-                description = diseaseCause
+                description = diseaseCause,
+                descriptionTextAlign = TextAlign.Justify
             )
 
             Spacer(Modifier.height(24.dp))
 
             PrimaryDescription(
                 title = stringResource(R.string.gejala),
-                description = diseaseSymptoms
+                description = diseaseSymptoms,
+                descriptionTextAlign = TextAlign.Justify
             )
 
             Spacer(Modifier.height(24.dp))
 
             SecondaryDescription(
                 title = stringResource(R.string.kondisi_biji),
-                description = seedCondition
+                description = seedCondition,
+                descriptionTextAlign = TextAlign.Justify
             )
         }
     }

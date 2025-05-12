@@ -1,8 +1,8 @@
-package com.neotelemetrixgdscunand.kamekapp.presentation.ui.onboarding
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neotelemetrixgdscunand.kamekapp.domain.data.AuthRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
