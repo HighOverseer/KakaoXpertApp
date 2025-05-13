@@ -28,7 +28,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey65
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
@@ -38,7 +39,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePain
 @Composable
 fun DiagnosisHistory(
     modifier: Modifier = Modifier,
-    item: DiagnosisSessionPreview,
+    item: AnalysisSessionPreviewDui,
     onClick: () -> Unit = { }
 ) {
     val cardModifier = remember {
@@ -133,7 +134,7 @@ fun DiagnosisHistory(
 private fun DiagnosisHistoryPreview() {
     KakaoXpertTheme {
         DiagnosisHistory(
-            item = DiagnosisSessionPreview(
+            item = AnalysisSessionPreviewDui(
                 id = 0,
                 title = "Kakao Pak Tono",
                 imageUrlOrPath = "https://drive.google.com/file/d/1SXCPCoMzRjZEpemeT-mLOUTD2mzbGee_/view?usp=drive_link",

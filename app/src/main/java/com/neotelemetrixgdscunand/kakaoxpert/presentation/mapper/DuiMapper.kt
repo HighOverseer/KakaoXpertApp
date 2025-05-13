@@ -1,10 +1,12 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper
 
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.DiagnosisSessionDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsDetailsDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.ShopItemDui
@@ -63,14 +65,34 @@ object DuiMapper {
         )
     }
 
-    fun mapDiagnosisSessionToDui(analysisSession: AnalysisSession): DiagnosisSessionDui {
-        return DiagnosisSessionDui(
+    fun mapDiagnosisSessionToDui(analysisSession: AnalysisSession): AnalysisSessionDui {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = analysisSession.createdAt
+        val sdf = SimpleDateFormat("d-MM-yyyy", Locale.getDefault())
+        val dateString = sdf.format(calendar.time)
+
+        return AnalysisSessionDui(
             id = analysisSession.id,
             title = analysisSession.title,
             imageUrlOrPath = analysisSession.imageUrlOrPath,
-            date = analysisSession.date,
+            date = dateString,
             predictedPrice = analysisSession.predictedPrice,
             detectedCocoas = analysisSession.detectedCocoas.toImmutableList()
+        )
+    }
+
+    fun mapDiagnosisSessionPreviewToDui(analysisSession: AnalysisSessionPreview): AnalysisSessionPreviewDui{
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = analysisSession.createdAt
+        val sdf = SimpleDateFormat("d-MM-yyyy", Locale.getDefault())
+        val dateString = sdf.format(calendar.time)
+
+        return AnalysisSessionPreviewDui(
+            id = analysisSession.id,
+            title = analysisSession.title,
+            imageUrlOrPath = analysisSession.imageUrlOrPath,
+            date = dateString,
+            predictedPrice = analysisSession.predictedPrice
         )
     }
 

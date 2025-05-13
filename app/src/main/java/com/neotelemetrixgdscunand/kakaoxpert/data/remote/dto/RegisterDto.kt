@@ -12,5 +12,4 @@ data class RegisterDto(
 
     @field:SerializedName("user_name")
     val userName: String? = null,
-
-    )
+)

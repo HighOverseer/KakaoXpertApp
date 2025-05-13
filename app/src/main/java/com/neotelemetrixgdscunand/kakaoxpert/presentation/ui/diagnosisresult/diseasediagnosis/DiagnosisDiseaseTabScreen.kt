@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.DiagnosisSessionDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.CocoaDiseaseMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DetectedCacaoDiseasePreviewSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DiagnosisBottomContent
@@ -34,7 +34,7 @@ fun DiagnosisDiseaseTabScreen(
     groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
         mutableMapOf<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
     navigateToCacaoImageDetail: (Int) -> Unit = { },
-    diagnosisSessionDui: DiagnosisSessionDui = DiagnosisSessionDui(),
+    analysisSessionDui: AnalysisSessionDui = AnalysisSessionDui(),
     isLoadingProvider: () -> Boolean = { false },
     isItemExpandProvider: (Int) -> Boolean = { false },
     toggleItemExpand: (Int) -> Unit = { },
@@ -55,15 +55,15 @@ fun DiagnosisDiseaseTabScreen(
     Spacer(Modifier.height(16.dp))
 
     val context = LocalContext.current
-    val solutionResId = remember(diagnosisSessionDui) {
+    val solutionResId = remember(analysisSessionDui) {
         CocoaDiseaseMapper.getDefaultSolutionResIdOfInfectedDiseases(
-            diagnosisSessionDui.detectedCocoas
+            analysisSessionDui.detectedCocoas
         )
     }
 
-    val preventions = remember(diagnosisSessionDui) {
+    val preventions = remember(analysisSessionDui) {
         CocoaDiseaseMapper.getDefaultPreventionsResIdOfInfectedDiseases(
-            diagnosisSessionDui.detectedCocoas
+            analysisSessionDui.detectedCocoas
         ).let { context.getString(it).split("\n") }.toImmutableList()
     }
 

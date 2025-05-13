@@ -1,6 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.interactor
 
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
@@ -20,7 +21,7 @@ class AnalysisCocoaInteractor(
     override suspend fun invoke(
         sessionName: String,
         imagePath: String
-    ): Result<AnalysisSession, CocoaAnalysisError> {
+    ): Result<AnalysisSession, DataError> {
         val result = try {
             cacaoImageDetectorHelper.detect(imagePath)
         } finally {
@@ -58,9 +59,8 @@ class AnalysisCocoaInteractor(
                     detectedCocoas = detectedCocoas
                 )
 
-                val newSavedAnalysis = cocoaAnalysisRepository.getDiagnosisSession(newSessionId)
-
-                return Result.Success(newSavedAnalysis)
+                val newAnalysisSession = cocoaAnalysisRepository.getDiagnosisSession(newSessionId)
+                return Result.Success(newAnalysisSession)
             }
         }
     }

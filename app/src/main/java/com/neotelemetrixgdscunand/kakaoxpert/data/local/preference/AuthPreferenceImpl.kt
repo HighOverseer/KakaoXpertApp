@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.data.local
+package com.neotelemetrixgdscunand.kakaoxpert.data.local.preference
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

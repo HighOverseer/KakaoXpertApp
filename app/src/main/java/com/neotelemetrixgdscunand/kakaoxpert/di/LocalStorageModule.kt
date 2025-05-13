@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.room.Room
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaAnalysisDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 import dagger.Module
 import dagger.Provides
@@ -24,5 +26,17 @@ class LocalStorageModule {
         @ApplicationContext context: Context
     ): DataStore<Preferences> {
         return context.dataStore
+    }
+
+    @Provides
+    @Singleton
+    fun provideCocoaAnalysisDatabase(
+        @ApplicationContext context: Context
+    ):CocoaAnalysisDatabase{
+        return Room.databaseBuilder(
+            context.applicationContext,
+            CocoaAnalysisDatabase::class.java,
+            CocoaAnalysisDatabase.DATABASE_NAME
+        ).build()
     }
 }

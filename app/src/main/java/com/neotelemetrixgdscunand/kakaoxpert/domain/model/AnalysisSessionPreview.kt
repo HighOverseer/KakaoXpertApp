@@ -1,9 +1,9 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.model
 
-data class DiagnosisSessionPreview(
+data class AnalysisSessionPreview(
     val id: Int,
     val title: String,
     val imageUrlOrPath: String,
-    val date: String,
+    val createdAt: Long,
     val predictedPrice: Float,
 )

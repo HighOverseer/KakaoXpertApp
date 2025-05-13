@@ -1,7 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
-import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ApiService
-import com.neotelemetrixgdscunand.kakaoxpert.data.utils.fetchFromNetwork
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.callApiFromNetwork
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.AuthError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
+    private val authApiService: AuthApiService,
     private val authPreference: AuthPreference,
 ) : AuthRepository {
 
@@ -25,9 +25,9 @@ class AuthRepositoryImpl @Inject constructor(
         handphoneNumberOrEmail: String,
         password: String
     ): Result<Pair<String, Boolean>, DataError.NetworkError> {
-        return fetchFromNetwork(
-            fetching = {
-                val response = apiService.login(
+        return callApiFromNetwork(
+            execute = {
+                val response = authApiService.login(
                     handphoneNumberOrEmail, password
                 )
 
@@ -38,17 +38,17 @@ class AuthRepositoryImpl @Inject constructor(
                 val isTokenValid = token != null && userId != null && userName != null
 
                 if (!isTokenValid) {
-                    return@fetchFromNetwork Result.Error(AuthError.INVALID_TOKEN)
+                    return@callApiFromNetwork Result.Error(AuthError.INVALID_TOKEN)
                 }
 
                 authPreference.saveToken(token as String)
                 val isFirstTime = authPreference.getIsFirstTime().first()
 
                 val data = Pair(userName as String, isFirstTime)
-                return@fetchFromNetwork Result.Success(data)
+                return@callApiFromNetwork Result.Success(data)
             },
             getErrorFromStatusCode = { statusCode ->
-                return@fetchFromNetwork when (statusCode) {
+                return@callApiFromNetwork when (statusCode) {
                     404 -> AuthError.INCORRECT_USERNAME_OR_PASSWORD
                     else -> null
                 }
@@ -64,9 +64,9 @@ class AuthRepositoryImpl @Inject constructor(
     ): Result<String, DataError.NetworkError> = withContext(Dispatchers.IO) {
         val oldSavedValueIsFirstTime = authPreference.getIsFirstTime().first()
 
-        fetchFromNetwork(
-            fetching = {
-                val response = apiService.register(
+        callApiFromNetwork(
+            execute = {
+                val response = authApiService.register(
                     handphoneNumberOrEmail, password, passwordConfirmation, name
                 )
 
@@ -77,7 +77,7 @@ class AuthRepositoryImpl @Inject constructor(
                     response.data?.userId != null && token != null && userName != null
 
                 if (!isRegisterValid) {
-                    return@fetchFromNetwork Result.Error(AuthError.INVALID_REGISTER_SESSION)
+                    return@callApiFromNetwork Result.Error(AuthError.INVALID_REGISTER_SESSION)
                 }
 
                 listOf(
@@ -85,10 +85,10 @@ class AuthRepositoryImpl @Inject constructor(
                     launch { authPreference.saveIsFirstTime(true) }
                 ).joinAll()
 
-                return@fetchFromNetwork Result.Success(userName as String)
+                return@callApiFromNetwork Result.Success(userName as String)
             },
             getErrorFromStatusCode = { statusCode ->
-                return@fetchFromNetwork when (statusCode) {
+                return@callApiFromNetwork when (statusCode) {
                     400 -> AuthError.USERNAME_IS_ALREADY_REGISTERED
                     else -> null
                 }

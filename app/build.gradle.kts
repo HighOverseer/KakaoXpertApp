@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.jetbrains.kotlin.kapt)
     alias(libs.plugins.jetbrains.kotlin.plugin.compose)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -37,8 +38,10 @@ android {
 
         val localProperties = getLocalProperties()
         val baseUrl = localProperties.getProperty("BASE_URL", "")
+        val imageBaseUrl = localProperties.getProperty("IMAGE_BASE_URL", "")
 
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+        buildConfigField("String", "IMAGE_BASE_URL", "\"$imageBaseUrl\"")
     }
 
     buildTypes {
@@ -142,5 +145,13 @@ dependencies {
 
     //fused location
     implementation(libs.play.services.location)
+
+    implementation(libs.androidx.room.runtime)
+    //ksp("androidx.room:room-compiler:2.7.1")
+    implementation(libs.androidx.room.ktx)
+
+    implementation(libs.androidx.room.paging)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation( libs.androidx.paging.common.ktx)
 }
 

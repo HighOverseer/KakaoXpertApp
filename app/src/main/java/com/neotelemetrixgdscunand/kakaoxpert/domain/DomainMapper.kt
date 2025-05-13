@@ -1,15 +1,15 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain
 
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 
 object DomainMapper {
     fun mapDiagnosisSessionToPreview(
         analysisSession: AnalysisSession
-    ): DiagnosisSessionPreview {
+    ): AnalysisSessionPreview {
         return analysisSession.run {
-            DiagnosisSessionPreview(
-                id, title, imageUrlOrPath, date, predictedPrice
+            AnalysisSessionPreview(
+                id, title, imageUrlOrPath, createdAt = createdAt, predictedPrice
             )
         }
     }

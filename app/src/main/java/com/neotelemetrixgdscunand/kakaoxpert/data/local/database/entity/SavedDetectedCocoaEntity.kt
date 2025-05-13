@@ -1,0 +1,64 @@
+package com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+// bb = bounding box
+@Entity(tableName = "saved_detected_cocoa")
+data class SavedDetectedCocoaEntity(
+    @ColumnInfo("id")
+    @PrimaryKey(autoGenerate = false)
+    val id: Int,
+
+    @ColumnInfo("bb_label")
+    val bbLabel: String,
+
+    @ColumnInfo("damage_percentage")
+    val damagePercentage: Float,
+
+    @ColumnInfo("bb_coordinate_top")
+    val bbCoordinateTop: Float,
+
+    @ColumnInfo("bb_cls")
+    val bbCls: Int,
+
+    @ColumnInfo("bb_height")
+    val bbHeight: Float,
+
+    @ColumnInfo("session_id")
+    val sessionId: Int,
+
+    @ColumnInfo("bb_center_x")
+    val bbCenterX: Float,
+
+    @ColumnInfo("bb_center_y")
+    val bbCenterY: Float,
+
+    @ColumnInfo("bb_coordinate_bottom")
+    val bbCoordinateBottom: Float,
+
+    @ColumnInfo("variety_info_id")
+    val varietyInfoId: Int,
+
+    @ColumnInfo("cocoa_number")
+    val cocoaNumber: Int,
+
+    @ColumnInfo("disease_id")
+    val diseaseId: Int,
+
+    @ColumnInfo("bb_coordinate_left")
+    val bbCoordinateLeft: Float,
+
+    @ColumnInfo("bb_width")
+    val bbWidth: Float,
+
+    @ColumnInfo("bb_confidence")
+    val bbConfidence: Float,
+
+    @ColumnInfo("bb_coordinate_right")
+    val bbCoordinateRight: Float,
+
+    @ColumnInfo("damage_level")
+    val damageLevel: Int
+)

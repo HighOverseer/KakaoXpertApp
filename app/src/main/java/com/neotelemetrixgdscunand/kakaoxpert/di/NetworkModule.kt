@@ -2,8 +2,12 @@ package com.neotelemetrixgdscunand.kakaoxpert.di
 
 import com.google.gson.Gson
 import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
-import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthInterceptor
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.CocoaAnalysisApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.NewsApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ShopApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.WeatherApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,18 +21,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-
-    @Provides
-    fun provideApiService(
-        client: OkHttpClient
-    ): ApiService {
-        return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-            .create(ApiService::class.java)
-    }
 
     @Provides
     @Singleton
@@ -46,5 +38,73 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideGson(): Gson = Gson()
+    @Singleton
+    fun provideGsonConverterFactory():GsonConverterFactory{
+        return GsonConverterFactory.create()
+    }
+
+    @Provides
+    fun provideCocoaAnalysisApiService(
+        client: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): CocoaAnalysisApiService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .client(client)
+            .build()
+            .create(CocoaAnalysisApiService::class.java)
+    }
+
+    @Provides
+    fun provideShopApiService(
+        client: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): ShopApiService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .client(client)
+            .build()
+            .create(ShopApiService::class.java)
+    }
+
+    @Provides
+    fun provideNewsApiService(
+        client: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): NewsApiService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .client(client)
+            .build()
+            .create(NewsApiService::class.java)
+    }
+
+    @Provides
+    fun provideWeatherApiService(
+        client: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): WeatherApiService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .client(client)
+            .build()
+            .create(WeatherApiService::class.java)
+    }
+
+    @Provides
+    fun provideAuthApiService(
+        client: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): AuthApiService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .client(client)
+            .build()
+            .create(AuthApiService::class.java)
+    }
 }

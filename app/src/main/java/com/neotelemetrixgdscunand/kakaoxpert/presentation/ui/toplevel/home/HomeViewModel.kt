@@ -8,9 +8,10 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.WeatherRepository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.Location
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.WeatherDuiMapper
@@ -51,10 +52,12 @@ class HomeViewModel @Inject constructor(
     private val _uiEvent = Channel<HomeUIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    val diagnosisHistory: StateFlow<ImmutableList<DiagnosisSessionPreview>> =
-        cocoaAnalysisRepository.getAllSavedDiagnosisSessionPreviews()
+    val diagnosisHistory: StateFlow<ImmutableList<AnalysisSessionPreviewDui>> =
+        cocoaAnalysisRepository.getAllSessionPreviews()
             .map {
-                it.toImmutableList()
+                it.map {
+                    DuiMapper.mapDiagnosisSessionPreviewToDui(it)
+                }.toImmutableList()
             }
             .flowOn(Dispatchers.Default)
             .stateIn(

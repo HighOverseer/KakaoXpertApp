@@ -25,14 +25,14 @@ val mapIOExceptionToError = hashMapOf(
     SocketTimeoutException::class to RootNetworkError.REQUEST_TIMEOUT
 )
 
-suspend fun <D> fetchFromNetwork(
-    fetching: suspend () -> Result<D, DataError.NetworkError>,
+suspend fun <D> callApiFromNetwork(
+    execute: suspend () -> Result<D, DataError.NetworkError>,
     getErrorFromStatusCode: (Int) -> DataError.NetworkError? = { null },
     getErrorFromIOException: (Exception) -> DataError.NetworkError? = { null },
     nonCancellableBlockWhenException: suspend () -> Unit = { }
 ): Result<D, DataError.NetworkError> {
     return try {
-        fetching()
+        execute()
     } catch (e: HttpException) {
         val statusCode = e.code()
         val error = getErrorFromStatusCode(statusCode) ?: mapStatusCodeToError[statusCode]
@@ -52,11 +52,11 @@ suspend fun <D> fetchFromNetwork(
     }
 }
 
-suspend fun <D> fetchFromNetwork(
-    fetching: suspend () -> Result<D, DataError.NetworkError>,
+suspend fun <D> callApiFromNetwork(
+    execute: suspend () -> Result<D, DataError.NetworkError>,
 ): Result<D, DataError.NetworkError> {
     return try {
-        fetching()
+        execute()
     } catch (e: HttpException) {
         val statusCode = e.code()
         val error =

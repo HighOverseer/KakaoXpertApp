@@ -1,14 +1,25 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
+import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionPreviewDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.DetectedCocoaDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsDetailsDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsItemDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.ShopItemDto
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
+import java.util.TimeZone
 
 object DataMapper {
     private const val DATA_NEWS_DATE_PATTERN = "dd/MM/yyyy"
@@ -76,6 +87,95 @@ object DataMapper {
             title = shopItemDto.name ?: return null,
             price = shopItemDto.price ?: return null,
             targetUrl = shopItemDto.link ?: return null
+        )
+    }
+
+    fun mapAnalysisSessionDtoToDomain(
+        analysisSessionDto: AnalysisSessionDto
+    ):AnalysisSession?{
+
+        val dateDateString = analysisSessionDto.date ?: return null
+        val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        val sdf = SimpleDateFormat(datePattern, Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+
+        val date = try {
+            sdf.parse(dateDateString)
+        }catch (e:ParseException){
+            return null
+        }
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val createdAt = calendar.timeInMillis
+
+        val imageUrl = "${BuildConfig.IMAGE_BASE_URL}${analysisSessionDto.sessionImage}"
+
+        return AnalysisSession(
+            id = analysisSessionDto.sessionId ?: return null,
+            title = analysisSessionDto.sessionName ?: return null,
+            createdAt = createdAt,
+            imageUrlOrPath = imageUrl,
+            predictedPrice = 2100f,
+            solutionEn = analysisSessionDto.solutionEn,
+            preventionsEn = analysisSessionDto.preventionEn,
+            solutionId = analysisSessionDto.solutionId,
+            preventionsId = analysisSessionDto.preventionId,
+            detectedCocoas = analysisSessionDto.detectedCocoas?.mapNotNull {
+                mapDetectedCocoaDtoToDomain(it)
+            }?: return null
+        )
+    }
+
+    fun mapDetectedCocoaDtoToDomain(
+        detectedCocoaDto: DetectedCocoaDto?
+    ):DetectedCocoa?{
+        return DetectedCocoa(
+            id = detectedCocoaDto?.id ?: return null,
+            cacaoNumber = detectedCocoaDto.cocoaNumber?.toShort() ?: return null,
+            boundingBox = BoundingBox(
+                x1 = detectedCocoaDto.bbCoordinateLeft ?: return null,
+                y1 = detectedCocoaDto.bbCoordinateTop ?: return null,
+                x2 = detectedCocoaDto.bbCoordinateRight ?: return null,
+                y2 = detectedCocoaDto.bbCoordinateBottom ?: return null,
+                cx = detectedCocoaDto.bbCenterX ?: return null,
+                cy = detectedCocoaDto.bbCenterY ?: return null,
+                w = detectedCocoaDto.bbWidth ?: return null,
+                h = detectedCocoaDto.bbHeight ?: return null,
+                label = detectedCocoaDto.bbLabel ?: return null,
+                cls = detectedCocoaDto.bbCls ?: return null,
+                cnf = detectedCocoaDto.bbConfidence ?: return null
+            ),
+            disease = CocoaDisease.getDiseaseFromId(detectedCocoaDto.diseaseId ?: return null) ?: return null
+        )
+    }
+
+    fun mapCocoaAnalysisSessionPreviewDtoToDomain(
+        analysisSessionPreviewDto: AnalysisSessionPreviewDto
+    ):AnalysisSessionPreview?{
+        val dateDateString = analysisSessionPreviewDto.date ?: return null
+        val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        val sdf = SimpleDateFormat(datePattern, Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+
+        val date = try {
+            sdf.parse(dateDateString)
+        }catch (e:ParseException){
+            return null
+        }
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val createdAt = calendar.timeInMillis
+
+        val imageUrl = "${BuildConfig.IMAGE_BASE_URL}${analysisSessionPreviewDto.sessionImage}"
+
+        return AnalysisSessionPreview(
+            id = analysisSessionPreviewDto.sessionId ?: return null,
+            title = analysisSessionPreviewDto.sessionName ?: return null,
+            imageUrlOrPath = imageUrl,
+            createdAt = createdAt,
+            predictedPrice = 2100f
         )
     }
 

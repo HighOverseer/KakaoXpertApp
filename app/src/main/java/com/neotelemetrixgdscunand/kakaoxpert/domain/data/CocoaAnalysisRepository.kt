@@ -1,8 +1,10 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.data
 
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import kotlinx.coroutines.flow.Flow
 
 interface CocoaAnalysisRepository {
@@ -13,9 +15,8 @@ interface CocoaAnalysisRepository {
         detectedCocoas: List<DetectedCocoa>
     ): Int
 
-    fun getAllSavedDiagnosisSessions(): Flow<List<AnalysisSession>>
+    fun getAllSessionPreviews(): Flow<List<AnalysisSessionPreview>>
 
     suspend fun getDiagnosisSession(id: Int): AnalysisSession
 
-    fun getAllSavedDiagnosisSessionPreviews(): Flow<List<DiagnosisSessionPreview>>
 }

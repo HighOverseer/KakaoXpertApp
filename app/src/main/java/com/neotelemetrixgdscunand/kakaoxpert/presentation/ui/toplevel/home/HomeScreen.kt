@@ -36,7 +36,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
@@ -142,7 +143,7 @@ fun HomeScreen(
         navigateToShop = navigateToShop,
         navigateToWeather = navigateToWeather,
         navigateToNewsDetail = navigateToNewsDetail,
-        diagnosisSessionPreviews = diagnosisSessionPreviews,
+        analysisSessionPreviews = diagnosisSessionPreviews,
         navigateToDiagnosisResult = navigateToDiagnosisResult,
         navigateToNotification = navigateToNotification,
         showSnackbar = showSnackbar,
@@ -163,7 +164,7 @@ fun HomeContent(
     navigateToShop: () -> Unit = {},
     navigateToWeather: () -> Unit = {},
     navigateToNewsDetail: (Int) -> Unit = {},
-    diagnosisSessionPreviews: ImmutableList<DiagnosisSessionPreview> = persistentListOf(),
+    analysisSessionPreviews: ImmutableList<AnalysisSessionPreviewDui> = persistentListOf(),
     navigateToDiagnosisResult: (Int) -> Unit = { _ -> },
     navigateToNotification: () -> Unit = {},
     showSnackbar: (String) -> Unit = {},
@@ -231,7 +232,8 @@ fun HomeContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             state = diagnosisHistoryListState
         ) {
-            items(diagnosisSessionPreviews, { it.id }) { item ->
+            println(analysisSessionPreviews.map { "${it.id}, ${it.title}" })
+            items(analysisSessionPreviews, { it.id }) { item ->
                 HomeDiagnosisHistory(
                     modifier = Modifier
                         .clickable {

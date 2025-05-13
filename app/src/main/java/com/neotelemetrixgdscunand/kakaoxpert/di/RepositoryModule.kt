@@ -5,7 +5,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.CocoaAnalysisRepositoryImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.NewsRepositoryImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.ShopRepositoryImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.WeatherRepositoryImpl
-import com.neotelemetrixgdscunand.kakaoxpert.data.local.AuthPreferenceImpl
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.preference.AuthPreferenceImpl
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository

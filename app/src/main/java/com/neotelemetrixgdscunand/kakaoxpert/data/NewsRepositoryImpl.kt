@@ -1,7 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
-import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ApiService
-import com.neotelemetrixgdscunand.kakaoxpert.data.utils.fetchFromNetwork
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.NewsApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.callApiFromNetwork
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
@@ -18,7 +18,7 @@ import kotlin.coroutines.coroutineContext
 
 @Singleton
 class NewsRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
+    private val newsApiService: NewsApiService,
     private val mapper: DataMapper
 ) : NewsRepository {
 
@@ -26,8 +26,8 @@ class NewsRepositoryImpl @Inject constructor(
         query: String,
         newsType: NewsType
     ): Result<List<NewsItem>, DataError.NetworkError> {
-        return fetchFromNetwork {
-            val response = apiService.getNewsItems(query, newsType.id)
+        return callApiFromNetwork {
+            val response = newsApiService.getNewsItems(query, newsType.id)
             coroutineContext.ensureActive()
             val newsItemsDto = response.data ?: emptyList()
 
@@ -52,19 +52,19 @@ class NewsRepositoryImpl @Inject constructor(
         newsId: Int,
         newsType: NewsType
     ): Result<NewsDetails, DataError.NetworkError> {
-        return fetchFromNetwork {
-            val response = apiService.getNewsById(newsId, newsType.id)
+        return callApiFromNetwork {
+            val response = newsApiService.getNewsById(newsId, newsType.id)
             coroutineContext.ensureActive()
-            val newsDetailsDto = response.data ?: return@fetchFromNetwork Result.Error(
+            val newsDetailsDto = response.data ?: return@callApiFromNetwork Result.Error(
                 RootNetworkError.UNEXPECTED_ERROR
             )
             val newsDetails = withContext(Dispatchers.Default) {
                 mapper.mapNewsDetailsToDomain(newsDetailsDto)
-            } ?: return@fetchFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            } ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
 
             coroutineContext.ensureActive()
 
-            return@fetchFromNetwork Result.Success(newsDetails)
+            return@callApiFromNetwork Result.Success(newsDetails)
         }
     }
 }

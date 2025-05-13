@@ -1,7 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
-import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ApiService
-import com.neotelemetrixgdscunand.kakaoxpert.data.utils.fetchFromNetwork
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.WeatherApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.callApiFromNetwork
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class WeatherRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
+    private val weatherApiService: WeatherApiService,
     private val dataMapper: WeatherDtoMapper
 ) : WeatherRepository {
 
@@ -27,10 +27,10 @@ class WeatherRepositoryImpl @Inject constructor(
         delayEachRequestWhenErrorMs: Long
     ): Flow<Result<WeatherForecastOverview, DataError.NetworkError>> = flow {
         while (true) {
-            val result = fetchFromNetwork {
-                val response = apiService.getWeatherForecastOverview(latitude, longitude)
+            val result = callApiFromNetwork {
+                val response = weatherApiService.getWeatherForecastOverview(latitude, longitude)
                 val weatherForecastOverviewDto = response.data
-                    ?: return@fetchFromNetwork Result.Error(RootNetworkError.INTERNAL_SERVER_ERROR)
+                    ?: return@callApiFromNetwork Result.Error(RootNetworkError.INTERNAL_SERVER_ERROR)
 
                 val weatherForecastOverview =
                     dataMapper.mapWeatherForecastOverviewDtoToDomain(weatherForecastOverviewDto)
@@ -51,11 +51,11 @@ class WeatherRepositoryImpl @Inject constructor(
         latitude: Double,
         longitude: Double
     ): Result<List<WeatherForecastItem>, DataError.NetworkError> {
-        return fetchFromNetwork {
-            val response = apiService.getWeatherForecastForSevenDays(
+        return callApiFromNetwork {
+            val response = weatherApiService.getWeatherForecastForSevenDays(
                 latitude, longitude
             )
-            val weatherForecastItemDtos = response.data ?: return@fetchFromNetwork Result.Error(
+            val weatherForecastItemDtos = response.data ?: return@callApiFromNetwork Result.Error(
                 RootNetworkError.INTERNAL_SERVER_ERROR
             )
 
@@ -63,7 +63,7 @@ class WeatherRepositoryImpl @Inject constructor(
                 dataMapper.mapWeatherForecastItemDtoToDomain(it)
             }
 
-            return@fetchFromNetwork Result.Success(weatherForecastItems)
+            return@callApiFromNetwork Result.Success(weatherForecastItems)
         }
     }
 }

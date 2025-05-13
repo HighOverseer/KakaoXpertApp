@@ -116,19 +116,21 @@ fun DiagnosisBottomContent(
             Row(
                 Modifier.fillMaxWidth()
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(20.dp)
-                ) {
+
+                if(index != 0 && (index != preventions.lastIndex || it.contains(':'))){
                     Box(
                         modifier = Modifier
-                            .align(Alignment.Center)
-                            .clip(CircleShape)
-                            .size(4.dp)
-                            .background(color = Grey60)
-                    )
+                            .size(20.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .clip(CircleShape)
+                                .size(4.dp)
+                                .background(color = Grey60)
+                        )
+                    }
                 }
-
 
                 Text(
                     it,

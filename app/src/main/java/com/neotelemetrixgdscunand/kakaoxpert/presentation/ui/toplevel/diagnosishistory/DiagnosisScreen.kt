@@ -42,7 +42,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DiagnosisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
@@ -70,7 +71,7 @@ fun DiagnosisScreen(
 
     DiagnosisContent(
         modifier = modifier,
-        diagnosisSessionPreviews = diagnosisHistories,
+        analysisSessionPreviews = diagnosisHistories,
         navigateToDiagnosisResult = navigateToDiagnosisResult,
         navigateToTakePhoto = navigateToTakePhoto,
         bottomBarHeightPxProvider = bottomBarHeightPxProvider
@@ -82,7 +83,7 @@ fun DiagnosisScreen(
 @Composable
 fun DiagnosisContent(
     modifier: Modifier = Modifier,
-    diagnosisSessionPreviews: ImmutableList<DiagnosisSessionPreview> = persistentListOf(),
+    analysisSessionPreviews: ImmutableList<AnalysisSessionPreviewDui> = persistentListOf(),
     navigateToDiagnosisResult: (Int) -> Unit = { _ -> },
     navigateToTakePhoto: () -> Unit = { },
     bottomBarHeightPxProvider: () -> Int = { 0 }
@@ -108,20 +109,17 @@ fun DiagnosisContent(
         var topBarHeightPx by remember {
             mutableIntStateOf(initialHeightBeforeCalculating)
         }
-        val isContentPaddingHasBeenCalculated by remember {
-            derivedStateOf {
-                remainingHeightPx != initialHeightBeforeCalculating
-                        && topBarHeightPx != initialHeightBeforeCalculating
-            }
-        }
 
         val lazyColumnModifier = remember {
+            var previousList = persistentListOf<AnalysisSessionPreviewDui>()
+                .toImmutableList()
+
             modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .background(color = Grey90)
                 .onGloballyPositioned { coordinates ->
-                    if (isContentPaddingHasBeenCalculated) return@onGloballyPositioned
+                    if (analysisSessionPreviews != previousList) return@onGloballyPositioned
 
                     val screenHeightPx = with(density) {
                         configuration.screenHeightDp.dp.roundToPx()
@@ -130,6 +128,8 @@ fun DiagnosisContent(
                         .coerceAtLeast(0)
 
                     remainingHeightPx = remainingHeightIfAny
+
+                    previousList = analysisSessionPreviews
                 }
         }
         LazyColumn(
@@ -201,7 +201,7 @@ fun DiagnosisContent(
 
                 Spacer(Modifier.height(8.dp))
             }
-            items(diagnosisSessionPreviews, key = { it.id }, contentType = { it::class }) { item ->
+            items(analysisSessionPreviews, key = { it.id }, contentType = { it::class }) { item ->
                 DiagnosisHistory(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -216,18 +216,16 @@ fun DiagnosisContent(
             }
 
             item {
-                if (isContentPaddingHasBeenCalculated) {
-                    Spacer(
-                        Modifier.height(
-                            calculateContentBottomPaddingOfLazyColumn(
-                                topBarHeightPx = topBarHeightPx,
-                                bottomBarHeightPx = bottomBarHeightPxProvider(),
-                                remainingContentHeight = remainingHeightPx,
-                                density = density
-                            )
+                Spacer(
+                    Modifier.height(
+                        calculateContentBottomPaddingOfLazyColumn(
+                            topBarHeightPx = topBarHeightPx,
+                            bottomBarHeightPx = bottomBarHeightPxProvider(),
+                            remainingContentHeight = remainingHeightPx,
+                            density = density
                         )
                     )
-                }
+                )
             }
         }
 
@@ -281,12 +279,12 @@ private fun calculateContentBottomPaddingOfLazyColumn(
 private fun DiagnosisScreenPreview() {
     KakaoXpertTheme {
         DiagnosisContent(
-            diagnosisSessionPreviews = List(10) {
-                DiagnosisSessionPreview(
+            analysisSessionPreviews = List(10) {
+                AnalysisSessionPreviewDui(
                     id = it,
                     title = "Example",
                     imageUrlOrPath = "",
-                    date = "12-05-2024",
+                    date = "12-04-2025",
                     predictedPrice = 1400f
                 )
             }.take(1).toImmutableList()

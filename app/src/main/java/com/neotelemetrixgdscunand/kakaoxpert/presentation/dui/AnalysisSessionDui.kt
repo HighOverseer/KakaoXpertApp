@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.random.Random
 
-data class DiagnosisSessionDui(
+data class AnalysisSessionDui(
     val id: Int = Random.nextInt(0, 1_000_000),
     val title: String = "",
     val imageUrlOrPath: String = "",

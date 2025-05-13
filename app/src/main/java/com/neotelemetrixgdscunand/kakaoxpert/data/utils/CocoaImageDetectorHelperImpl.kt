@@ -2,6 +2,9 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.utils
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.media.ExifInterface
+import android.os.Environment
 import androidx.core.net.toUri
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.BoundingBoxProcessor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
@@ -22,8 +25,11 @@ import org.tensorflow.lite.support.common.ops.CastOp
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 class CocoaImageDetectorHelperImpl @Inject constructor(
@@ -40,18 +46,13 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
     private var numChannel = 0
     private var numElements = 0
 
-    private val imageProcessor = ImageProcessor.Builder()
-        .add(NormalizeOp(INPUT_MEAN, INPUT_STANDARD_DEVIATION))
-        .add(CastOp(INPUT_IMAGE_TYPE))
-        .build()
-
     override suspend fun setupImageDetector() = withContext(Dispatchers.Default) {
         clearResource()
 
         val model = FileUtil.loadMappedFile(context, MODEL_PATH)
         ensureActive()
         val options = Interpreter.Options()
-        options.numThreads = 4
+        options.numThreads = 6
         interpreter = Interpreter(model, options)
 
         val inputShape = interpreter?.getInputTensor(0)?.shape() ?: return@withContext
@@ -96,13 +97,18 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
             val imageUri = imageFile.toUri()
             ensureActive()
             val imageBitmap = imageConverter.convertImageUriToBitmap(imageUri)
+            val rotatedImageBitmap = rotateBitmapIfRequired(imageBitmap, imageFile)
             ensureActive()
-            val resizedBitmap =
-                Bitmap.createScaledBitmap(imageBitmap, tensorWidth, tensorHeight, false)
 
             ensureActive()
             val tensorImage = TensorImage(DataType.FLOAT32)
-            tensorImage.load(resizedBitmap)
+            tensorImage.load(rotatedImageBitmap)
+
+            val imageProcessor = ImageProcessor.Builder()
+                .add(ResizeOp(tensorHeight, tensorWidth, ResizeOp.ResizeMethod.BILINEAR))
+                .add(NormalizeOp(INPUT_MEAN, INPUT_STANDARD_DEVIATION))
+                .add(CastOp(INPUT_IMAGE_TYPE))
+                .build()
 
             ensureActive()
             val processedImage = imageProcessor.process(tensorImage)
@@ -148,3 +154,46 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
     }
 
 }
+
+fun rotateBitmapIfRequired(bitmap: Bitmap, imageFile: File): Bitmap {
+    val ei = ExifInterface(imageFile.absolutePath)
+    val orientation = ei.getAttributeInt(
+        ExifInterface.TAG_ORIENTATION,
+        ExifInterface.ORIENTATION_NORMAL
+    )
+
+    return when (orientation) {
+        ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
+        ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
+        ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
+        else -> bitmap
+    }
+}
+
+private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
+    val matrix = Matrix()
+    matrix.postRotate(angle)
+    return Bitmap.createBitmap(
+        source, 0, 0, source.width, source.height, matrix, true
+    )
+}
+
+//fun saveBitmapToFile(context: Context, bitmap: Bitmap, filename: String): File? {
+//    val directory = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "SavedImages")
+//    if (!directory.exists()) {
+//        directory.mkdirs()
+//    }
+//
+//    val file = File(directory, "$filename.png")
+//
+//    return try {
+//        val outputStream = FileOutputStream(file)
+//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+//        outputStream.flush()
+//        outputStream.close()
+//        file
+//    } catch (e: IOException) {
+//        e.printStackTrace()
+//        null
+//    }
+//}
