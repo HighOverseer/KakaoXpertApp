@@ -2,8 +2,6 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.relatio
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCocoaAnalysisEntity
-import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedDetectedCocoaEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedDetectedCocoaEntity
 
@@ -15,5 +13,5 @@ data class UnsavedCocoaAnalysisAndDetectedCocoas(
         parentColumn = "unsaved_session_id",
         entityColumn = "unsaved_session_id"
     )
-    val unsavedDetectedCocoaEntities:List<UnsavedDetectedCocoaEntity>
+    val unsavedDetectedCocoaEntities: List<UnsavedDetectedCocoaEntity>
 )

@@ -13,5 +13,5 @@ data class SavedCocoaAnalysisAndDetectedCocoas(
         parentColumn = "session_id",
         entityColumn = "session_id"
     )
-    val savedDetectedCocoaEntities:List<SavedDetectedCocoaEntity>
+    val savedDetectedCocoaEntities: List<SavedDetectedCocoaEntity>
 )

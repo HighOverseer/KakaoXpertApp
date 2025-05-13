@@ -32,7 +32,7 @@ class LocalStorageModule {
     @Singleton
     fun provideCocoaAnalysisDatabase(
         @ApplicationContext context: Context
-    ):CocoaAnalysisDatabase{
+    ): CocoaAnalysisDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             CocoaAnalysisDatabase::class.java,

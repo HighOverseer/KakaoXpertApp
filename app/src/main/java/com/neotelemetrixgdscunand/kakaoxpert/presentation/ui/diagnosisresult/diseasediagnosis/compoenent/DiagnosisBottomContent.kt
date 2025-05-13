@@ -117,7 +117,7 @@ fun DiagnosisBottomContent(
                 Modifier.fillMaxWidth()
             ) {
 
-                if(index != 0 && (index != preventions.lastIndex || it.contains(':'))){
+                if (index != 0 && (index != preventions.lastIndex || it.contains(':'))) {
                     Box(
                         modifier = Modifier
                             .size(20.dp)

@@ -3,7 +3,6 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.remote
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionPreviewDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.Response
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -11,7 +10,6 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
-import retrofit2.http.PartMap
 import retrofit2.http.Path
 import java.io.File
 
@@ -21,7 +19,7 @@ interface CocoaAnalysisApiService {
 
     @GET("analysis-history/{id}")
     suspend fun getAnalysisSessionById(
-        @Path("id") sessionId:Int
+        @Path("id") sessionId: Int
     ): Response<AnalysisSessionDto>
 
     @Multipart
@@ -71,16 +69,16 @@ interface CocoaAnalysisApiService {
         val bbConfidences: RequestBody,
         val bbCls: RequestBody,
         val bbLabels: RequestBody
-    ){
+    ) {
 
-        companion object{
+        companion object {
             fun createPostRequestBody(
-                sessionImagePath:String,
-                sessionName:String,
+                sessionImagePath: String,
+                sessionName: String,
                 detectedCocoas: List<DetectedCocoa>,
-            ):PostRequestBody{
+            ): PostRequestBody {
                 val sessionImageFile = File(sessionImagePath)
-                if(!sessionImageFile.exists()) throw Exception("error")
+                if (!sessionImageFile.exists()) throw Exception("error")
 
                 val sessionImagePart = sessionImageFile.asImageRequestBody()
                     .run {

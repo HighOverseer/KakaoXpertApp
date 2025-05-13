@@ -1,7 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.model
 
 
-enum class CocoaDisease(val id:Int) {
+enum class CocoaDisease(val id: Int) {
     NONE(2),
     HELOPELTIS(3),
     BLACKPOD(1),
@@ -10,9 +10,9 @@ enum class CocoaDisease(val id:Int) {
     companion object {
 
         fun getDiseaseFromId(
-            diseaseId:Int
-        ):CocoaDisease?{
-            return when(diseaseId){
+            diseaseId: Int
+        ): CocoaDisease? {
+            return when (diseaseId) {
                 1 -> BLACKPOD
                 2 -> NONE
                 3 -> HELOPELTIS
@@ -20,6 +20,7 @@ enum class CocoaDisease(val id:Int) {
                 else -> null
             }
         }
+
         fun getDiseaseFromName(
             name: String
         ): CocoaDisease {

@@ -3,7 +3,6 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.DetectedCocoaDto
 
 @Entity(tableName = "saved_cocoa_analysis")
 data class SavedCocoaAnalysisEntity(

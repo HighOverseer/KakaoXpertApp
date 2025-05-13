@@ -127,6 +127,7 @@ class DiagnosisResultViewModel @Inject constructor(
                                 AnalysisResultUIEvent.OnInputImageInvalid
                             )
                         }
+
                         else -> {
                             //TODO()
                         }

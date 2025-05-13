@@ -92,7 +92,7 @@ object DataMapper {
 
     fun mapAnalysisSessionDtoToDomain(
         analysisSessionDto: AnalysisSessionDto
-    ):AnalysisSession?{
+    ): AnalysisSession? {
 
         val dateDateString = analysisSessionDto.date ?: return null
         val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
@@ -101,7 +101,7 @@ object DataMapper {
 
         val date = try {
             sdf.parse(dateDateString)
-        }catch (e:ParseException){
+        } catch (e: ParseException) {
             return null
         }
 
@@ -123,13 +123,13 @@ object DataMapper {
             preventionsId = analysisSessionDto.preventionId,
             detectedCocoas = analysisSessionDto.detectedCocoas?.mapNotNull {
                 mapDetectedCocoaDtoToDomain(it)
-            }?: return null
+            } ?: return null
         )
     }
 
     fun mapDetectedCocoaDtoToDomain(
         detectedCocoaDto: DetectedCocoaDto?
-    ):DetectedCocoa?{
+    ): DetectedCocoa? {
         return DetectedCocoa(
             id = detectedCocoaDto?.id ?: return null,
             cacaoNumber = detectedCocoaDto.cocoaNumber?.toShort() ?: return null,
@@ -146,13 +146,14 @@ object DataMapper {
                 cls = detectedCocoaDto.bbCls ?: return null,
                 cnf = detectedCocoaDto.bbConfidence ?: return null
             ),
-            disease = CocoaDisease.getDiseaseFromId(detectedCocoaDto.diseaseId ?: return null) ?: return null
+            disease = CocoaDisease.getDiseaseFromId(detectedCocoaDto.diseaseId ?: return null)
+                ?: return null
         )
     }
 
     fun mapCocoaAnalysisSessionPreviewDtoToDomain(
         analysisSessionPreviewDto: AnalysisSessionPreviewDto
-    ):AnalysisSessionPreview?{
+    ): AnalysisSessionPreview? {
         val dateDateString = analysisSessionPreviewDto.date ?: return null
         val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         val sdf = SimpleDateFormat(datePattern, Locale.getDefault())
@@ -160,7 +161,7 @@ object DataMapper {
 
         val date = try {
             sdf.parse(dateDateString)
-        }catch (e:ParseException){
+        } catch (e: ParseException) {
             return null
         }
 

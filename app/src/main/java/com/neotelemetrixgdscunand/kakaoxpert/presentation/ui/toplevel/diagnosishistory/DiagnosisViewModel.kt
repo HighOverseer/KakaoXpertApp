@@ -3,7 +3,6 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosis
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import dagger.hilt.android.lifecycle.HiltViewModel

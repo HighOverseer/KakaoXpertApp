@@ -18,9 +18,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedD
     ],
     version = 1
 )
-abstract class CocoaAnalysisDatabase:RoomDatabase(){
+abstract class CocoaAnalysisDatabase : RoomDatabase() {
 
-    companion object{
+    companion object {
         const val DATABASE_NAME = "cocoa_analysis_database.db"
     }
 }

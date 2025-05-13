@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
-import android.os.Environment
 import androidx.core.net.toUri
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.BoundingBoxProcessor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
@@ -28,8 +27,6 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import javax.inject.Inject
 
 class CocoaImageDetectorHelperImpl @Inject constructor(

@@ -81,7 +81,7 @@ object DuiMapper {
         )
     }
 
-    fun mapDiagnosisSessionPreviewToDui(analysisSession: AnalysisSessionPreview): AnalysisSessionPreviewDui{
+    fun mapDiagnosisSessionPreviewToDui(analysisSession: AnalysisSessionPreview): AnalysisSessionPreviewDui {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = analysisSession.createdAt
         val sdf = SimpleDateFormat("d-MM-yyyy", Locale.getDefault())

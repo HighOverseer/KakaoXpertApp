@@ -9,8 +9,8 @@ data class AnalysisSession(
     val createdAt: Long = 0,
     val predictedPrice: Float = 0f,
     val detectedCocoas: List<DetectedCocoa> = emptyList(),
-    val solutionEn:String? = null,
-    val preventionsEn:String? = null,
-    val solutionId:String? = null,
-    val preventionsId:String? = null
+    val solutionEn: String? = null,
+    val preventionsEn: String? = null,
+    val solutionId: String? = null,
+    val preventionsId: String? = null
 )

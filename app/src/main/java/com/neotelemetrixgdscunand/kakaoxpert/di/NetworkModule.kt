@@ -1,6 +1,5 @@
 package com.neotelemetrixgdscunand.kakaoxpert.di
 
-import com.google.gson.Gson
 import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthInterceptor
@@ -39,7 +38,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverterFactory():GsonConverterFactory{
+    fun provideGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
     }
 

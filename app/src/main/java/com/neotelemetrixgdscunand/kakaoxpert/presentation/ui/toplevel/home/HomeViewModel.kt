@@ -8,7 +8,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.WeatherRepository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.Location
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
