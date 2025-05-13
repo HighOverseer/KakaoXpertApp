@@ -17,5 +17,11 @@ data class CocoaAnalysisPreviewEntity(
     val sessionName: String,
 
     @ColumnInfo("session_image_url")
-    val sessionImageUrl: String
+    val sessionImageUrl: String,
+
+    @ColumnInfo("predicted_price")
+    val predictedPrice:Long = 2100L,
+
+    @ColumnInfo("is_deleted")
+    val isDeleted: Boolean = false,
 )

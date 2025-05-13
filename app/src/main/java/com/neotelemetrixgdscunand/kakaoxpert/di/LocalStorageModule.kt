@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaAnalysisDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 import dagger.Module
@@ -37,6 +39,13 @@ class LocalStorageModule {
             context.applicationContext,
             CocoaAnalysisDatabase::class.java,
             CocoaAnalysisDatabase.DATABASE_NAME
-        ).build()
+        ).addCallback(
+            object : RoomDatabase.Callback(){
+                override fun onOpen(db: SupportSQLiteDatabase) {
+                    super.onOpen(db)
+                    db.setForeignKeyConstraintsEnabled(true)
+                }
+        })
+            .build()
     }
 }

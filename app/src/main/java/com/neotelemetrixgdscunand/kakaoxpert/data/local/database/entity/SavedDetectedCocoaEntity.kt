@@ -2,14 +2,28 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 // bb = bounding box
-@Entity(tableName = "saved_detected_cocoa")
+@Entity(
+    tableName = "saved_detected_cocoa",
+    foreignKeys = [ForeignKey(
+        entity = SavedCocoaAnalysisEntity::class,
+        parentColumns = ["session_id"],
+        childColumns = ["session_id"],
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["session_id"])]
+)
 data class SavedDetectedCocoaEntity(
     @ColumnInfo("id")
     @PrimaryKey(autoGenerate = false)
     val id: Int,
+
+    @ColumnInfo("session_id")
+    val sessionId: Int,
 
     @ColumnInfo("bb_label")
     val bbLabel: String,
@@ -26,8 +40,6 @@ data class SavedDetectedCocoaEntity(
     @ColumnInfo("bb_height")
     val bbHeight: Float,
 
-    @ColumnInfo("session_id")
-    val sessionId: Int,
 
     @ColumnInfo("bb_center_x")
     val bbCenterX: Float,

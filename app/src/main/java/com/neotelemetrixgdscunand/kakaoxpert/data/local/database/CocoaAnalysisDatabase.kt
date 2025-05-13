@@ -2,6 +2,9 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.CocoaAnalysisPreviewDao
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.SavedCocoaAnalysisDao
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.UnsavedCocoaAnalysisDao
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAnalysisPreviewEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedDetectedCocoaEntity
@@ -19,6 +22,12 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedD
     version = 1
 )
 abstract class CocoaAnalysisDatabase : RoomDatabase() {
+
+    abstract fun cocoaAnalysisPreviewDao(): CocoaAnalysisPreviewDao
+    abstract fun savedCocoaAnalysisDao(): SavedCocoaAnalysisDao
+    abstract fun unsavedCocoaAnalysisDao(): UnsavedCocoaAnalysisDao
+
+    override fun c
 
     companion object {
         const val DATABASE_NAME = "cocoa_analysis_database.db"

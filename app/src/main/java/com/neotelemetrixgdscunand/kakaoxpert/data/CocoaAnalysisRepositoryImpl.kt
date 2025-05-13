@@ -1,14 +1,18 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import android.icu.util.Calendar
+import androidx.room.withTransaction
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaAnalysisDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.CocoaAnalysisApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.Response
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.callApiFromNetwork
 import com.neotelemetrixgdscunand.kakaoxpert.domain.DomainMapper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
@@ -30,8 +34,20 @@ import kotlin.random.Random
 @Singleton
 class CocoaAnalysisRepositoryImpl @Inject constructor(
     private val cocoaAnalysisApiService: CocoaAnalysisApiService,
-    private val dataMapper: DataMapper
+    private val cocoaAnalysisDatabase: CocoaAnalysisDatabase,
+    private val dataPreference: DataPreference,
+    private val dataMapper: DataMapper,
 ) : CocoaAnalysisRepository {
+
+    private val cocoaAnalysisPreviewDao by lazy {
+        cocoaAnalysisDatabase.cocoaAnalysisPreviewDao()
+    }
+    private val savedCocoaAnalysisDao by lazy {
+        cocoaAnalysisDatabase.savedCocoaAnalysisDao()
+    }
+    private val unsavedCocoaAnalysisDao by lazy {
+        cocoaAnalysisDatabase.unsavedCocoaAnalysisDao()
+    }
 
     private val savedAnalysisSession = MutableStateFlow(
         listOf(
@@ -113,6 +129,56 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
         } else {
 
             return newUnsavedAnalysisSession.id
+        }
+    }
+
+    override suspend fun syncAllSessionsFromRemote():Result<Unit, DataError.NetworkError>{
+        val needToSync = dataPreference.needToSync()
+
+        if(!needToSync) return Result.Success(Unit)
+
+        try {
+            dataPreference.setIsSyncing(true)
+
+            val result = callApiFromNetwork {
+                val response = cocoaAnalysisApiService.getAllAnalysisSessionPreviews()
+                withContext(Dispatchers.Default) {
+                    val listAnalysisSessionPreviewDto = response.data
+                    val listAnalysisSessionPreview = listAnalysisSessionPreviewDto
+                        ?.mapNotNull {
+                            dataMapper.mapCocoaAnalysisSessionPreviewDtoToDomain(it)
+                        } ?: emptyList()
+
+                    Result.Success(listAnalysisSessionPreview)
+                }
+            }
+
+            val finalResult:Result<Unit, DataError.NetworkError> = when(result){
+                is Result.Success -> {
+                    val analysisSessionPreviewsEntities = withContext(Dispatchers.Default) {
+                        result.data.map {
+                            DataMapper.mapAnalysisSessionPreviewToEntity(it)
+                        }
+                    }
+
+                    cocoaAnalysisDatabase.withTransaction {
+                        cocoaAnalysisPreviewDao.setAllIsDeletedToTrue()
+                        cocoaAnalysisPreviewDao.insertAll(analysisSessionPreviewsEntities)
+                        cocoaAnalysisPreviewDao.deleteAllIsDeleted()
+                    }
+                    withContext(NonCancellable){
+                        dataPreference.updateLastSyncTime()
+                    }
+
+                    Result.Success(Unit)
+                }
+                is Result.Error -> Result.Error(result.error)
+            }
+            return finalResult
+        }finally {
+            withContext(NonCancellable){
+                dataPreference.setIsSyncing(false)
+            }
         }
     }
 

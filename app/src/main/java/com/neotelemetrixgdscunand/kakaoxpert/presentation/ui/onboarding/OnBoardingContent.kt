@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +55,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey45
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey71
@@ -72,21 +74,32 @@ fun OnBoardingScreen(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit,
     viewModel: OnBoardingViewModel = hiltViewModel(),
-    navigateToMainPage: () -> Unit
+    navigateToMainPage: () -> Unit,
+    showSnackbar: (String) -> Unit
 ) {
 
     val lifecycle = LocalLifecycleOwner.current
 
+    val context = LocalContext.current
     LaunchedEffect(true) {
-        lifecycle.collectChannelWhenStarted(viewModel.onBoardingSessionFinishedEvent) {
-            navigateToMainPage()
+        lifecycle.collectChannelWhenStarted(viewModel.uiEvent) { event ->
+            when(event){
+                OnBoardingUIEvent.OnBoardingSessionFinished -> navigateToMainPage()
+                is OnBoardingUIEvent.OnFailedFinishingSession -> {
+                    showSnackbar(event.errorUIText.getValue(context))
+                }
+            }
+
         }
     }
+
+    val isButtonEnabled by viewModel.isButtonEnabled.collectAsStateWithLifecycle()
 
     OnBoardingContent(
         modifier = modifier,
         navigateUp = navigateUp,
-        onBoardingSessionFinish = viewModel::onBoardingSessionFinish
+        onUserHasPressedStartButton = viewModel::onUserPressedStartButton,
+        isButtonEnabledProvider = { isButtonEnabled }
     )
 }
 
@@ -94,7 +107,8 @@ fun OnBoardingScreen(
 fun OnBoardingContent(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = { },
-    onBoardingSessionFinish: () -> Unit = {}
+    onUserHasPressedStartButton: () -> Unit = {},
+    isButtonEnabledProvider: () -> Boolean = { true }
 ) {
     var selectedTabIndex by rememberSaveable {
         mutableIntStateOf(0)
@@ -370,8 +384,6 @@ fun OnBoardingContent(
                 .layoutId(LayoutUtil.BUTTON_ID)
         }
 
-        var isButtonEnabled by remember { mutableStateOf(true) }
-
         PrimaryButton(
             modifier = buttonModifier,
             contentPadding = PaddingValues(horizontal = 40.dp, vertical = 12.5.dp),
@@ -393,11 +405,10 @@ fun OnBoardingContent(
                 if (selectedTabIndex < 2) {
                     selectedTabIndex++
                 } else {
-                    isButtonEnabled = false
-                    onBoardingSessionFinish()
+                    onUserHasPressedStartButton()
                 }
             },
-            enabled = isButtonEnabled
+            enabled = isButtonEnabledProvider()
         )
     }
 }

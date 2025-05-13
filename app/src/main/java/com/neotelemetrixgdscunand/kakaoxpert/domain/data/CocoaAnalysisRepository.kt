@@ -1,5 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.data
 
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
@@ -16,5 +18,7 @@ interface CocoaAnalysisRepository {
     fun getAllSessionPreviews(): Flow<List<AnalysisSessionPreview>>
 
     suspend fun getDiagnosisSession(id: Int): AnalysisSession
+
+    suspend fun syncAllSessionsFromRemote():Result<Unit, DataError.NetworkError>
 
 }

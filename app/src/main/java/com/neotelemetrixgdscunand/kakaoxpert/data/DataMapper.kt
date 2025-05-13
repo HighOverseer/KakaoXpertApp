@@ -1,6 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAnalysisPreviewEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionPreviewDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.DetectedCocoaDto
@@ -177,6 +178,17 @@ object DataMapper {
             imageUrlOrPath = imageUrl,
             createdAt = createdAt,
             predictedPrice = 2100f
+        )
+    }
+
+    fun mapAnalysisSessionPreviewToEntity(
+        cocoaAnalysisSessionPreview:AnalysisSessionPreview
+    ):CocoaAnalysisPreviewEntity{
+        return CocoaAnalysisPreviewEntity(
+            sessionId = cocoaAnalysisSessionPreview.id,
+            createdAt = cocoaAnalysisSessionPreview.createdAt,
+            sessionName = cocoaAnalysisSessionPreview.title,
+            sessionImageUrl = cocoaAnalysisSessionPreview.imageUrlOrPath,
         )
     }
 

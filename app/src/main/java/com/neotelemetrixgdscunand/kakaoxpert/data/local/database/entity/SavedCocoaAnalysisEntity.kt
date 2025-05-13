@@ -2,9 +2,20 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "saved_cocoa_analysis")
+@Entity(
+    tableName = "saved_cocoa_analysis",
+    foreignKeys = [ForeignKey(
+        entity = CocoaAnalysisPreviewEntity::class,
+        parentColumns = ["session_id"],
+        childColumns = ["session_id"],
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["session_id"])]
+)
 data class SavedCocoaAnalysisEntity(
     @ColumnInfo("session_id")
     @PrimaryKey(autoGenerate = false)

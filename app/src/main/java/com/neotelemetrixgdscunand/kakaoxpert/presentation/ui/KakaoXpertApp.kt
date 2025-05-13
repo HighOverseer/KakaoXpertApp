@@ -132,6 +132,7 @@ fun KakaoXpertApp(
             composable<Navigation.OnBoarding> {
                 OnBoardingScreen(
                     navigateUp = rootNavHostController::navigateUp,
+                    showSnackbar = showSnackbar,
                     navigateToMainPage = {
                         rootNavHostController.navigate(Navigation.Main) {
                             popUpTo<Navigation.OnBoarding> {
