@@ -40,12 +40,12 @@ class LocalStorageModule {
             CocoaAnalysisDatabase::class.java,
             CocoaAnalysisDatabase.DATABASE_NAME
         ).addCallback(
-            object : RoomDatabase.Callback(){
+            object : RoomDatabase.Callback() {
                 override fun onOpen(db: SupportSQLiteDatabase) {
                     super.onOpen(db)
                     db.setForeignKeyConstraintsEnabled(true)
                 }
-        })
+            })
             .build()
     }
 }

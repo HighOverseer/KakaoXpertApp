@@ -27,8 +27,6 @@ abstract class CocoaAnalysisDatabase : RoomDatabase() {
     abstract fun savedCocoaAnalysisDao(): SavedCocoaAnalysisDao
     abstract fun unsavedCocoaAnalysisDao(): UnsavedCocoaAnalysisDao
 
-    override fun c
-
     companion object {
         const val DATABASE_NAME = "cocoa_analysis_database.db"
     }

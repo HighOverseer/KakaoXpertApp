@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val cocoaAnalysisRepository: CocoaAnalysisRepository
-):ViewModel() {
+) : ViewModel() {
 
     init {
         viewModelScope.launch {

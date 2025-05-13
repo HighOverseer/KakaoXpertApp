@@ -41,29 +41,32 @@ class OnBoardingViewModel @Inject constructor(
         false
     )
 
-    private var syncJob:Job? = null
+    private var syncJob: Job? = null
 
     init {
         syncAllSessions()
 
         viewModelScope.launch {
-            combine(_isSyncSuccess, _userHasPressedStartButton){
-                    isSyncSuccess, userHasPressedStartButton ->
+            combine(
+                _isSyncSuccess,
+                _userHasPressedStartButton
+            ) { isSyncSuccess, userHasPressedStartButton ->
                 isSyncSuccess && userHasPressedStartButton
-            }.collectLatest{ isSessionFinished ->
-                if(isSessionFinished) _uiEvent.send(OnBoardingUIEvent.OnBoardingSessionFinished)
+            }.collectLatest { isSessionFinished ->
+                if (isSessionFinished) _uiEvent.send(OnBoardingUIEvent.OnBoardingSessionFinished)
             }
         }
     }
 
-    private fun syncAllSessions(){
+    private fun syncAllSessions() {
         syncJob = viewModelScope.launch(Dispatchers.IO) {
-            when(val result = cocoaAnalysisRepository.syncAllSessionsFromRemote()){
+            when (val result = cocoaAnalysisRepository.syncAllSessionsFromRemote()) {
                 is Result.Error -> {
                     val errorUIText = result.toErrorUIText()
                     _uiEvent.send(OnBoardingUIEvent.OnFailedFinishingSession(errorUIText))
                     _userHasPressedStartButton.update { false }
                 }
+
                 is Result.Success -> {
                     authRepository.setIsFirstTime(false)
                     _isSyncSuccess.update { true }
@@ -73,7 +76,7 @@ class OnBoardingViewModel @Inject constructor(
     }
 
     fun onUserPressedStartButton() {
-        if(syncJob?.isCompleted == true && !_isSyncSuccess.value){
+        if (syncJob?.isCompleted == true && !_isSyncSuccess.value) {
             syncAllSessions()
         }
 

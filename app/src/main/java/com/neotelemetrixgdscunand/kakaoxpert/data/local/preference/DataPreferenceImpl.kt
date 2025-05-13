@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class DataPreferenceImpl @Inject constructor(
     private val dataStorePrefs: DataStore<Preferences>
-):DataPreference {
+) : DataPreference {
 
     override suspend fun needToSync(): Boolean {
         val lastSyncTime = dataStorePrefs.data.map { prefs ->
@@ -25,7 +25,8 @@ class DataPreferenceImpl @Inject constructor(
             prefs[IS_SYNCING] ?: false
         }.first()
 
-        val passSyncPeriodThreshold = System.currentTimeMillis() - lastSyncTime >= DataPreference.SYNC_TIME_PERIOD
+        val passSyncPeriodThreshold =
+            System.currentTimeMillis() - lastSyncTime >= DataPreference.SYNC_TIME_PERIOD
 
         val needToSync = !isSyncing && passSyncPeriodThreshold
 
@@ -45,7 +46,7 @@ class DataPreferenceImpl @Inject constructor(
         }
     }
 
-    companion object{
+    companion object {
 
         private val IS_SYNCING = booleanPreferencesKey("is_syncing")
         private val LAST_SYNC_TIME = longPreferencesKey("last_sync_time")

@@ -182,8 +182,8 @@ object DataMapper {
     }
 
     fun mapAnalysisSessionPreviewToEntity(
-        cocoaAnalysisSessionPreview:AnalysisSessionPreview
-    ):CocoaAnalysisPreviewEntity{
+        cocoaAnalysisSessionPreview: AnalysisSessionPreview
+    ): CocoaAnalysisPreviewEntity {
         return CocoaAnalysisPreviewEntity(
             sessionId = cocoaAnalysisSessionPreview.id,
             createdAt = cocoaAnalysisSessionPreview.createdAt,

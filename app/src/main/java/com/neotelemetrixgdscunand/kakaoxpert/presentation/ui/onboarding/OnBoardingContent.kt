@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -83,7 +82,7 @@ fun OnBoardingScreen(
     val context = LocalContext.current
     LaunchedEffect(true) {
         lifecycle.collectChannelWhenStarted(viewModel.uiEvent) { event ->
-            when(event){
+            when (event) {
                 OnBoardingUIEvent.OnBoardingSessionFinished -> navigateToMainPage()
                 is OnBoardingUIEvent.OnFailedFinishingSession -> {
                     showSnackbar(event.errorUIText.getValue(context))

@@ -19,6 +19,6 @@ interface CocoaAnalysisRepository {
 
     suspend fun getDiagnosisSession(id: Int): AnalysisSession
 
-    suspend fun syncAllSessionsFromRemote():Result<Unit, DataError.NetworkError>
+    suspend fun syncAllSessionsFromRemote(): Result<Unit, DataError.NetworkError>
 
 }

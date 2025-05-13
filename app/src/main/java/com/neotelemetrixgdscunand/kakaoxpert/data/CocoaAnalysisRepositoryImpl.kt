@@ -132,10 +132,10 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun syncAllSessionsFromRemote():Result<Unit, DataError.NetworkError>{
+    override suspend fun syncAllSessionsFromRemote(): Result<Unit, DataError.NetworkError> {
         val needToSync = dataPreference.needToSync()
 
-        if(!needToSync) return Result.Success(Unit)
+        if (!needToSync) return Result.Success(Unit)
 
         try {
             dataPreference.setIsSyncing(true)
@@ -153,7 +153,7 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
                 }
             }
 
-            val finalResult:Result<Unit, DataError.NetworkError> = when(result){
+            val finalResult: Result<Unit, DataError.NetworkError> = when (result) {
                 is Result.Success -> {
                     val analysisSessionPreviewsEntities = withContext(Dispatchers.Default) {
                         result.data.map {
@@ -166,17 +166,18 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
                         cocoaAnalysisPreviewDao.insertAll(analysisSessionPreviewsEntities)
                         cocoaAnalysisPreviewDao.deleteAllIsDeleted()
                     }
-                    withContext(NonCancellable){
+                    withContext(NonCancellable) {
                         dataPreference.updateLastSyncTime()
                     }
 
                     Result.Success(Unit)
                 }
+
                 is Result.Error -> Result.Error(result.error)
             }
             return finalResult
-        }finally {
-            withContext(NonCancellable){
+        } finally {
+            withContext(NonCancellable) {
                 dataPreference.setIsSyncing(false)
             }
         }
