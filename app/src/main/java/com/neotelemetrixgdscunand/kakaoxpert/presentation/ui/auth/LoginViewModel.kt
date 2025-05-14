@@ -1,5 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.R
@@ -7,7 +8,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.worker.CocoaAnalysisSyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -21,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private var loginJob: Job? = null
@@ -64,6 +68,9 @@ class LoginViewModel @Inject constructor(
                 is Result.Success -> {
                     val (userName, isFirstTime) = result.data
                     val firstWordUserName = userName.split(" ").firstOrNull() ?: "Anonim"
+
+                    CocoaAnalysisSyncScheduler.startPeriodicSync(context)
+
                     _uiEvent.send(
                         LoginUIEvent.OnLoginSuccess(firstWordUserName, isFirstTime)
                     )

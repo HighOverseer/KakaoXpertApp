@@ -347,4 +347,7 @@
 
     <string name="info_penyakit">Info Penyakit</string>
     <string name="analisis">Analisis</string>
+    <string name="syncing_data">Syncing Data</string>
+    <string name="just_need_a_moment">Just need a moment...</string>
+    <string name="perlu_izin_notifikasi_agar">Perlu izin notifikasi agar aplikasi dapat berjalan dengan semestinya...</string>
 </resources>

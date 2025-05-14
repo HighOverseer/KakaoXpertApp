@@ -95,7 +95,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -153,5 +152,9 @@ dependencies {
     implementation(libs.androidx.room.paging)
     implementation(libs.androidx.paging.runtime.ktx)
     implementation( libs.androidx.paging.common.ktx)
+
+    //Work Manager
+    implementation(libs.androidx.work.runtime)
+    implementation(libs.androidx.hilt.work)
 }
 

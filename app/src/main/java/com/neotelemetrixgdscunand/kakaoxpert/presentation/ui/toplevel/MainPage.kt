@@ -63,7 +63,7 @@ fun MainPage(
         rememberLauncherForActivityResult(
             ActivityResultContracts.StartIntentSenderForResult()
         ) {}
-    }
+    },
 ) {
 
     val snackbarHostState = remember {

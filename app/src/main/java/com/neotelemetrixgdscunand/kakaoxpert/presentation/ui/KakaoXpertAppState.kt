@@ -5,11 +5,13 @@ import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -18,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -65,6 +68,9 @@ class KakaoXpertAppState(
     private var isLocationPermissionGranted by mutableStateOf<Boolean?>(null)
     val isLocationPermissionGrantedProvider = { isLocationPermissionGranted }
 
+    private var isNotificationPermissionGranted by mutableStateOf<Boolean?>(null)
+    val isNotificationPermissionGrantedProvider = { isNotificationPermissionGranted }
+
     private fun hideStatusBar() {
         windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
     }
@@ -87,6 +93,15 @@ class KakaoXpertAppState(
         return rememberPermissionRequest(
             onResult = { isGranted ->
                 isLocationPermissionGranted = isGranted
+            }
+        )
+    }
+
+    @Composable
+    fun rememberNotificationPermissionRequest(modifier: Modifier = Modifier):ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>> {
+        return rememberPermissionRequest(
+            onResult = {
+                isNotificationPermissionGranted = it
             }
         )
     }
@@ -153,6 +168,23 @@ class KakaoXpertAppState(
                 isLocationPermissionGranted = true
             }
         )
+    }
+
+
+    fun checkNotificationPermission(
+        context: Context,
+        notificationPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
+    ){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            checkPermission(
+                context = context,
+                permissionRequest = notificationPermissionRequest,
+                permissions = persistentListOf(Manifest.permission.POST_NOTIFICATIONS),
+                onAlreadyGranted = {
+                    isNotificationPermissionGranted = true
+                }
+            )
+        }else isNotificationPermissionGranted = true
     }
 
     private fun isPermissionGranted(context: Context, permission: String): Boolean {

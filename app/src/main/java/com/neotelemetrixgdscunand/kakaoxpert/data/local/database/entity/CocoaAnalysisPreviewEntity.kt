@@ -20,7 +20,7 @@ data class CocoaAnalysisPreviewEntity(
     val sessionImageUrl: String,
 
     @ColumnInfo("predicted_price")
-    val predictedPrice: Long = 2100L,
+    val predictedPrice: Float = 2100f,
 
     @ColumnInfo("is_deleted")
     val isDeleted: Boolean = false,

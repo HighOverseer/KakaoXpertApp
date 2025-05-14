@@ -152,6 +152,7 @@ object DataMapper {
         )
     }
 
+
     fun mapCocoaAnalysisSessionPreviewDtoToDomain(
         analysisSessionPreviewDto: AnalysisSessionPreviewDto
     ): AnalysisSessionPreview? {

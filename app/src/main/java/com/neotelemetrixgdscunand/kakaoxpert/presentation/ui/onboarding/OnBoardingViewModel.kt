@@ -2,9 +2,11 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisSyncType
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val cocoaAnalysisRepository: CocoaAnalysisRepository
+    private val syncCocoaAnalysisDataUseCase: SyncCocoaAnalysisDataUseCase
 ) : ViewModel() {
 
     private val _uiEvent = Channel<OnBoardingUIEvent>()
@@ -60,7 +62,7 @@ class OnBoardingViewModel @Inject constructor(
 
     private fun syncAllSessions() {
         syncJob = viewModelScope.launch(Dispatchers.IO) {
-            when (val result = cocoaAnalysisRepository.syncAllSessionsFromRemote()) {
+            when (val result = syncCocoaAnalysisDataUseCase(CocoaAnalysisSyncType.PREVIEWS)) {
                 is Result.Error -> {
                     val errorUIText = result.toErrorUIText()
                     _uiEvent.send(OnBoardingUIEvent.OnFailedFinishingSession(errorUIText))

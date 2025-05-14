@@ -27,6 +27,8 @@ logginInterceptor = "4.12.0"
 libphonenumber = "8.13.24"
 playServicesLocation = "21.3.0"
 ksp_version = "2.0.10-RC-1.0.23"
+workRuntime = "2.10.1"
+hiltWork = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +37,7 @@ androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", v
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomPaging" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomPaging" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomPaging" }
+androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -69,6 +72,7 @@ dagger-hilt-compiler = { group = "com.google.dagger", name ="hilt-android-compil
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt_navigation" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStorePrefs"}
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor",  version.ref = "logginInterceptor"}
+androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

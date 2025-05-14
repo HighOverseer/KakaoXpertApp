@@ -33,15 +33,18 @@ data class SavedCocoaAnalysisEntity(
     @ColumnInfo("user_id")
     val userId: Int,
 
-    @ColumnInfo("session_image_path")
-    val sessionImagePath: String,
+    @ColumnInfo("session_image_url")
+    val sessionImageUrl: String,
 
-    @ColumnInfo("prevention_id")
-    val preventionId: String,
+    @ColumnInfo("preventions_id")
+    val preventionsId: String,
 
-    @ColumnInfo("prevention_en")
-    val preventionEn: String,
+    @ColumnInfo("preventions_en")
+    val preventionsEn: String,
 
     @ColumnInfo("solution_id")
-    val solutionId: String
+    val solutionId: String,
+
+    @ColumnInfo("predicted_price")
+    val predictedPrice: Float = 2100f,
 )

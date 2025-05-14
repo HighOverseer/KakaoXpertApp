@@ -1,5 +1,8 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui
 
+import android.os.Build
+import androidx.activity.compose.LocalActivity
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,17 +13,20 @@ import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.LoginScreen
@@ -42,7 +48,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.rememberMa
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.weather.WeatherScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.MessageSnackbar
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun KakaoXpertApp(
@@ -64,6 +72,25 @@ fun KakaoXpertApp(
             showingSnackbarJob = coroutineScope.launch {
                 snackbarHostState.showSnackbar(message)
             }
+        }
+    }
+
+    val activity = LocalActivity.current
+    val notificationPermissionRequest = appState.rememberNotificationPermissionRequest()
+    val isNotificationPermissionGranted = appState.isNotificationPermissionGrantedProvider()
+    val notificationPermissionDeniedMessage =
+        stringResource(R.string.perlu_izin_notifikasi_agar)
+    LaunchedEffect(isNotificationPermissionGranted) {
+        if(isNotificationPermissionGranted == null){
+            appState.checkNotificationPermission(
+                context,
+                notificationPermissionRequest
+            )
+        }else if(isNotificationPermissionGranted == false){
+            val delayDuration = 2000L
+            showSnackbar(notificationPermissionDeniedMessage)
+            delay(delayDuration)
+            activity?.finish()
         }
     }
 

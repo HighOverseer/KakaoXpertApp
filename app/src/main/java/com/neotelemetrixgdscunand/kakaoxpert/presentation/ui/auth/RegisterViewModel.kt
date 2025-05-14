@@ -1,5 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.R
@@ -9,7 +10,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.UsernameValidator
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.worker.CocoaAnalysisSyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -24,7 +27,8 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val passwordValidator: PasswordValidator,
-    private val usernameValidator: UsernameValidator
+    private val usernameValidator: UsernameValidator,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private var registerJob: Job? = null
@@ -98,6 +102,7 @@ class RegisterViewModel @Inject constructor(
             )
             when (result) {
                 is Result.Success -> {
+                    CocoaAnalysisSyncScheduler.startPeriodicSync(context)
                     val userName = result.data.split(" ").firstOrNull() ?: "Anonim"
                     _uiEvent.send(RegisterUIEvent.OnRegisterSuccess(userName))
                 }

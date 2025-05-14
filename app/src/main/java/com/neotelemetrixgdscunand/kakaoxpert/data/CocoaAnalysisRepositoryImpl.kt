@@ -2,7 +2,10 @@ package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import android.icu.util.Calendar
 import androidx.room.withTransaction
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.EntityMapper
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaAnalysisDatabase
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCocoaAnalysisEntity
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedDetectedCocoaEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.CocoaAnalysisApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.Response
@@ -11,21 +14,24 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.DomainMapper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.SyncError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getDetectedDiseaseCacaos
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,19 +41,14 @@ import kotlin.random.Random
 class CocoaAnalysisRepositoryImpl @Inject constructor(
     private val cocoaAnalysisApiService: CocoaAnalysisApiService,
     private val cocoaAnalysisDatabase: CocoaAnalysisDatabase,
-    private val dataPreference: DataPreference,
     private val dataMapper: DataMapper,
+    private val entityMapper: EntityMapper
 ) : CocoaAnalysisRepository {
 
-    private val cocoaAnalysisPreviewDao by lazy {
-        cocoaAnalysisDatabase.cocoaAnalysisPreviewDao()
-    }
-    private val savedCocoaAnalysisDao by lazy {
-        cocoaAnalysisDatabase.savedCocoaAnalysisDao()
-    }
-    private val unsavedCocoaAnalysisDao by lazy {
-        cocoaAnalysisDatabase.unsavedCocoaAnalysisDao()
-    }
+    private val cocoaAnalysisPreviewDao by lazy { cocoaAnalysisDatabase.cocoaAnalysisPreviewDao() }
+    private val savedCocoaAnalysisDao by lazy { cocoaAnalysisDatabase.savedCocoaAnalysisDao() }
+    private val unsavedCocoaAnalysisDao by lazy { cocoaAnalysisDatabase.unsavedCocoaAnalysisDao() }
+    private val savedDetectedCocoaDao by lazy { cocoaAnalysisDatabase.savedDetectedCocoaDao() }
 
     private val savedAnalysisSession = MutableStateFlow(
         listOf(
@@ -132,57 +133,33 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun syncAllSessionsFromRemote(): Result<Unit, DataError.NetworkError> {
-        val needToSync = dataPreference.needToSync()
 
-        if (!needToSync) return Result.Success(Unit)
 
-        try {
-            dataPreference.setIsSyncing(true)
+    override suspend fun getDiagnosisSession(id: Int): AnalysisSession {
+        val output = savedAnalysisSession.value.find { it.id == id }
+        if (output != null) return output
 
-            val result = callApiFromNetwork {
-                val response = cocoaAnalysisApiService.getAllAnalysisSessionPreviews()
-                withContext(Dispatchers.Default) {
-                    val listAnalysisSessionPreviewDto = response.data
-                    val listAnalysisSessionPreview = listAnalysisSessionPreviewDto
-                        ?.mapNotNull {
-                            dataMapper.mapCocoaAnalysisSessionPreviewDtoToDomain(it)
-                        } ?: emptyList()
-
-                    Result.Success(listAnalysisSessionPreview)
-                }
-            }
-
-            val finalResult: Result<Unit, DataError.NetworkError> = when (result) {
-                is Result.Success -> {
-                    val analysisSessionPreviewsEntities = withContext(Dispatchers.Default) {
-                        result.data.map {
-                            DataMapper.mapAnalysisSessionPreviewToEntity(it)
-                        }
-                    }
-
-                    cocoaAnalysisDatabase.withTransaction {
-                        cocoaAnalysisPreviewDao.setAllIsDeletedToTrue()
-                        cocoaAnalysisPreviewDao.insertAll(analysisSessionPreviewsEntities)
-                        cocoaAnalysisPreviewDao.deleteAllIsDeleted()
-                    }
-                    withContext(NonCancellable) {
-                        dataPreference.updateLastSyncTime()
-                    }
-
-                    Result.Success(Unit)
-                }
-
-                is Result.Error -> Result.Error(result.error)
-            }
-            return finalResult
-        } finally {
-            withContext(NonCancellable) {
-                dataPreference.setIsSyncing(false)
+        val result = callApiFromNetwork {
+            val response = cocoaAnalysisApiService.getAnalysisSessionById(id)
+            val analysisSessionDto = response.data
+            val analysisSession = dataMapper.mapAnalysisSessionDtoToDomain(
+                analysisSessionDto = analysisSessionDto ?: return@callApiFromNetwork Result.Error(
+                    RootNetworkError.UNEXPECTED_ERROR
+                )
+            )
+            if (analysisSession == null) {
+                Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            } else {
+                Result.Success(analysisSession)
             }
         }
+        if (result is Result.Success) {
+            savedAnalysisSession.update {
+                (it + listOf(result.data))
+            }
+            return result.data
+        } else throw Exception("error")
     }
-
 
     override fun getAllSessionPreviews(): Flow<List<AnalysisSessionPreview>> = flow {
         val result = callApiFromNetwork {
@@ -226,30 +203,157 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
         emitAll(analysisSessionPreviewLocal)
     }
 
-    override suspend fun getDiagnosisSession(id: Int): AnalysisSession {
-        val output = savedAnalysisSession.value.find { it.id == id }
-        if (output != null) return output
-
+    override suspend fun syncAllSessionsFromRemote(): Result<Unit, DataError> {
         val result = callApiFromNetwork {
-            val response = cocoaAnalysisApiService.getAnalysisSessionById(id)
-            val analysisSessionDto = response.data
-            val analysisSession = dataMapper.mapAnalysisSessionDtoToDomain(
-                analysisSessionDto = analysisSessionDto ?: return@callApiFromNetwork Result.Error(
-                    RootNetworkError.UNEXPECTED_ERROR
-                )
-            )
-            if (analysisSession == null) {
-                Result.Error(RootNetworkError.UNEXPECTED_ERROR)
-            } else {
-                Result.Success(analysisSession)
+            val response = cocoaAnalysisApiService.getAllAnalysisSessionPreviews()
+            withContext(Dispatchers.Default) {
+                val listAnalysisSessionPreviewDto = response.data
+                val listAnalysisSessionPreview = listAnalysisSessionPreviewDto?.mapNotNull {
+                    entityMapper.mapCocoaAnalysisSessionPreviewDtoToEntity(it)
+                }
+
+                Result.Success(listAnalysisSessionPreview)
             }
         }
-        if (result is Result.Success) {
-            savedAnalysisSession.update {
-                (it + listOf(result.data))
+
+        return when (result) {
+            is Result.Success -> {
+                val analysisSessionPreviewsEntities = result.data ?: return Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+
+                cocoaAnalysisDatabase.withTransaction {
+                    cocoaAnalysisPreviewDao.setAllIsDeletedToTrue()
+                    cocoaAnalysisPreviewDao.insertAll(analysisSessionPreviewsEntities)
+                    cocoaAnalysisPreviewDao.deleteAllIsDeleted()
+                }
+
+                Result.Success(Unit)
             }
-            return result.data
-        } else throw Exception("error")
+
+            is Result.Error -> Result.Error(result.error)
+        }
+    }
+
+//    private suspend fun <T> doSync(
+//        work: suspend () -> T
+//    ):T {
+//        try {
+//            dataPreference.setIsSyncing(true)
+//            return work()
+//        }finally {
+//            withContext(NonCancellable){
+//                dataPreference.setIsSyncing(false)
+//            }
+//        }
+//    }
+
+    override suspend fun syncAllUnsavedSessionsFromLocal() : Result<Unit, DataError>{
+        val unsavedCocoaAnalysisSessionWithDetectedCocoas = unsavedCocoaAnalysisDao.getFiveOldestData()
+
+        if (unsavedCocoaAnalysisSessionWithDetectedCocoas.isEmpty()) return Result.Error(SyncError.NO_DATA_NEED_TO_SYNC)
+
+        return supervisorScope {
+            val resultsDeferred = unsavedCocoaAnalysisSessionWithDetectedCocoas.map { unsavedAnalysis ->
+                async{
+                    val sessionName = unsavedAnalysis.unsavedCocoaAnalysisEntity.sessionName
+                    val sessionImagePath = unsavedAnalysis.unsavedCocoaAnalysisEntity.sessionImagePath
+                    val detectedCocoas = withContext(Dispatchers.Default){
+                        unsavedAnalysis.unsavedDetectedCocoaEntities.map {
+                            entityMapper.mapUnsavedDetectedCocoaEntityToDomain(it) ?: throw CancellationException()
+                        }
+                    }
+
+                    callApiFromNetwork {
+                        val postRequestBody = CocoaAnalysisApiService
+                            .PostRequestBody.createPostRequestBody(
+                                sessionName = sessionName,
+                                sessionImagePath = sessionImagePath,
+                                detectedCocoas = detectedCocoas
+                            )
+
+                        val response = postNewAnalysisSession(postRequestBody)
+                        val cocoaAnalysisSessionDto = response.data ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+
+                        withContext(Dispatchers.Default){
+                            val savedCocoaAnalysisEntity = entityMapper.mapCocoaAnalysisDtoToSavedEntity(
+                                cocoaAnalysisSessionDto
+                            ) ?: return@withContext Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+
+                            val savedDetectedCocoaEntities = cocoaAnalysisSessionDto.detectedCocoas?.map {
+                                entityMapper.mapDetectedCocoaDtoToSavedEntity(it, savedCocoaAnalysisEntity.sessionId) ?: return@withContext Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+                            } ?: return@withContext Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+
+                            Result.Success(Triple(unsavedAnalysis.unsavedCocoaAnalysisEntity.unsavedSessionId, savedCocoaAnalysisEntity, savedDetectedCocoaEntities))
+                        }
+                    }
+                }
+            }
+
+            val results = resultsDeferred.awaitAll()
+            val successResults:List<Result.Success<Triple<Int, SavedCocoaAnalysisEntity, List<SavedDetectedCocoaEntity>>, DataError.NetworkError>>
+            withContext(NonCancellable){
+                successResults = results
+                    .filterIsInstance<Result.Success<Triple<Int, SavedCocoaAnalysisEntity, List<SavedDetectedCocoaEntity>>, DataError.NetworkError>>()
+                val allWasUnsavedSessionsIds= successResults.map { it.data.first }
+                val allJustSavedSessions = successResults.map { it.data.second }
+                val allJustSavedDetectedCocoas = successResults.map { it.data.third }.flatten()
+
+                cocoaAnalysisDatabase.withTransaction {
+                    unsavedCocoaAnalysisDao.deleteAllByIds(allWasUnsavedSessionsIds)
+                    savedCocoaAnalysisDao.insertAll(allJustSavedSessions)
+                    savedDetectedCocoaDao.insertAll(allJustSavedDetectedCocoas)
+                }
+            }
+
+            return@supervisorScope when{
+                successResults.isEmpty() -> {
+                    val firstErrorResult =
+                        results
+                            .filterIsInstance<Result.Error<Triple<Int, SavedCocoaAnalysisEntity, List<SavedDetectedCocoaEntity>>, DataError.NetworkError>>()
+                    return@supervisorScope Result.Error(firstErrorResult.firstOrNull()?.error ?: RootNetworkError.UNEXPECTED_ERROR)
+                }
+                else -> Result.Success(Unit)
+            }
+        }
+    }
+
+    override suspend fun syncAllSavedSessionsFromRemote() : Result<Unit, DataError>{
+        val sessionIdsWhichDoNotHaveCachedDetailsYet = cocoaAnalysisPreviewDao.getFiveOldestWhichNotHaveDetailsYet()
+
+        if(sessionIdsWhichDoNotHaveCachedDetailsYet.isEmpty()) return Result.Error(SyncError.NO_DATA_NEED_TO_SYNC)
+
+        return supervisorScope {
+            val resultsDeferred = sessionIdsWhichDoNotHaveCachedDetailsYet.map { sessionId ->
+                async {
+                    callApiFromNetwork {
+                        val response = cocoaAnalysisApiService.getAnalysisSessionById(sessionId)
+                        val analysisSessionDto = response.data
+                        val analysisSession = entityMapper.mapCocoaAnalysisDtoToSavedEntity(
+                            analysisSessionDto = analysisSessionDto ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+                        )?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+
+                        Result.Success(analysisSession)
+                    }
+                }
+            }
+
+            val results = resultsDeferred.awaitAll()
+            val successResults:List<Result.Success<SavedCocoaAnalysisEntity, DataError.NetworkError>>
+            withContext(NonCancellable){
+                successResults = results.filterIsInstance<Result.Success<SavedCocoaAnalysisEntity, DataError.NetworkError>>()
+                val allJustGotSavedAnalysisSessionEntities = successResults.map { it.data }
+                savedCocoaAnalysisDao.insertAll(allJustGotSavedAnalysisSessionEntities)
+            }
+
+            return@supervisorScope when{
+                successResults.isEmpty() -> {
+                    val firstErrorResult =
+                        results
+                            .filterIsInstance<Result.Error<SavedCocoaAnalysisEntity, DataError.NetworkError>>()
+                    return@supervisorScope Result.Error(firstErrorResult.firstOrNull()?.error ?: RootNetworkError.UNEXPECTED_ERROR)
+                }
+                else -> Result.Success(Unit)
+            }
+        }
     }
 
 

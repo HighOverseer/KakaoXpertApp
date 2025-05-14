@@ -5,7 +5,7 @@ import androidx.room.Relation
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedDetectedCocoaEntity
 
-data class UnsavedCocoaAnalysisAndDetectedCocoas(
+data class UnsavedCocoaAnalysisAndDetectedCocoasRelation(
     @Embedded
     val unsavedCocoaAnalysisEntity: UnsavedCocoaAnalysisEntity,
 
