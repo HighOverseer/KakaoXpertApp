@@ -8,5 +8,5 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedDet
 @Dao
 interface SavedDetectedCocoaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(listSavedDetectedCocoa:List<SavedDetectedCocoaEntity>)
+    suspend fun insertAll(listSavedDetectedCocoa: List<SavedDetectedCocoaEntity>)
 }

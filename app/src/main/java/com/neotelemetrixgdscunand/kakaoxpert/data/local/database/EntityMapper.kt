@@ -49,7 +49,7 @@ object EntityMapper {
 
     fun mapUnsavedDetectedCocoaEntityToDomain(
         unsavedDetectedCocoaEntity: UnsavedDetectedCocoaEntity
-    ):DetectedCocoa?{
+    ): DetectedCocoa? {
         return DetectedCocoa(
             id = unsavedDetectedCocoaEntity.unsavedId,
             cacaoNumber = unsavedDetectedCocoaEntity.cocoaNumber.toShort(),
@@ -66,7 +66,8 @@ object EntityMapper {
                 cnf = unsavedDetectedCocoaEntity.bbConfidence,
                 label = unsavedDetectedCocoaEntity.bbLabel
             ),
-            disease = CocoaDisease.getDiseaseFromId(unsavedDetectedCocoaEntity.diseaseId) ?: return null
+            disease = CocoaDisease.getDiseaseFromId(unsavedDetectedCocoaEntity.diseaseId)
+                ?: return null
         )
     }
 
@@ -105,7 +106,7 @@ object EntityMapper {
             solutionId = analysisSessionDto.solutionId ?: return null,
             preventionsId = analysisSessionDto.preventionId ?: return null,
 
-        )
+            )
     }
 
     fun mapDetectedCocoaDtoToSavedEntity(

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisSyncType
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
-import com.neotelemetrixgdscunand.kakaoxpert.domain.common.SyncError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.SyncSuccess
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,11 +21,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun syncAnyCocoaAnalysisTypeThatNeedTo(){
-        for(syncType in CocoaAnalysisSyncType.entries){
+    private suspend fun syncAnyCocoaAnalysisTypeThatNeedTo() {
+        for (syncType in CocoaAnalysisSyncType.entries) {
             val result = syncCocoaAnalysisDataUseCase(syncType)
 
-            if(result is Result.Success && result.data == SyncSuccess.ALREADY_SYNCED_BEFORE){
+            if (result is Result.Success && result.data == SyncSuccess.ALREADY_SYNCED_BEFORE) {
                 continue
             }
 

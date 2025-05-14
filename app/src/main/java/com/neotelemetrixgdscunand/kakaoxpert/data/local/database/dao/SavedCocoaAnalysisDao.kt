@@ -9,6 +9,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCoc
 interface SavedCocoaAnalysisDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(listSavedCocoaAnalysis:List<SavedCocoaAnalysisEntity>)
+    suspend fun insertAll(listSavedCocoaAnalysis: List<SavedCocoaAnalysisEntity>)
 
 }

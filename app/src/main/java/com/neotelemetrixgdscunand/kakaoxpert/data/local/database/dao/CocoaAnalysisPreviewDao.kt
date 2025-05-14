@@ -19,14 +19,16 @@ interface CocoaAnalysisPreviewDao {
     @Query("DELETE FROM cocoa_analysis_preview WHERE is_deleted = 1")
     suspend fun deleteAllIsDeleted()
 
-    @Query("""
+    @Query(
+        """
         SELECT cocoa_analysis_preview.session_id as preview_id FROM cocoa_analysis_preview
         LEFT JOIN saved_cocoa_analysis ON
         cocoa_analysis_preview.session_id = saved_cocoa_analysis.session_id
         WHERE saved_cocoa_analysis.session_id IS NULL
         ORDER BY cocoa_analysis_preview.created_at ASC
         LIMIT 5
-    """)
+    """
+    )
     suspend fun getFiveOldestWhichNotHaveDetailsYet(): List<Int>
 
     @Query("SELECT * FROM cocoa_analysis_preview WHERE is_deleted = 0")

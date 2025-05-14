@@ -6,14 +6,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.AuthError
-import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisSyncType
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.PasswordValidator
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.UsernameValidator
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
-import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

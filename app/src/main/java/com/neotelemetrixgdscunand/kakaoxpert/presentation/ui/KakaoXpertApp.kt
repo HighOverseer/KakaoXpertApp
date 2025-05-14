@@ -1,8 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui
 
-import android.os.Build
 import androidx.activity.compose.LocalActivity
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -81,12 +79,12 @@ fun KakaoXpertApp(
     val notificationPermissionDeniedMessage =
         stringResource(R.string.perlu_izin_notifikasi_agar)
     LaunchedEffect(isNotificationPermissionGranted) {
-        if(isNotificationPermissionGranted == null){
+        if (isNotificationPermissionGranted == null) {
             appState.checkNotificationPermission(
                 context,
                 notificationPermissionRequest
             )
-        }else if(isNotificationPermissionGranted == false){
+        } else if (isNotificationPermissionGranted == false) {
             val delayDuration = 2000L
             showSnackbar(notificationPermissionDeniedMessage)
             delay(delayDuration)

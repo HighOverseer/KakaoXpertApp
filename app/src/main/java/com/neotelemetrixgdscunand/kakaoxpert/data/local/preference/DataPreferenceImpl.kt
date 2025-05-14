@@ -32,7 +32,8 @@ class DataPreferenceImpl @Inject constructor(
     override suspend fun needToSync(syncType: CocoaAnalysisSyncType): Boolean {
         val lastSyncTimeKey = mapSyncTypeToLastSyncTimeKey[syncType] ?: return false
         val lastSyncTime = dataStorePrefs.data.map { it[lastSyncTimeKey] ?: 0L }.first()
-        val didPassPeriodThreshold = System.currentTimeMillis() - lastSyncTime >= DataPreference.SYNC_TIME_PERIOD_IN_MILLIS
+        val didPassPeriodThreshold =
+            System.currentTimeMillis() - lastSyncTime >= DataPreference.SYNC_TIME_PERIOD_IN_MILLIS
 
         val isSyncingKey = mapSyncTypeToIsSyncingState[syncType] ?: return false
         val isSyncing = dataStorePrefs.data.map { it[isSyncingKey] ?: false }.first()
@@ -42,7 +43,7 @@ class DataPreferenceImpl @Inject constructor(
 
     override suspend fun setIsSyncing(syncType: CocoaAnalysisSyncType, isSyncing: Boolean) {
         val isSyncingKey = mapSyncTypeToIsSyncingState[syncType]
-        if(isSyncingKey != null){
+        if (isSyncingKey != null) {
             dataStorePrefs.edit { prefs ->
                 prefs[isSyncingKey] = isSyncing
             }
@@ -51,7 +52,7 @@ class DataPreferenceImpl @Inject constructor(
 
     override suspend fun updateLastSyncTime(syncType: CocoaAnalysisSyncType) {
         val lastTimeSyncingKey = mapSyncTypeToLastSyncTimeKey[syncType]
-        if(lastTimeSyncingKey != null){
+        if (lastTimeSyncingKey != null) {
             dataStorePrefs.edit { prefs ->
                 prefs[lastTimeSyncingKey] = System.currentTimeMillis()
             }
@@ -61,12 +62,16 @@ class DataPreferenceImpl @Inject constructor(
 
     companion object {
 
-        private val IS_SYNCING_PREVIEWS_ANALYSIS = booleanPreferencesKey("is_syncing_previews_analysis")
+        private val IS_SYNCING_PREVIEWS_ANALYSIS =
+            booleanPreferencesKey("is_syncing_previews_analysis")
         private val IS_SYNCING_REMOTE_ANALYSIS = booleanPreferencesKey("is_syncing_remote_analysis")
         private val IS_SYNCING_LOCAL_ANALYSIS = booleanPreferencesKey("is_syncing_local_analysis")
 
-        private val LAST_SYNC_PREVIEW_ANALYSIS_TIME = longPreferencesKey("last_sync_preview_analysis_time")
-        private val LAST_SYNC_REMOTE_ANALYSIS_TIME = longPreferencesKey("last_sync_remote_analysis_time")
-        private val LAST_SYNC_LOCAL_ANALYSIS_TIME = longPreferencesKey("last_sync_local_analysis_time")
+        private val LAST_SYNC_PREVIEW_ANALYSIS_TIME =
+            longPreferencesKey("last_sync_preview_analysis_time")
+        private val LAST_SYNC_REMOTE_ANALYSIS_TIME =
+            longPreferencesKey("last_sync_remote_analysis_time")
+        private val LAST_SYNC_LOCAL_ANALYSIS_TIME =
+            longPreferencesKey("last_sync_local_analysis_time")
     }
 }

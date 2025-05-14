@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisSyncType
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel

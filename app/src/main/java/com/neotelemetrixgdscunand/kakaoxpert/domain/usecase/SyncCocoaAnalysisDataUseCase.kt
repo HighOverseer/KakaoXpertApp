@@ -5,6 +5,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.SyncSuccess
 
-interface SyncCocoaAnalysisDataUseCase{
-    suspend operator fun invoke(syncType: CocoaAnalysisSyncType):Result<SyncSuccess, DataError>
+interface SyncCocoaAnalysisDataUseCase {
+    suspend operator fun invoke(syncType: CocoaAnalysisSyncType): Result<SyncSuccess, DataError>
 }

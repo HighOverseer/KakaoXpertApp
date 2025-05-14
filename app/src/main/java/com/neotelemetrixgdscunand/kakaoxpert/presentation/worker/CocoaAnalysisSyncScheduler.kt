@@ -6,7 +6,6 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -18,7 +17,7 @@ object CocoaAnalysisSyncScheduler {
     private const val WORK_NAME = "periodic_cocoa_analysis_sync"
     private const val FALLBACK_WORK_NAME = "fallback_cocoa_analysis_sync"
 
-    fun startPeriodicSync(context: Context){
+    fun startPeriodicSync(context: Context) {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -43,8 +42,8 @@ object CocoaAnalysisSyncScheduler {
             .setInitialDelay(DataPreference.FALLBACK_ONE_TIME_REQUEST_DELAY, TimeUnit.MILLISECONDS)
             .setConstraints(
                 Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build()
             )
             .build()
 
@@ -55,7 +54,7 @@ object CocoaAnalysisSyncScheduler {
         )
     }
 
-    fun stopPeriodicSync(context: Context){
+    fun stopPeriodicSync(context: Context) {
         WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
         WorkManager.getInstance(context).cancelUniqueWork(FALLBACK_WORK_NAME)
     }

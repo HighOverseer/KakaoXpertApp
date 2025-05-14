@@ -11,7 +11,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -98,7 +97,7 @@ class KakaoXpertAppState(
     }
 
     @Composable
-    fun rememberNotificationPermissionRequest(modifier: Modifier = Modifier):ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>> {
+    fun rememberNotificationPermissionRequest(modifier: Modifier = Modifier): ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>> {
         return rememberPermissionRequest(
             onResult = {
                 isNotificationPermissionGranted = it
@@ -174,8 +173,8 @@ class KakaoXpertAppState(
     fun checkNotificationPermission(
         context: Context,
         notificationPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>
-    ){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             checkPermission(
                 context = context,
                 permissionRequest = notificationPermissionRequest,
@@ -184,7 +183,7 @@ class KakaoXpertAppState(
                     isNotificationPermissionGranted = true
                 }
             )
-        }else isNotificationPermissionGranted = true
+        } else isNotificationPermissionGranted = true
     }
 
     private fun isPermissionGranted(context: Context, permission: String): Boolean {

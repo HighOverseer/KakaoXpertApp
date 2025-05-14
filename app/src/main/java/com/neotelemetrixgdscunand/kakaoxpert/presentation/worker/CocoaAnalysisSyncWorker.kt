@@ -9,14 +9,10 @@ import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisSyncType
-import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
-import com.neotelemetrixgdscunand.kakaoxpert.domain.common.SyncError
-import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -24,10 +20,10 @@ import kotlin.coroutines.cancellation.CancellationException
 
 @HiltWorker
 class CocoaAnalysisSyncWorker @AssistedInject constructor(
-    @Assisted context:Context,
+    @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val syncCocoaAnalysisDataUseCase: SyncCocoaAnalysisDataUseCase
-) : CoroutineWorker(context, workerParameters){
+) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val notification = createNotificationForForeground(applicationContext)
@@ -43,12 +39,12 @@ class CocoaAnalysisSyncWorker @AssistedInject constructor(
                 syncCocoaAnalysisDataUseCase(it)
             }
 
-            if (results.any { it is com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result.Error }){
+            if (results.any { it is com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result.Error }) {
                 return Result.retry()
             }
 
-        }catch (e:Exception){
-            if(e is CancellationException) throw e
+        } catch (e: Exception) {
+            if (e is CancellationException) throw e
 
             return Result.failure()
         }
@@ -58,7 +54,8 @@ class CocoaAnalysisSyncWorker @AssistedInject constructor(
     }
 
     private fun createNotificationForForeground(context: Context): Notification {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(context.getString(R.string.syncing_data))
             .setContentText(context.getString(R.string.just_need_a_moment))
@@ -66,7 +63,7 @@ class CocoaAnalysisSyncWorker @AssistedInject constructor(
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setAutoCancel(false)
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
@@ -79,7 +76,7 @@ class CocoaAnalysisSyncWorker @AssistedInject constructor(
         return notification
     }
 
-    companion object{
+    companion object {
         private const val NOTIFICATION_ID = 1
         private const val CHANNEL_ID = "channel_01"
         private const val CHANNEL_NAME = "Cocoa Analysis Sync"

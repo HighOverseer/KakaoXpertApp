@@ -26,7 +26,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val isAlreadyLoggedIn = authRepository.isAlreadyLoggedIn()
             val isFirstTime = authRepository.isFirstTime()
-            if(isAlreadyLoggedIn && !isFirstTime){
+            if (isAlreadyLoggedIn && !isFirstTime) {
                 CocoaAnalysisSyncScheduler.startPeriodicSync(context)
             }
 
