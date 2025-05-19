@@ -29,9 +29,13 @@ class CocoaAnalysisSyncWorker @AssistedInject constructor(
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val notification = createNotificationForForeground(applicationContext)
 
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            ForegroundInfo(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
-        }else ForegroundInfo(NOTIFICATION_ID, notification)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ForegroundInfo(
+                NOTIFICATION_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            )
+        } else ForegroundInfo(NOTIFICATION_ID, notification)
     }
 
 

@@ -3,8 +3,8 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import androidx. exifinterface.media.ExifInterface
 import androidx.core.net.toUri
+import androidx.exifinterface.media.ExifInterface
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.BoundingBoxProcessor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper.Companion.INPUT_MEAN
@@ -24,7 +24,6 @@ import org.tensorflow.lite.support.common.ops.CastOp
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
 import javax.inject.Inject
@@ -101,7 +100,8 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
             ensureActive()
             val imageBitmap = imageConverter.convertImageUriToBitmap(imageUri)
                 .run {
-                    val resizedBitmap = Bitmap.createScaledBitmap(this, tensorWidth, tensorHeight, false)
+                    val resizedBitmap =
+                        Bitmap.createScaledBitmap(this, tensorWidth, tensorHeight, false)
                     ensureActive()
                     rotateBitmapIfRequired(resizedBitmap, imageFile)
                 }

@@ -45,10 +45,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey65
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Red
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.AsyncImagePainterStable
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.ImagePainterStable
 
 
 @Composable
@@ -185,7 +182,7 @@ fun HomeDiagnosisHistory(
             ) {
                 Image(
                     modifier = Modifier.size(12.dp),
-                    imageVector = if(item.availableOffline) Icons.Default.Check else Icons.Default.Close,
+                    imageVector = if (item.availableOffline) Icons.Default.Check else Icons.Default.Close,
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(Color.White)
                 )

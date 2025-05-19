@@ -23,7 +23,7 @@ data class CocoaAnalysisPreviewEntity(
     val predictedPrice: Float = 2100f,
 
     @ColumnInfo("last_synced_time")
-    val lastSyncedTime:Long = 0L,
+    val lastSyncedTime: Long = 0L,
 
     @ColumnInfo("is_deleted")
     val isDeleted: Boolean = false,

@@ -1,7 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert
 
 import android.app.Application
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.worker.CommonWorkerFactory
 import dagger.hilt.android.HiltAndroidApp

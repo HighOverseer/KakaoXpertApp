@@ -90,6 +90,7 @@ fun DiagnosisResultScreen(
                     showSnackbar(message)
                     navigateUp()
                 }
+
                 is AnalysisResultUIEvent.OnFailedToFindSession -> {
                     val message = event.errorUIText.getValue(context)
                     showSnackbar(message)

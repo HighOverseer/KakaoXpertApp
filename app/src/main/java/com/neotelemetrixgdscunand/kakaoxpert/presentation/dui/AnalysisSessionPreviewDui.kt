@@ -7,5 +7,5 @@ data class AnalysisSessionPreviewDui(
     val date: String,
     val predictedPrice: Float,
     val hasSynced: Boolean,
-    val availableOffline:Boolean
+    val availableOffline: Boolean
 )

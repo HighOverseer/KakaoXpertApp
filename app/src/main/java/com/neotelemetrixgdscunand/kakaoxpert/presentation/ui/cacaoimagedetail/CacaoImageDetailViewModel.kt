@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
-import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
@@ -37,15 +36,16 @@ class CacaoImageDetailViewModel @Inject constructor(
             val selectedDiagnosisSessionResult =
                 getCocoaAnalysisSessionUseCase(extras.diagnosisSessionId)
 
-            val selectedDiagnosisSession = when(selectedDiagnosisSessionResult){
+            val selectedDiagnosisSession = when (selectedDiagnosisSessionResult) {
                 is Result.Error -> {
                     _invalidSessionEvent.send(Unit)
                     null
                 }
+
                 is Result.Success -> selectedDiagnosisSessionResult.data
             }
 
-            if(selectedDiagnosisSession == null) return@launch
+            if (selectedDiagnosisSession == null) return@launch
 
             val boundingBoxes = mutableListOf<BoundingBox>()
 

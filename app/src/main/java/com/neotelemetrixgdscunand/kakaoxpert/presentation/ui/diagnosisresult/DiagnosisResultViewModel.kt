@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
@@ -86,8 +85,8 @@ class DiagnosisResultViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getCocoaAnalysisSessionById(sessionId: Int){
-        when(val result = getCocoaAnalysisSessionUseCase(sessionId)){
+    private suspend fun getCocoaAnalysisSessionById(sessionId: Int) {
+        when (val result = getCocoaAnalysisSessionUseCase(sessionId)) {
             is Result.Error -> {
                 val errorUIText = result.toErrorUIText()
                 _event.send(
@@ -96,6 +95,7 @@ class DiagnosisResultViewModel @Inject constructor(
                     )
                 )
             }
+
             is Result.Success -> {
                 val selectedAnalysisSession = result.data
                 _uiState.update {

@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +53,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosish
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchBar
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchCategory
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.component.SearchHistoryCategory
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -205,7 +203,9 @@ fun DiagnosisContent(
                 Spacer(Modifier.height(8.dp))
             }
 
-            items(analysisSessionPreviews.itemCount, key = { index: Int -> analysisSessionPreviews[index]?.id ?: -1}){
+            items(
+                analysisSessionPreviews.itemCount,
+                key = { index: Int -> analysisSessionPreviews[index]?.id ?: -1 }) {
                 val item = analysisSessionPreviews[it] ?: return@items
                 DiagnosisHistory(
                     modifier = Modifier
@@ -299,7 +299,8 @@ private fun DiagnosisScreenPreview() {
             )
         }
 
-        val flowPagingData: Flow<PagingData<AnalysisSessionPreviewDui>> = remember { flow { pagingData } }
+        val flowPagingData: Flow<PagingData<AnalysisSessionPreviewDui>> =
+            remember { flow { pagingData } }
         DiagnosisContent(
             analysisSessionPreviews = flowPagingData.collectAsLazyPagingItems()
         )

@@ -79,7 +79,7 @@ object EntityMapper {
 
     fun mapDetectedCocoaToUnsavedEntity(
         detectedCocoa: DetectedCocoa,
-        unsavedSessionId:Int
+        unsavedSessionId: Int
     ): UnsavedDetectedCocoaEntity {
         return UnsavedDetectedCocoaEntity(
             unsavedSessionId = unsavedSessionId,
@@ -169,7 +169,7 @@ object EntityMapper {
     fun mapUnsavedCocoaAnalysisEntityToDomain(
         unsavedCocoaAnalysisEntity: UnsavedCocoaAnalysisEntity,
         unsavedDetectedCocoas: List<UnsavedDetectedCocoaEntity>
-    ):AnalysisSession{
+    ): AnalysisSession {
         val detectedCocoas = unsavedDetectedCocoas.mapNotNull {
             mapUnsavedDetectedCocoaEntityToDomain(it)
         }
@@ -190,7 +190,7 @@ object EntityMapper {
     fun mapSavedCocoaAnalysisEntityToDomain(
         savedCocoaAnalysisEntity: SavedCocoaAnalysisEntity,
         savedDetectedCocoas: List<SavedDetectedCocoaEntity>
-    ):AnalysisSession{
+    ): AnalysisSession {
         val detectedCocoas = savedDetectedCocoas.mapNotNull {
             mapSavedDetectedCocoaEntityToDomain(it)
         }
@@ -211,7 +211,7 @@ object EntityMapper {
 
     fun mapSavedDetectedCocoaEntityToDomain(
         savedDetectedCocoaEntity: SavedDetectedCocoaEntity
-    ):DetectedCocoa? {
+    ): DetectedCocoa? {
         return DetectedCocoa(
             id = savedDetectedCocoaEntity.id,
             cacaoNumber = savedDetectedCocoaEntity.cocoaNumber.toShort(),
@@ -252,7 +252,7 @@ object EntityMapper {
 
     fun mapSavedCocoaAnalysisEntityToCocoaAnalysisPreviewEntity(
         savedCocoaAnalysisEntity: SavedCocoaAnalysisEntity
-    ):CocoaAnalysisPreviewEntity {
+    ): CocoaAnalysisPreviewEntity {
         return CocoaAnalysisPreviewEntity(
             sessionId = savedCocoaAnalysisEntity.sessionId,
             createdAt = savedCocoaAnalysisEntity.createdAt,

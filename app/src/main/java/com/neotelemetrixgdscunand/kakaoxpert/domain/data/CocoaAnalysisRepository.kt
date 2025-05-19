@@ -1,11 +1,8 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.data
 
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
-import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
-import com.neotelemetrixgdscunand.kakaoxpert.domain.common.SyncError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
@@ -19,7 +16,7 @@ interface CocoaAnalysisRepository {
         detectedCocoas: List<DetectedCocoa>
     ): Int
 
-    fun getAllSessionPreviews(query:String = ""): Flow<PagingData<AnalysisSessionPreview>>
+    fun getAllSessionPreviews(query: String = ""): Flow<PagingData<AnalysisSessionPreview>>
 
     fun getSomeSessionPreviews(): Flow<List<AnalysisSessionPreview>>
 

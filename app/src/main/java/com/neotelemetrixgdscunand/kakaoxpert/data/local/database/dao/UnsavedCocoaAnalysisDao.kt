@@ -11,7 +11,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.relation
 interface UnsavedCocoaAnalysisDao {
 
     @Insert
-    suspend fun insert(unsavedCocoaAnalysisEntity: UnsavedCocoaAnalysisEntity):Long
+    suspend fun insert(unsavedCocoaAnalysisEntity: UnsavedCocoaAnalysisEntity): Long
 
     @Transaction
     @Query("SELECT * FROM unsaved_cocoa_analysis ORDER BY created_at ASC LIMIT 5")
@@ -21,7 +21,7 @@ interface UnsavedCocoaAnalysisDao {
     suspend fun deleteAllByIds(ids: List<Int>)
 
     @Query("SELECT * FROM unsaved_cocoa_analysis WHERE unsaved_session_id = :sessionId")
-    suspend fun getById(sessionId:Int):UnsavedCocoaAnalysisAndDetectedCocoasRelation?
+    suspend fun getById(sessionId: Int): UnsavedCocoaAnalysisAndDetectedCocoasRelation?
 
     @Query("DELETE FROM unsaved_cocoa_analysis")
     suspend fun resetTableData()

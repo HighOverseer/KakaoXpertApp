@@ -1,6 +1,5 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
-import android.icu.util.Calendar
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -29,15 +28,12 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.random.Random
 
 @Singleton
 class CocoaAnalysisRepositoryImpl @Inject constructor(
@@ -96,10 +92,13 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
                 )
 
             val response = postNewAnalysisSession(postRequestBody)
-            val analysisSessionDto = response.data ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val analysisSessionDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
 
-            val newSavedCocoaAnalysisEntity = entityMapper.mapCocoaAnalysisDtoToSavedEntity(analysisSessionDto)
-                ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val newSavedCocoaAnalysisEntity =
+                entityMapper.mapCocoaAnalysisDtoToSavedEntity(analysisSessionDto)
+                    ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
 
             val savedDetectedCocoaEntities =
                 analysisSessionDto.detectedCocoas?.map {
@@ -116,7 +115,7 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
 
         if (result is Result.Success) {
             val (newSavedAnalysisSessionEntity, newSavedDetectedCocoaEntities) = result.data
-            withContext(NonCancellable){
+            withContext(NonCancellable) {
                 val newCocoaAnalysisPreview = entityMapper
                     .mapSavedCocoaAnalysisEntityToCocoaAnalysisPreviewEntity(
                         newSavedAnalysisSessionEntity
@@ -137,9 +136,10 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
                 sessionImagePath = imageOrUrlPath,
                 createdAt = createdAt
             )
-            val unsavedSessionId = withContext(NonCancellable){
+            val unsavedSessionId = withContext(NonCancellable) {
                 cocoaAnalysisDatabase.withTransaction {
-                    val unsavedSessionId = unsavedCocoaAnalysisDao.insert(unsavedCocoaAnalysisEntity).toInt()
+                    val unsavedSessionId =
+                        unsavedCocoaAnalysisDao.insert(unsavedCocoaAnalysisEntity).toInt()
                     val unsavedDetectedCocoaEntities = detectedCocoas.map {
                         entityMapper.mapDetectedCocoaToUnsavedEntity(it, unsavedSessionId)
                     }
@@ -155,35 +155,38 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
     override suspend fun getDiagnosisSession(sessionId: Int): Result<AnalysisSession, DataError.NetworkError> {
         val unsavedCocoaAnalysisRelation = unsavedCocoaAnalysisDao.getById(sessionId)
 
-        if(unsavedCocoaAnalysisRelation != null){
+        if (unsavedCocoaAnalysisRelation != null) {
             val cocoaAnalysisSessionDomain = entityMapper.mapUnsavedCocoaAnalysisEntityToDomain(
-                unsavedCocoaAnalysisRelation.unsavedCocoaAnalysisEntity, unsavedCocoaAnalysisRelation.unsavedDetectedCocoaEntities
+                unsavedCocoaAnalysisRelation.unsavedCocoaAnalysisEntity,
+                unsavedCocoaAnalysisRelation.unsavedDetectedCocoaEntities
             )
             return Result.Success(cocoaAnalysisSessionDomain)
         }
 
         val savedCocoaAnalysisRelation = savedCocoaAnalysisDao.getById(sessionId)
 
-        if(savedCocoaAnalysisRelation != null){
+        if (savedCocoaAnalysisRelation != null) {
             val cocoaAnalysisSessionDomain = entityMapper.mapSavedCocoaAnalysisEntityToDomain(
-                savedCocoaAnalysisRelation.savedCocoaAnalysisEntity, savedCocoaAnalysisRelation.savedDetectedCocoaEntities
+                savedCocoaAnalysisRelation.savedCocoaAnalysisEntity,
+                savedCocoaAnalysisRelation.savedDetectedCocoaEntities
             )
             return Result.Success(cocoaAnalysisSessionDomain)
         }
 
         val cocoaAnalysisSessionDtoResult = getCocoaAnalysisSessionByIdFromNetwork(sessionId)
-        when(cocoaAnalysisSessionDtoResult){
+        when (cocoaAnalysisSessionDtoResult) {
             is Result.Error -> return Result.Error(cocoaAnalysisSessionDtoResult.error)
             is Result.Success -> {
                 val analysisSessionEntity = entityMapper.mapCocoaAnalysisDtoToSavedEntity(
                     analysisSessionDto = cocoaAnalysisSessionDtoResult.data
-                )?: return Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+                ) ?: return Result.Error(RootNetworkError.UNEXPECTED_ERROR)
 
-                val detectedCocoaEntities = cocoaAnalysisSessionDtoResult.data.detectedCocoas?.mapNotNull {
-                    entityMapper.mapDetectedCocoaDtoToSavedEntity(it, sessionId)
-                }?:return Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+                val detectedCocoaEntities =
+                    cocoaAnalysisSessionDtoResult.data.detectedCocoas?.mapNotNull {
+                        entityMapper.mapDetectedCocoaDtoToSavedEntity(it, sessionId)
+                    } ?: return Result.Error(RootNetworkError.UNEXPECTED_ERROR)
 
-                withContext(NonCancellable){
+                withContext(NonCancellable) {
                     cocoaAnalysisDatabase.withTransaction {
                         cocoaAnalysisPreviewDao.updateLastSyncedTime(
                             listOf(analysisSessionEntity.sessionId),
@@ -195,30 +198,35 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
                     }
                 }
 
-                val justSavedCocoaAnalysisRelation = savedCocoaAnalysisDao.getById(analysisSessionEntity.sessionId)
-                if(justSavedCocoaAnalysisRelation != null){
-                    val cocoaAnalysisSessionDomain = entityMapper.mapSavedCocoaAnalysisEntityToDomain(
-                        justSavedCocoaAnalysisRelation.savedCocoaAnalysisEntity, justSavedCocoaAnalysisRelation.savedDetectedCocoaEntities
-                    )
+                val justSavedCocoaAnalysisRelation =
+                    savedCocoaAnalysisDao.getById(analysisSessionEntity.sessionId)
+                if (justSavedCocoaAnalysisRelation != null) {
+                    val cocoaAnalysisSessionDomain =
+                        entityMapper.mapSavedCocoaAnalysisEntityToDomain(
+                            justSavedCocoaAnalysisRelation.savedCocoaAnalysisEntity,
+                            justSavedCocoaAnalysisRelation.savedDetectedCocoaEntities
+                        )
                     return Result.Success(cocoaAnalysisSessionDomain)
 
-                }else return Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+                } else return Result.Error(RootNetworkError.UNEXPECTED_ERROR)
             }
         }
     }
 
     private suspend fun getCocoaAnalysisSessionByIdFromNetwork(
         sessionId: Int
-    ):Result<AnalysisSessionDto, DataError.NetworkError>{
+    ): Result<AnalysisSessionDto, DataError.NetworkError> {
         return callApiFromNetwork {
             val response = cocoaAnalysisApiService.getAnalysisSessionById(sessionId)
-            val analysisSessionDto = response.data ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val analysisSessionDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
 
             return@callApiFromNetwork Result.Success(analysisSessionDto)
         }
     }
 
-    override fun getAllSessionPreviews(query:String): Flow<PagingData<AnalysisSessionPreview>>{
+    override fun getAllSessionPreviews(query: String): Flow<PagingData<AnalysisSessionPreview>> {
         return Pager(
             config = PagingConfig(
                 pageSize = CocoaAnalysisRepository.PAGE_SIZE,
@@ -230,7 +238,7 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
         ).flow
             .flowOn(Dispatchers.IO)
             .map { pagingData ->
-            pagingData.map {
+                pagingData.map {
                     entityMapper.mapCocoaAnalysisPreviewRelationToDomain(it)
                 }
             }.flowOn(Dispatchers.Default)
@@ -382,11 +390,12 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
                         val response = cocoaAnalysisApiService.getAnalysisSessionById(sessionId)
                         val analysisSessionDto = response.data
 
-                        val savedAnalysisSessionEntity = entityMapper.mapCocoaAnalysisDtoToSavedEntity(
-                            analysisSessionDto = analysisSessionDto
+                        val savedAnalysisSessionEntity =
+                            entityMapper.mapCocoaAnalysisDtoToSavedEntity(
+                                analysisSessionDto = analysisSessionDto
+                                    ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+                            )
                                 ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
-                        )
-                            ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
 
                         val savedDetectedCocoaEntities =
                             analysisSessionDto.detectedCocoas?.map {

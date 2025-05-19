@@ -1,7 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.relations
 
 import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
 
 data class CocoaAnalysisPreviewRelation(
     @ColumnInfo("session_id")

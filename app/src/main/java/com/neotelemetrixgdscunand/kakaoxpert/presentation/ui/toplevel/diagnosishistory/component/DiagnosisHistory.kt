@@ -172,7 +172,7 @@ fun DiagnosisHistory(
                     ) {
                         Image(
                             modifier = Modifier.size(12.dp),
-                            imageVector = if(item.availableOffline) Icons.Default.Check else Icons.Default.Close,
+                            imageVector = if (item.availableOffline) Icons.Default.Check else Icons.Default.Close,
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(Color.White)
                         )

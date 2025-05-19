@@ -28,7 +28,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
-import java.util.Locale
 
 @Composable
 fun DiagnosisDiseaseTabScreen(
@@ -59,12 +58,12 @@ fun DiagnosisDiseaseTabScreen(
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val solution = remember(analysisSessionDui) {
-        if(analysisSessionDui.solutionEn == null || analysisSessionDui.solutionId == null){
+        if (analysisSessionDui.solutionEn == null || analysisSessionDui.solutionId == null) {
             CocoaDiseaseMapper.getDefaultSolutionResIdOfInfectedDiseases(
                 analysisSessionDui.detectedCocoas
-            ).let{ context.getString(it) }
-        }else{
-            when(configuration.locales[0].language){
+            ).let { context.getString(it) }
+        } else {
+            when (configuration.locales[0].language) {
                 "id" -> analysisSessionDui.solutionId
                 else -> analysisSessionDui.solutionEn
             }
@@ -73,12 +72,12 @@ fun DiagnosisDiseaseTabScreen(
     }
 
     val preventions = remember(analysisSessionDui) {
-        if(analysisSessionDui.preventionsEn == null || analysisSessionDui.preventionsId == null){
+        if (analysisSessionDui.preventionsEn == null || analysisSessionDui.preventionsId == null) {
             CocoaDiseaseMapper.getDefaultPreventionsResIdOfInfectedDiseases(
                 analysisSessionDui.detectedCocoas
             ).let { context.getString(it) }
-        }else{
-            when(configuration.locales[0].language){
+        } else {
+            when (configuration.locales[0].language) {
                 "id" -> analysisSessionDui.preventionsId
                 else -> analysisSessionDui.preventionsEn
             }

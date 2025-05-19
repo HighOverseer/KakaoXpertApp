@@ -33,7 +33,7 @@ interface CocoaAnalysisPreviewDao {
     suspend fun updateAllLastSyncedTime(newLastSyncedTime: Long)
 
     @Query("UPDATE cocoa_analysis_preview SET last_synced_time = :newLastSyncedTime WHERE session_id in (:sessionIds)")
-    suspend fun updateLastSyncedTime(sessionIds:List<Int>, newLastSyncedTime: Long)
+    suspend fun updateLastSyncedTime(sessionIds: List<Int>, newLastSyncedTime: Long)
 
     @Transaction
     @Query(
@@ -48,7 +48,8 @@ interface CocoaAnalysisPreviewDao {
     )
     suspend fun getFiveOldestWhichNotHaveDetailsYet(): List<Int>
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM
             (
                 SELECT preview.session_id, 
@@ -82,11 +83,13 @@ interface CocoaAnalysisPreviewDao {
         
         WHERE final.session_name LIKE '%' || :query || '%'
         ORDER BY final.created_at DESC
-    """)
-    fun getAllAsPagingSource(query:String): PagingSource<Int, CocoaAnalysisPreviewRelation>
+    """
+    )
+    fun getAllAsPagingSource(query: String): PagingSource<Int, CocoaAnalysisPreviewRelation>
 
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM
             (
                 SELECT preview.session_id, 
@@ -118,7 +121,8 @@ interface CocoaAnalysisPreviewDao {
                 FROM unsaved_cocoa_analysis AS unsaved
             ) AS final
         ORDER BY final.created_at DESC LIMIT 10
-    """)
+    """
+    )
     fun getSome(): Flow<List<CocoaAnalysisPreviewRelation>>
     // Full outer-like merge via union
 

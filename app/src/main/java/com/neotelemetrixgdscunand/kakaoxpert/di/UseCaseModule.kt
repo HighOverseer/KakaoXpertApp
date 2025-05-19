@@ -6,12 +6,10 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.AnalysisCocoaInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.GetCocoaAnalysisSessionInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.LogoutInteractor
-import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.SyncCocoaAnalysisDataInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.LogoutUseCase
-import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,7 +43,7 @@ class UseCaseModule {
         cocoaAnalysisRepository: CocoaAnalysisRepository,
         dataPreference: DataPreference,
         authPreference: AuthPreference
-    ):LogoutUseCase{
+    ): LogoutUseCase {
         return LogoutInteractor(
             authPreference,
             dataPreference,
