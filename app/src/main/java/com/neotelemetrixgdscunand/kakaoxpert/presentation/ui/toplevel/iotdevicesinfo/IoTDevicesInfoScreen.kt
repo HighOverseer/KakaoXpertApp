@@ -19,9 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -53,24 +50,27 @@ fun IoTDevicesInfoScreen(
     showSnackbar: (String) -> Unit = {},
     viewModel: IoTDeviceInfoViewModel = hiltViewModel()
 ) {
-    
+
     val lifecycle = LocalLifecycleOwner.current
     val context = LocalContext.current
     val deviceFormIsNotValidMessage = stringResource(R.string.device_id_or_device_key_is_blank)
     val deviceNotFoundMessage = stringResource(R.string.no_device_found)
     val successAddingDeviceIoTMessage = stringResource(R.string.berhasil_menambahkan_perangkat)
-    LaunchedEffect(true){
-        lifecycle.collectChannelWhenStarted(viewModel.event){
-            when(it){
+    LaunchedEffect(true) {
+        lifecycle.collectChannelWhenStarted(viewModel.event) {
+            when (it) {
                 is IoTDeviceInfoUIEvent.OnFailedAddingDeviceIoT -> {
                     showSnackbar(it.errorUIText.getValue(context))
                 }
+
                 is IoTDeviceInfoUIEvent.OnSuccessAddingDeviceIoT -> {
                     showSnackbar(successAddingDeviceIoTMessage)
                 }
+
                 is IoTDeviceInfoUIEvent.OnAddDeviceFormIsNotValid -> {
                     showSnackbar(deviceFormIsNotValidMessage)
                 }
+
                 IoTDeviceInfoUIEvent.OnNoDeviceFound -> showSnackbar(deviceNotFoundMessage)
                 is IoTDeviceInfoUIEvent.OnFailedGetIoTDataOverview -> {
                     showSnackbar(it.errorUIText.getValue(context))
@@ -219,7 +219,7 @@ fun IoTDevicesInfoContent(
             onClick = onShowAddDeviceDialog
         )
 
-        uiState.connectedDevices.forEach{
+        uiState.connectedDevices.forEach {
             Spacer(Modifier.height(16.dp))
 
             IoTDeviceItem(ioTDevice = it)

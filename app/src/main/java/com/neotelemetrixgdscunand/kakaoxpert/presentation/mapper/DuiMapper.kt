@@ -43,16 +43,21 @@ object DuiMapper {
 
     fun mapIoTDataOverviewToDui(
         ioTDataOverview: IoTDataOverview
-    ):IoTDataOverviewDui{
+    ): IoTDataOverviewDui {
         return IoTDataOverviewDui(
             averageTemperatureValue = UIText.StringResource(
-                R.string.suhu_format, arrayOf(ioTDataOverview.averageTemperatureValue?.formatFloat()?.toString() ?: "-")
+                R.string.suhu_format,
+                arrayOf(ioTDataOverview.averageTemperatureValue?.formatFloat()?.toString() ?: "-")
             ),
             averageHumidityValue = UIText.StringResource(
-                R.string.humidity_format, arrayOf(ioTDataOverview.averageHumidityValue?.formatFloat()?.toString() ?: "-")
+                R.string.humidity_format,
+                arrayOf(ioTDataOverview.averageHumidityValue?.formatFloat()?.toString() ?: "-")
             ),
             averageLightIntensityValue = UIText.StringResource(
-                R.string.light_intensity_format, arrayOf(ioTDataOverview.averageLightIntensityValue?.formatFloat()?.toString() ?: "-")
+                R.string.light_intensity_format,
+                arrayOf(
+                    ioTDataOverview.averageLightIntensityValue?.formatFloat()?.toString() ?: "-"
+                )
             ),
         )
     }

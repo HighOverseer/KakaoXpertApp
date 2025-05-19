@@ -12,7 +12,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -24,18 +23,21 @@ import javax.inject.Inject
 @HiltViewModel
 class SensorDataDetailViewModel @Inject constructor(
     private val ioTDeviceRepository: IoTDeviceRepository
-):ViewModel() {
+) : ViewModel() {
 
     private val _uiEvent = Channel<SensorDataDetailUIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    private val _temperatureSensorData = MutableStateFlow<ImmutableList<SensorItemData.Temperature>>(persistentListOf())
+    private val _temperatureSensorData =
+        MutableStateFlow<ImmutableList<SensorItemData.Temperature>>(persistentListOf())
     val temperatureSensorData = _temperatureSensorData.asStateFlow()
 
-    private val _humiditySensorData = MutableStateFlow<ImmutableList<SensorItemData.Humidity>>(persistentListOf())
+    private val _humiditySensorData =
+        MutableStateFlow<ImmutableList<SensorItemData.Humidity>>(persistentListOf())
     val humiditySensorData = _humiditySensorData.asStateFlow()
 
-    private val _lightIntensitySensorData = MutableStateFlow<ImmutableList<SensorItemData.LightIntensity>>(persistentListOf())
+    private val _lightIntensitySensorData =
+        MutableStateFlow<ImmutableList<SensorItemData.LightIntensity>>(persistentListOf())
     val lightIntensitySensorData = _lightIntensitySensorData.asStateFlow()
 
 
@@ -43,15 +45,16 @@ class SensorDataDetailViewModel @Inject constructor(
         getAllSensorData()
     }
 
-    private fun getAllSensorData(){
+    private fun getAllSensorData() {
         viewModelScope.launch(Dispatchers.IO) {
-            when(val result = ioTDeviceRepository.getAllIoTData()){
-                is Result.Error ->{
+            when (val result = ioTDeviceRepository.getAllIoTData()) {
+                is Result.Error -> {
                     val errorUIText = result.toErrorUIText()
                     _uiEvent.send(
                         SensorDataDetailUIEvent.OnFailedGettingSensorData(errorUIText)
                     )
                 }
+
                 is Result.Success -> {
                     val sensorsData = result.data
                     withContext(Dispatchers.Default) {

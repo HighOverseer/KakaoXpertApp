@@ -9,8 +9,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.IoTDeviceRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDataOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +16,7 @@ import javax.inject.Singleton
 class IoTDeviceRepositoryImpl @Inject constructor(
     private val iotDeviceService: IoTDeviceService,
     private val dataMapper: DataMapper
-):IoTDeviceRepository {
+) : IoTDeviceRepository {
 
     override suspend fun addIoTDeviceToAccount(
         deviceId: String,
@@ -26,7 +24,9 @@ class IoTDeviceRepositoryImpl @Inject constructor(
     ): Result<List<IoTDevice>, DataError.NetworkError> {
         return callApiFromNetwork {
             val response = iotDeviceService.addIoTDeviceToAccount(deviceId, deviceKey)
-            val iotDevicesDto = response.data ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val iotDevicesDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
             val iotDevices = iotDevicesDto.mapNotNull {
                 dataMapper.mapIoTDeviceDtoToDomain(it)
             }
@@ -38,7 +38,9 @@ class IoTDeviceRepositoryImpl @Inject constructor(
     override suspend fun getAllIoTData(): Result<List<SensorItemData>, DataError.NetworkError> {
         return callApiFromNetwork {
             val response = iotDeviceService.getAllIoTData()
-            val ioTDataDto = response.data ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val ioTDataDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
 
             val sensorItemDatas = mutableListOf<SensorItemData>()
             ioTDataDto.forEach { dto ->
@@ -56,7 +58,9 @@ class IoTDeviceRepositoryImpl @Inject constructor(
     override suspend fun getAllConnectedIoTDevices(): Result<List<IoTDevice>, DataError.NetworkError> {
         return callApiFromNetwork {
             val response = iotDeviceService.getAllConnectedDevice()
-            val iotDevicesDto = response.data ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val iotDevicesDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
             val iotDevices = iotDevicesDto.mapNotNull {
                 dataMapper.mapIoTDeviceDtoToDomain(it)
             }
@@ -68,7 +72,9 @@ class IoTDeviceRepositoryImpl @Inject constructor(
     override suspend fun getIoTOverviewData(): Result<IoTDataOverview, DataError.NetworkError> {
         return callApiFromNetwork {
             val response = iotDeviceService.getIoTDataOverview()
-            val ioTDataOverviewDto = response.data ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val ioTDataOverviewDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
             val ioTDataOverview = dataMapper.mapIoTDataOverviewDtoToDomain(ioTDataOverviewDto)
 
             Result.Success(ioTDataOverview)

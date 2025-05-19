@@ -45,7 +45,7 @@ fun AddIoTDeviceDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
     isShownProvider: () -> Boolean = { true },
-    onSubmit: (String, String) -> Unit = {_, _ -> },
+    onSubmit: (String, String) -> Unit = { _, _ -> },
 ) {
     if (isShownProvider()) {
 
@@ -93,7 +93,7 @@ fun AddIoTDeviceDialog(
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 32.dp)
                 ) {
-                    
+
                     PrimaryTextField(
                         contentPadding = PaddingValues(vertical = 13.5.dp, horizontal = 16.dp),
                         valueProvider = { deviceIdText },

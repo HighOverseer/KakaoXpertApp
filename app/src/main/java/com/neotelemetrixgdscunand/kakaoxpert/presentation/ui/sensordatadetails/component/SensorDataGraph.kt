@@ -7,10 +7,8 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -151,8 +149,8 @@ fun SensorDataGraph(
         }
 
 
-        val yTextMeasurables = remember(sensorItemData){
-            if(sensorItemData.isEmpty()) return@remember persistentListOf()
+        val yTextMeasurables = remember(sensorItemData) {
+            if (sensorItemData.isEmpty()) return@remember persistentListOf()
 
             val sensorDataUnit = sensorItemData.firstOrNull()?.unit ?: ""
             val minimumValue = sensorItemData
@@ -192,14 +190,14 @@ fun SensorDataGraph(
         var dataValuePath = remember<Path?> { null }
 
 
-        if(sensorItemData.isEmpty()){
+        if (sensorItemData.isEmpty()) {
             Box(
                 Modifier
                     .fillMaxWidth()
                     .aspectRatio(1.35f)
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Text(
                     stringResource(R.string.there_is_no_sensor_data_to_show),
                     modifier = Modifier.align(Alignment.Center),
@@ -208,7 +206,7 @@ fun SensorDataGraph(
                     color = Black10
                 )
             }
-        }else{
+        } else {
             if (canDraw) {
                 val coroutineScope = rememberCoroutineScope()
                 var job = remember<Job?> { (null) }
@@ -411,7 +409,9 @@ fun SensorDataGraph(
 
                                 // 2.dp -> to slide it to the end a little
                                 val x1 =
-                                    initialXAxisStartPadding + data.getDayInFraction(baseDayOfTheYear = baseDayOfTheYear) * spacePerDay + 2.dp.toPx()
+                                    initialXAxisStartPadding + data.getDayInFraction(
+                                        baseDayOfTheYear = baseDayOfTheYear
+                                    ) * spacePerDay + 2.dp.toPx()
                                 val y1 = (height - initialYAxisBottomPadding) * yValueRatio
 
                                 if (i == 0) {

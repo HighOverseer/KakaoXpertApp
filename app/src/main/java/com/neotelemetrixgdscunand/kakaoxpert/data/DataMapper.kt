@@ -50,7 +50,7 @@ object DataMapper {
         )
     }
 
-    fun mapIoTDeviceDtoToDomain(ioTDeviceDto: IoTDeviceDto):IoTDevice?{
+    fun mapIoTDeviceDtoToDomain(ioTDeviceDto: IoTDeviceDto): IoTDevice? {
         return IoTDevice(
             id = ioTDeviceDto.iotDeviceId ?: return null,
             name = "IoT Device ${ioTDeviceDto.iotDeviceId}"
@@ -59,7 +59,7 @@ object DataMapper {
 
     fun mapIoTDataOverviewDtoToDomain(
         ioTDataOverviewDto: IoTDataOverviewDto
-    ):IoTDataOverview{
+    ): IoTDataOverview {
         return IoTDataOverview(
             averageTemperatureValue = ioTDataOverviewDto.temperatureValue ?: 0f,
             averageHumidityValue = ioTDataOverviewDto.humidityValue ?: 0f,
@@ -69,7 +69,7 @@ object DataMapper {
 
     fun mapIoTDataDtoToDomain(
         ioTDataDto: IoTDataDto
-    ):Triple<SensorItemData.Temperature, SensorItemData.Humidity, SensorItemData.LightIntensity>?{
+    ): Triple<SensorItemData.Temperature, SensorItemData.Humidity, SensorItemData.LightIntensity>? {
 
         val dateDateString = ioTDataDto.date ?: return null
         val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
@@ -86,9 +86,16 @@ object DataMapper {
         calendar.time = date
         val timeInMillis = calendar.timeInMillis
 
-        val temperatureSensorData = SensorItemData.Temperature(value = ioTDataDto.temperatureValue ?: return null, timeInMillis = timeInMillis)
-        val humiditySensorData = SensorItemData.Humidity(value = ioTDataDto.humidityValue?: return null, timeInMillis)
-        val lightIntensitySensorData = SensorItemData.LightIntensity(value = ioTDataDto.lightIntensityValue?:return null, timeInMillis)
+        val temperatureSensorData = SensorItemData.Temperature(
+            value = ioTDataDto.temperatureValue ?: return null,
+            timeInMillis = timeInMillis
+        )
+        val humiditySensorData =
+            SensorItemData.Humidity(value = ioTDataDto.humidityValue ?: return null, timeInMillis)
+        val lightIntensitySensorData = SensorItemData.LightIntensity(
+            value = ioTDataDto.lightIntensityValue ?: return null,
+            timeInMillis
+        )
 
         return Triple(
             temperatureSensorData,

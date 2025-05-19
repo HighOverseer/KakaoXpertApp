@@ -25,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,7 +34,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
@@ -47,11 +45,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.component.SensorDataGraph
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import java.util.Calendar
-import kotlin.random.Random
 
 
 @Composable
@@ -65,8 +60,8 @@ fun SensorDataDetailScreen(
     val lifecycle = LocalLifecycleOwner.current
     val context = LocalContext.current
     LaunchedEffect(true) {
-        lifecycle.collectChannelWhenStarted(viewModel.uiEvent){
-            when(it){
+        lifecycle.collectChannelWhenStarted(viewModel.uiEvent) {
+            when (it) {
                 is SensorDataDetailUIEvent.OnFailedGettingSensorData -> {
                     showSnackbar(it.errorUIText.getValue(context))
                 }
@@ -85,15 +80,16 @@ fun SensorDataDetailScreen(
         humiditySensorData = humiditySensorData,
         lightIntensitySensorData = lightIntensitySensorData
     )
-    
+
 }
+
 @Composable
 fun SensorDataDetailContent(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
-    temperatureSensorData:ImmutableList<SensorItemData>,
-    humiditySensorData:ImmutableList<SensorItemData>,
-    lightIntensitySensorData:ImmutableList<SensorItemData>
+    temperatureSensorData: ImmutableList<SensorItemData>,
+    humiditySensorData: ImmutableList<SensorItemData>,
+    lightIntensitySensorData: ImmutableList<SensorItemData>
 ) {
 
 //    val temperatureSensorItemDatas = remember {

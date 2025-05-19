@@ -24,10 +24,11 @@ class DataPreferenceImpl @Inject constructor(
     )
 
     override suspend fun needToSync(syncType: CocoaAnalysisSyncType): Boolean {
-        val didPassPeriodThreshold = if(syncType == CocoaAnalysisSyncType.PREVIEWS){
-            val lastSyncTime = dataStorePrefs.data.map { it[LAST_SYNC_PREVIEW_ANALYSIS_TIME] ?: 0L }.first()
+        val didPassPeriodThreshold = if (syncType == CocoaAnalysisSyncType.PREVIEWS) {
+            val lastSyncTime =
+                dataStorePrefs.data.map { it[LAST_SYNC_PREVIEW_ANALYSIS_TIME] ?: 0L }.first()
             System.currentTimeMillis() - lastSyncTime >= DataPreference.SYNC_TIME_PERIOD_IN_MILLIS
-        }else true
+        } else true
 
         val isSyncingKey = mapSyncTypeToIsSyncingState[syncType] ?: return false
         val isSyncing = dataStorePrefs.data.map { it[isSyncingKey] ?: false }.first()
@@ -45,7 +46,7 @@ class DataPreferenceImpl @Inject constructor(
     }
 
     override suspend fun updateLastSyncTime(syncType: CocoaAnalysisSyncType) {
-        if(syncType != CocoaAnalysisSyncType.PREVIEWS) return
+        if (syncType != CocoaAnalysisSyncType.PREVIEWS) return
 
         dataStorePrefs.edit { prefs ->
             prefs[LAST_SYNC_PREVIEW_ANALYSIS_TIME] = System.currentTimeMillis()

@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class IoTDeviceDto(
 
-	@field:SerializedName("iot_device_id")
-	val iotDeviceId: Int? = null,
+    @field:SerializedName("iot_device_id")
+    val iotDeviceId: Int? = null,
 )

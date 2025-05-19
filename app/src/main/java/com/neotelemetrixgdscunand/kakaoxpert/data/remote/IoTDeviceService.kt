@@ -16,14 +16,14 @@ interface IoTDeviceService {
     suspend fun addIoTDeviceToAccount(
         @Field("iot_device_id") deviceId: String,
         @Field("key") deviceKey: String,
-    ):Response<List<IoTDeviceDto>>
+    ): Response<List<IoTDeviceDto>>
 
     @GET("user-iot-device")
-    suspend fun getAllConnectedDevice():Response<List<IoTDeviceDto>>
+    suspend fun getAllConnectedDevice(): Response<List<IoTDeviceDto>>
 
     @GET("sensor-data-overview")
-    suspend fun getIoTDataOverview():Response<IoTDataOverviewDto>
+    suspend fun getIoTDataOverview(): Response<IoTDataOverviewDto>
 
     @GET("sensor-data")
-    suspend fun getAllIoTData():Response<List<IoTDataDto>>
+    suspend fun getAllIoTData(): Response<List<IoTDataDto>>
 }
