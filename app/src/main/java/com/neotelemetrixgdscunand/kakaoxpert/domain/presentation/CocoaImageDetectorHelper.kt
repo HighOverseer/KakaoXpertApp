@@ -14,7 +14,7 @@ interface CocoaImageDetectorHelper {
 
         const val INPUT_MEAN = 0f
         const val INPUT_STANDARD_DEVIATION = 255f
-        const val CONFIDENCE_THRESHOLD = 0.4f
+        const val CONFIDENCE_THRESHOLD = 0.1f
         const val IOU_THRESHOLD = 0.5f
     }
 }

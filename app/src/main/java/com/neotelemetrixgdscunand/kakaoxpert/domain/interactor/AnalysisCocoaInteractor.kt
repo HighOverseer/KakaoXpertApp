@@ -17,7 +17,6 @@ class AnalysisCocoaInteractor(
     private val cacaoImageDetectorHelper: CocoaImageDetectorHelper,
     private val cocoaAnalysisRepository: CocoaAnalysisRepository
 ) : AnalysisCocoaUseCase {
-
     override suspend fun invoke(
         sessionName: String,
         imagePath: String
@@ -59,8 +58,7 @@ class AnalysisCocoaInteractor(
                     detectedCocoas = detectedCocoas
                 )
 
-                val newAnalysisSession = cocoaAnalysisRepository.getDiagnosisSession(newSessionId)
-                return Result.Success(newAnalysisSession)
+                return cocoaAnalysisRepository.getDiagnosisSession(newSessionId)
             }
         }
     }

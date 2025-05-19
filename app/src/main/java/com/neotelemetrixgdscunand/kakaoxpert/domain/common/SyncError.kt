@@ -1,5 +1,5 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.common
 
-enum class SyncError : DataError {
-    NO_DATA_NEED_TO_SYNC
+enum class SyncError:DataError{
+    NOT_AVAILABLE_NOT_SYNC_YET
 }

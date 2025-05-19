@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.LogoutUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.worker.CocoaAnalysisSyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -15,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val logoutUseCase: LogoutUseCase,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -27,8 +29,8 @@ class AccountViewModel @Inject constructor(
     fun logout() {
         if (job?.isCompleted == false) return
 
-        job = viewModelScope.launch {
-            authRepository.clearToken()
+        job = viewModelScope.launch(Dispatchers.IO){
+            logoutUseCase()
             CocoaAnalysisSyncScheduler.stopPeriodicSync(context.applicationContext)
             _onLogoutFinishedEvent.send(Unit)
         }

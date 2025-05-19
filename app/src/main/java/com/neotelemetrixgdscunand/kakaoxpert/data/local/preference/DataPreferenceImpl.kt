@@ -59,6 +59,17 @@ class DataPreferenceImpl @Inject constructor(
         }
     }
 
+    override suspend fun resetAll() {
+        dataStorePrefs.edit { prefs ->
+            prefs[IS_SYNCING_PREVIEWS_ANALYSIS] = false
+            prefs[IS_SYNCING_REMOTE_ANALYSIS] = false
+            prefs[IS_SYNCING_LOCAL_ANALYSIS] = false
+
+            prefs[LAST_SYNC_PREVIEW_ANALYSIS_TIME] = 0L
+            prefs[LAST_SYNC_REMOTE_ANALYSIS_TIME] = 0L
+            prefs[LAST_SYNC_LOCAL_ANALYSIS_TIME] = 0L
+        }
+    }
 
     companion object {
 

@@ -14,3 +14,4 @@ data class AnalysisSession(
     val solutionId: String? = null,
     val preventionsId: String? = null
 )
+

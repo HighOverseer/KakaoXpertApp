@@ -2,6 +2,9 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
@@ -26,26 +29,27 @@ class DiagnosisViewModel @Inject constructor(
     private val duiMapper: DuiMapper
 ) : ViewModel() {
 
-    val diagnosisHistoryPreview: StateFlow<ImmutableList<AnalysisSessionPreviewDui>> =
+    val diagnosisHistoryPreview =
         cocoaAnalysisRepository.getAllSessionPreviews()
-            .map {
-                it.map {
-                    DuiMapper.mapDiagnosisSessionPreviewToDui(it)
-                }.toImmutableList()
+            .map { pagingData ->
+                pagingData.map {
+                    duiMapper.mapDiagnosisSessionPreviewToDui(it)
+                }
             }
             .flowOn(Dispatchers.Default)
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf())
+            .cachedIn(viewModelScope)
+
 
     var job: Job? = null
 
-    fun search(query: String) {
-        job?.cancel()
-        job = viewModelScope.launch {
-            withContext(Dispatchers.Default) {
-                diagnosisHistoryPreview.value.filter {
-                    it.title.contains("query", ignoreCase = true)
-                }
-            }
-        }
-    }
+//    fun search(query: String) {
+//        job?.cancel()
+//        job = viewModelScope.launch {
+//            withContext(Dispatchers.Default) {
+//                diagnosisHistoryPreview.value.filter {
+//                    it.title.contains("query", ignoreCase = true)
+//                }
+//            }
+//        }
+//    }
 }

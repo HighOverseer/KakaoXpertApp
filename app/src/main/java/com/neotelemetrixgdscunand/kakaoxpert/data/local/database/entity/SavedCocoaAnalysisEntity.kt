@@ -30,8 +30,8 @@ data class SavedCocoaAnalysisEntity(
     @ColumnInfo("solution_en")
     val solutionEn: String,
 
-    @ColumnInfo("user_id")
-    val userId: Int,
+//    @ColumnInfo("user_id")
+//    val userId: Int,
 
     @ColumnInfo("session_image_url")
     val sessionImageUrl: String,

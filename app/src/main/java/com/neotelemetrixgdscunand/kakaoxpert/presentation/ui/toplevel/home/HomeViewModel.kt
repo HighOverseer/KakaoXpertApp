@@ -52,9 +52,9 @@ class HomeViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     val diagnosisHistory: StateFlow<ImmutableList<AnalysisSessionPreviewDui>> =
-        cocoaAnalysisRepository.getAllSessionPreviews()
-            .map {
-                it.map {
+        cocoaAnalysisRepository.getSomeSessionPreviews()
+            .map { list ->
+                list.map {
                     DuiMapper.mapDiagnosisSessionPreviewToDui(it)
                 }.toImmutableList()
             }

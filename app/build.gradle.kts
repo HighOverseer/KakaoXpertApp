@@ -94,6 +94,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.exifinterface)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -146,7 +147,7 @@ dependencies {
     implementation(libs.play.services.location)
 
     implementation(libs.androidx.room.runtime)
-    //ksp("androidx.room:room-compiler:2.7.1")
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
     implementation(libs.androidx.room.paging)
@@ -156,5 +157,7 @@ dependencies {
     //Work Manager
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.hilt.work)
+
+    implementation(libs.androidx.paging.compose)
 }
 

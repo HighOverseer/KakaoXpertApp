@@ -6,10 +6,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -60,17 +62,7 @@ class DiagnosisResultViewModel @Inject constructor(
         if (isNewDiagnosisSessionSavedFromProcessDeathDueToSystemKills) {
             backupNewDiagnosisSessionIdThatJustSaved?.let { sessionId ->
                 viewModelScope.launch {
-                    val theNewDiagnosisSessionThatHasJustBeenSaved =
-                        getCocoaAnalysisSessionUseCase(sessionId)
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(
-                                theNewDiagnosisSessionThatHasJustBeenSaved
-                            ),
-                            imagePreviewPath = theNewDiagnosisSessionThatHasJustBeenSaved.imageUrlOrPath
-                        )
-                    }
+                    getCocoaAnalysisSessionById(sessionId)
                 }
             }
             return
@@ -87,20 +79,35 @@ class DiagnosisResultViewModel @Inject constructor(
         } else {
             extras.sessionId?.let { sessionId ->
                 viewModelScope.launch {
-                    val selectedDiagnosisSession = getCocoaAnalysisSessionUseCase(sessionId)
-
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            diagnosisSession = duiMapper.mapDiagnosisSessionToDui(
-                                selectedDiagnosisSession
-                            ),
-                            imagePreviewPath = selectedDiagnosisSession.imageUrlOrPath
-                        )
-                    }
+                    getCocoaAnalysisSessionById(sessionId)
                 }
             }
 
+        }
+    }
+
+    private suspend fun getCocoaAnalysisSessionById(sessionId: Int){
+        when(val result = getCocoaAnalysisSessionUseCase(sessionId)){
+            is Result.Error -> {
+                val errorUIText = result.toErrorUIText()
+                _event.send(
+                    AnalysisResultUIEvent.OnFailedToFindSession(
+                        errorUIText
+                    )
+                )
+            }
+            is Result.Success -> {
+                val selectedAnalysisSession = result.data
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        diagnosisSession = duiMapper.mapDiagnosisSessionToDui(
+                            selectedAnalysisSession
+                        ),
+                        imagePreviewPath = selectedAnalysisSession.imageUrlOrPath
+                    )
+                }
+            }
         }
     }
 
@@ -138,8 +145,8 @@ class DiagnosisResultViewModel @Inject constructor(
                     val extras = this@DiagnosisResultViewModel.extras
                     if (extras.newSessionName == null || extras.newUnsavedSessionImagePath == null) return@launch
 
-                    val newSessionId = result.data.id
-                    backupNewDiagnosisSessionIdThatJustSaved = newSessionId
+                    val newAnalysisSession = result.data
+                    backupNewDiagnosisSessionIdThatJustSaved = newAnalysisSession.id
 
                     coroutineContext.ensureActive()
 
@@ -147,7 +154,7 @@ class DiagnosisResultViewModel @Inject constructor(
                         it.copy(
                             isLoading = false,
                             diagnosisSession = duiMapper.mapDiagnosisSessionToDui(
-                                getCocoaAnalysisSessionUseCase(newSessionId)
+                                newAnalysisSession
                             )
                         )
                     }

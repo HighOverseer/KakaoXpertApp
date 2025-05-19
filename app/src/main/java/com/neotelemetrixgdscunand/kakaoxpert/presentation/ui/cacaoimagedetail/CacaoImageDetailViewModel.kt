@@ -4,8 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -19,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CacaoImageDetailViewModel @Inject constructor(
-    val cocoaAnalysisRepository: CocoaAnalysisRepository,
+    private val getCocoaAnalysisSessionUseCase: GetCocoaAnalysisSessionUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -32,8 +34,18 @@ class CacaoImageDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val extras = savedStateHandle.toRoute<Navigation.CacaoImageDetail>()
-            val selectedDiagnosisSession =
-                cocoaAnalysisRepository.getDiagnosisSession(extras.diagnosisSessionId)
+            val selectedDiagnosisSessionResult =
+                getCocoaAnalysisSessionUseCase(extras.diagnosisSessionId)
+
+            val selectedDiagnosisSession = when(selectedDiagnosisSessionResult){
+                is Result.Error -> {
+                    _invalidSessionEvent.send(Unit)
+                    null
+                }
+                is Result.Success -> selectedDiagnosisSessionResult.data
+            }
+
+            if(selectedDiagnosisSession == null) return@launch
 
             val boundingBoxes = mutableListOf<BoundingBox>()
 

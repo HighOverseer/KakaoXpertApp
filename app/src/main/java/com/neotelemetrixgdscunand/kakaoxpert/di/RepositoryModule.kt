@@ -14,6 +14,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.ShopRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.WeatherRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.SyncCocoaAnalysisDataInteractor
+import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -49,5 +51,8 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindDataPreference(dataPreferenceImpl: DataPreferenceImpl): DataPreference
+
+    @Binds
+    abstract fun bindSyncCocoaAnalysisDataUseCase(syncCocoaAnalysisDataInteractor: SyncCocoaAnalysisDataInteractor): SyncCocoaAnalysisDataUseCase
 
 }

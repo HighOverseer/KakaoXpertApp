@@ -1,15 +1,12 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
-import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAnalysisPreviewEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
-import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionPreviewDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.DetectedCocoaDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsDetailsDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsItemDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.ShopItemDto
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
@@ -153,44 +150,44 @@ object DataMapper {
     }
 
 
-    fun mapCocoaAnalysisSessionPreviewDtoToDomain(
-        analysisSessionPreviewDto: AnalysisSessionPreviewDto
-    ): AnalysisSessionPreview? {
-        val dateDateString = analysisSessionPreviewDto.date ?: return null
-        val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        val sdf = SimpleDateFormat(datePattern, Locale.getDefault())
-        sdf.timeZone = TimeZone.getTimeZone("UTC")
+//    fun mapCocoaAnalysisSessionPreviewDtoToDomain(
+//        analysisSessionPreviewDto: AnalysisSessionPreviewDto
+//    ): AnalysisSessionPreview? {
+//        val dateDateString = analysisSessionPreviewDto.date ?: return null
+//        val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+//        val sdf = SimpleDateFormat(datePattern, Locale.getDefault())
+//        sdf.timeZone = TimeZone.getTimeZone("UTC")
+//
+//        val date = try {
+//            sdf.parse(dateDateString)
+//        } catch (e: ParseException) {
+//            return null
+//        }
+//
+//        val calendar = Calendar.getInstance()
+//        calendar.time = date
+//        val createdAt = calendar.timeInMillis
+//
+//        val imageUrl = "${BuildConfig.IMAGE_BASE_URL}${analysisSessionPreviewDto.sessionImage}"
+//
+//        return AnalysisSessionPreview(
+//            id = analysisSessionPreviewDto.sessionId ?: return null,
+//            title = analysisSessionPreviewDto.sessionName ?: return null,
+//            imageUrlOrPath = imageUrl,
+//            createdAt = createdAt,
+//            predictedPrice = 2100f
+//        )
+//    }
 
-        val date = try {
-            sdf.parse(dateDateString)
-        } catch (e: ParseException) {
-            return null
-        }
-
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        val createdAt = calendar.timeInMillis
-
-        val imageUrl = "${BuildConfig.IMAGE_BASE_URL}${analysisSessionPreviewDto.sessionImage}"
-
-        return AnalysisSessionPreview(
-            id = analysisSessionPreviewDto.sessionId ?: return null,
-            title = analysisSessionPreviewDto.sessionName ?: return null,
-            imageUrlOrPath = imageUrl,
-            createdAt = createdAt,
-            predictedPrice = 2100f
-        )
-    }
-
-    fun mapAnalysisSessionPreviewToEntity(
-        cocoaAnalysisSessionPreview: AnalysisSessionPreview
-    ): CocoaAnalysisPreviewEntity {
-        return CocoaAnalysisPreviewEntity(
-            sessionId = cocoaAnalysisSessionPreview.id,
-            createdAt = cocoaAnalysisSessionPreview.createdAt,
-            sessionName = cocoaAnalysisSessionPreview.title,
-            sessionImageUrl = cocoaAnalysisSessionPreview.imageUrlOrPath,
-        )
-    }
+//    fun mapAnalysisSessionPreviewToEntity(
+//        cocoaAnalysisSessionPreview: AnalysisSessionPreview
+//    ): CocoaAnalysisPreviewEntity {
+//        return CocoaAnalysisPreviewEntity(
+//            sessionId = cocoaAnalysisSessionPreview.id,
+//            createdAt = cocoaAnalysisSessionPreview.createdAt,
+//            sessionName = cocoaAnalysisSessionPreview.title,
+//            sessionImageUrl = cocoaAnalysisSessionPreview.imageUrlOrPath,
+//        )
+//    }
 
 }

@@ -40,6 +40,9 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
@@ -54,6 +57,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosish
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -65,14 +70,14 @@ fun DiagnosisScreen(
     bottomBarHeightPxProvider: () -> Int = { 0 }
 ) {
 
-    val diagnosisHistories by viewModel.diagnosisHistoryPreview.collectAsState()
+    val diagnosisHistories = viewModel.diagnosisHistoryPreview.collectAsLazyPagingItems()
 
     DiagnosisContent(
         modifier = modifier,
         analysisSessionPreviews = diagnosisHistories,
         navigateToDiagnosisResult = navigateToDiagnosisResult,
         navigateToTakePhoto = navigateToTakePhoto,
-        bottomBarHeightPxProvider = bottomBarHeightPxProvider
+        bottomBarHeightPxProvider = bottomBarHeightPxProvider,
     )
 }
 
@@ -81,10 +86,10 @@ fun DiagnosisScreen(
 @Composable
 fun DiagnosisContent(
     modifier: Modifier = Modifier,
-    analysisSessionPreviews: ImmutableList<AnalysisSessionPreviewDui> = persistentListOf(),
     navigateToDiagnosisResult: (Int) -> Unit = { _ -> },
     navigateToTakePhoto: () -> Unit = { },
-    bottomBarHeightPxProvider: () -> Int = { 0 }
+    bottomBarHeightPxProvider: () -> Int = { 0 },
+    analysisSessionPreviews: LazyPagingItems<AnalysisSessionPreviewDui>,
 ) {
 
     val selectedSearchHistoryCategory by remember {
@@ -199,7 +204,9 @@ fun DiagnosisContent(
 
                 Spacer(Modifier.height(8.dp))
             }
-            items(analysisSessionPreviews, key = { it.id }, contentType = { it::class }) { item ->
+
+            items(analysisSessionPreviews.itemCount, key = { index: Int -> analysisSessionPreviews[index]?.id ?: -1}){
+                val item = analysisSessionPreviews[it] ?: return@items
                 DiagnosisHistory(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -276,16 +283,25 @@ private fun calculateContentBottomPaddingOfLazyColumn(
 @Composable
 private fun DiagnosisScreenPreview() {
     KakaoXpertTheme {
+        val pagingData = remember {
+            PagingData.from(
+                List(10) {
+                    AnalysisSessionPreviewDui(
+                        id = it,
+                        title = "Example",
+                        imageUrlOrPath = "",
+                        date = "12-04-2025",
+                        predictedPrice = 1400f,
+                        hasSynced = true,
+                        availableOffline = true
+                    )
+                }.take(1).toImmutableList()
+            )
+        }
+
+        val flowPagingData: Flow<PagingData<AnalysisSessionPreviewDui>> = remember { flow { pagingData } }
         DiagnosisContent(
-            analysisSessionPreviews = List(10) {
-                AnalysisSessionPreviewDui(
-                    id = it,
-                    title = "Example",
-                    imageUrlOrPath = "",
-                    date = "12-04-2025",
-                    predictedPrice = 1400f
-                )
-            }.take(1).toImmutableList()
+            analysisSessionPreviews = flowPagingData.collectAsLazyPagingItems()
         )
     }
 

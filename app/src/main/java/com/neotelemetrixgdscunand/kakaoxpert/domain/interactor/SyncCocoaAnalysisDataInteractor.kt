@@ -18,10 +18,11 @@ class SyncCocoaAnalysisDataInteractor(
     override suspend fun invoke(syncType: CocoaAnalysisSyncType): Result<SyncSuccess, DataError> {
         val needToSync = dataPreference.needToSync(syncType)
 
-        if (!needToSync) return Result.Success(SyncSuccess.ALREADY_SYNCED_BEFORE)
+        if (!needToSync) return Result.Success(SyncSuccess.ALREADY_SYNCED_OR_IN_SYNCING)
 
         return try {
             dataPreference.setIsSyncing(syncType, true)
+
             val result = when (syncType) {
                 CocoaAnalysisSyncType.PREVIEWS -> cocoaAnalysisRepository.syncAllSessionPreviewsFromRemote()
                 CocoaAnalysisSyncType.REMOTE -> cocoaAnalysisRepository.syncAllSavedSessionsFromRemote()

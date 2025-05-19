@@ -11,5 +11,9 @@ data class AnalysisSessionDui(
     val imageUrlOrPath: String = "",
     val date: String = "",
     val predictedPrice: Float = 0f,
-    val detectedCocoas: ImmutableList<DetectedCocoa> = persistentListOf()
+    val detectedCocoas: ImmutableList<DetectedCocoa> = persistentListOf(),
+    val solutionEn: String? = null,
+    val preventionsEn: String? = null,
+    val solutionId: String? = null,
+    val preventionsId: String? = null
 )

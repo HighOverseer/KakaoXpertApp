@@ -77,22 +77,28 @@ object DuiMapper {
             imageUrlOrPath = analysisSession.imageUrlOrPath,
             date = dateString,
             predictedPrice = analysisSession.predictedPrice,
-            detectedCocoas = analysisSession.detectedCocoas.toImmutableList()
+            detectedCocoas = analysisSession.detectedCocoas.toImmutableList(),
+            solutionEn = analysisSession.solutionEn,
+            preventionsEn = analysisSession.preventionsEn,
+            solutionId = analysisSession.solutionId,
+            preventionsId = analysisSession.preventionsId
         )
     }
 
-    fun mapDiagnosisSessionPreviewToDui(analysisSession: AnalysisSessionPreview): AnalysisSessionPreviewDui {
+    fun mapDiagnosisSessionPreviewToDui(analysisSessionPreview: AnalysisSessionPreview): AnalysisSessionPreviewDui {
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = analysisSession.createdAt
+        calendar.timeInMillis = analysisSessionPreview.createdAt
         val sdf = SimpleDateFormat("d-MM-yyyy", Locale.getDefault())
         val dateString = sdf.format(calendar.time)
 
         return AnalysisSessionPreviewDui(
-            id = analysisSession.id,
-            title = analysisSession.title,
-            imageUrlOrPath = analysisSession.imageUrlOrPath,
+            id = analysisSessionPreview.id,
+            title = analysisSessionPreview.title,
+            imageUrlOrPath = analysisSessionPreview.imageUrlOrPath,
             date = dateString,
-            predictedPrice = analysisSession.predictedPrice
+            predictedPrice = analysisSessionPreview.predictedPrice,
+            hasSynced = analysisSessionPreview.hasSynced,
+            availableOffline = analysisSessionPreview.isDetailAvailableInLocal
         )
     }
 

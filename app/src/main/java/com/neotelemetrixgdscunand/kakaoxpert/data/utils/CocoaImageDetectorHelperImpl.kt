@@ -3,7 +3,7 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
-import android.media.ExifInterface
+import androidx. exifinterface.media.ExifInterface
 import androidx.core.net.toUri
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.BoundingBoxProcessor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
@@ -42,6 +42,12 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
     private var tensorHeight = 0
     private var numChannel = 0
     private var numElements = 0
+
+    private val imageProcessor = ImageProcessor.Builder()
+        .add(NormalizeOp(INPUT_MEAN, INPUT_STANDARD_DEVIATION))
+        .add(CastOp(INPUT_IMAGE_TYPE))
+        .build()
+
 
     override suspend fun setupImageDetector() = withContext(Dispatchers.Default) {
         clearResource()
@@ -94,18 +100,15 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
             val imageUri = imageFile.toUri()
             ensureActive()
             val imageBitmap = imageConverter.convertImageUriToBitmap(imageUri)
-            val rotatedImageBitmap = rotateBitmapIfRequired(imageBitmap, imageFile)
-            ensureActive()
+                .run {
+                    val resizedBitmap = Bitmap.createScaledBitmap(this, tensorWidth, tensorHeight, false)
+                    ensureActive()
+                    rotateBitmapIfRequired(resizedBitmap, imageFile)
+                }
 
             ensureActive()
             val tensorImage = TensorImage(DataType.FLOAT32)
-            tensorImage.load(rotatedImageBitmap)
-
-            val imageProcessor = ImageProcessor.Builder()
-                .add(ResizeOp(tensorHeight, tensorWidth, ResizeOp.ResizeMethod.BILINEAR))
-                .add(NormalizeOp(INPUT_MEAN, INPUT_STANDARD_DEVIATION))
-                .add(CastOp(INPUT_IMAGE_TYPE))
-                .build()
+            tensorImage.load(imageBitmap)
 
             ensureActive()
             val processedImage = imageProcessor.process(tensorImage)

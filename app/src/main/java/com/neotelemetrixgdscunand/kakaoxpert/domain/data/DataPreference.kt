@@ -10,6 +10,8 @@ interface DataPreference {
 
     suspend fun updateLastSyncTime(syncType: CocoaAnalysisSyncType)
 
+    suspend fun resetAll()
+
     companion object {
         const val SYNC_TIME_PERIOD_IN_MILLIS = 15 * 60 * 1000L // 15 Minutes
         const val SYNC_BACK_OFF_DELAY = 15 * 1000L // 15 Seconds

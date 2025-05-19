@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import java.util.Locale
 
 @Composable
 fun DiagnosisDiseaseTabScreen(
@@ -55,16 +57,33 @@ fun DiagnosisDiseaseTabScreen(
     Spacer(Modifier.height(16.dp))
 
     val context = LocalContext.current
-    val solutionResId = remember(analysisSessionDui) {
-        CocoaDiseaseMapper.getDefaultSolutionResIdOfInfectedDiseases(
-            analysisSessionDui.detectedCocoas
-        )
+    val configuration = LocalConfiguration.current
+    val solution = remember(analysisSessionDui) {
+        if(analysisSessionDui.solutionEn == null || analysisSessionDui.solutionId == null){
+            CocoaDiseaseMapper.getDefaultSolutionResIdOfInfectedDiseases(
+                analysisSessionDui.detectedCocoas
+            ).let{ context.getString(it) }
+        }else{
+            when(configuration.locales[0].language){
+                "id" -> analysisSessionDui.solutionId
+                else -> analysisSessionDui.solutionEn
+            }
+        }
+
     }
 
     val preventions = remember(analysisSessionDui) {
-        CocoaDiseaseMapper.getDefaultPreventionsResIdOfInfectedDiseases(
-            analysisSessionDui.detectedCocoas
-        ).let { context.getString(it).split("\n") }.toImmutableList()
+        if(analysisSessionDui.preventionsEn == null || analysisSessionDui.preventionsId == null){
+            CocoaDiseaseMapper.getDefaultPreventionsResIdOfInfectedDiseases(
+                analysisSessionDui.detectedCocoas
+            ).let { context.getString(it) }
+        }else{
+            when(configuration.locales[0].language){
+                "id" -> analysisSessionDui.preventionsId
+                else -> analysisSessionDui.preventionsEn
+            }
+        }.split("\n")
+            .toImmutableList()
     }
 
     DiagnosisBottomContent(
@@ -74,7 +93,7 @@ fun DiagnosisDiseaseTabScreen(
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))
             .padding(16.dp),
         preventions = preventions,
-        solution = stringResource(solutionResId),
+        solution = solution,
         isLoadingProvider = isLoadingProvider
     )
 

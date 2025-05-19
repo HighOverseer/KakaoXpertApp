@@ -4,10 +4,15 @@ import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAnalysisPreviewEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedDetectedCocoaEntity
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedDetectedCocoaEntity
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.relations.CocoaAnalysisPreviewRelation
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionPreviewDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.DetectedCocoaDto
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
@@ -43,7 +48,8 @@ object EntityMapper {
             sessionName = analysisSessionPreviewDto.sessionName ?: return null,
             sessionImageUrl = imageUrl,
             createdAt = createdAt,
-            predictedPrice = 2100f
+            predictedPrice = 2100f,
+            isDeleted = false
         )
     }
 
@@ -68,6 +74,31 @@ object EntityMapper {
             ),
             disease = CocoaDisease.getDiseaseFromId(unsavedDetectedCocoaEntity.diseaseId)
                 ?: return null
+        )
+    }
+
+    fun mapDetectedCocoaToUnsavedEntity(
+        detectedCocoa: DetectedCocoa,
+        unsavedSessionId:Int
+    ): UnsavedDetectedCocoaEntity {
+        return UnsavedDetectedCocoaEntity(
+            unsavedSessionId = unsavedSessionId,
+            cocoaNumber = detectedCocoa.cacaoNumber.toInt(),
+            bbCoordinateLeft = detectedCocoa.boundingBox.x1,
+            bbCoordinateTop = detectedCocoa.boundingBox.y1,
+            bbCoordinateRight = detectedCocoa.boundingBox.x2,
+            bbCoordinateBottom = detectedCocoa.boundingBox.y2,
+            bbCenterX = detectedCocoa.boundingBox.cx,
+            bbCenterY = detectedCocoa.boundingBox.cy,
+            bbWidth = detectedCocoa.boundingBox.w,
+            bbHeight = detectedCocoa.boundingBox.h,
+            bbLabel = detectedCocoa.boundingBox.label,
+            bbCls = detectedCocoa.boundingBox.cls,
+            bbConfidence = detectedCocoa.boundingBox.cnf,
+            diseaseId = detectedCocoa.disease.id,
+            varietyInfoId = 1,
+            damagePercentage = 0.5f,
+            damageLevel = 50
         )
     }
 
@@ -96,7 +127,7 @@ object EntityMapper {
         val sessionId = analysisSessionDto.sessionId ?: return null
         return SavedCocoaAnalysisEntity(
             sessionId = sessionId,
-            userId = analysisSessionDto.userId ?: return null,
+            //userId = analysisSessionDto.userId ?: return null,
             sessionName = analysisSessionDto.sessionName ?: return null,
             createdAt = createdAt,
             sessionImageUrl = imageUrl,
@@ -135,4 +166,101 @@ object EntityMapper {
         )
     }
 
+    fun mapUnsavedCocoaAnalysisEntityToDomain(
+        unsavedCocoaAnalysisEntity: UnsavedCocoaAnalysisEntity,
+        unsavedDetectedCocoas: List<UnsavedDetectedCocoaEntity>
+    ):AnalysisSession{
+        val detectedCocoas = unsavedDetectedCocoas.mapNotNull {
+            mapUnsavedDetectedCocoaEntityToDomain(it)
+        }
+        return AnalysisSession(
+            id = unsavedCocoaAnalysisEntity.unsavedSessionId,
+            title = unsavedCocoaAnalysisEntity.sessionName,
+            imageUrlOrPath = unsavedCocoaAnalysisEntity.sessionImagePath,
+            createdAt = unsavedCocoaAnalysisEntity.createdAt,
+            predictedPrice = 2100f,
+            detectedCocoas = detectedCocoas,
+//            solutionId = unsavedCocoaAnalysisEntity.solutionId,
+//            preventionsId = unsavedCocoaAnalysisEntity.preventionId,
+//            solutionEn = unsavedCocoaAnalysisEntity.solutionEn,
+//            preventionsEn = unsavedCocoaAnalysisEntity.preventionEn,
+        )
+    }
+
+    fun mapSavedCocoaAnalysisEntityToDomain(
+        savedCocoaAnalysisEntity: SavedCocoaAnalysisEntity,
+        savedDetectedCocoas: List<SavedDetectedCocoaEntity>
+    ):AnalysisSession{
+        val detectedCocoas = savedDetectedCocoas.mapNotNull {
+            mapSavedDetectedCocoaEntityToDomain(it)
+        }
+
+        return AnalysisSession(
+            id = savedCocoaAnalysisEntity.sessionId,
+            title = savedCocoaAnalysisEntity.sessionName,
+            imageUrlOrPath = savedCocoaAnalysisEntity.sessionImageUrl,
+            createdAt = savedCocoaAnalysisEntity.createdAt,
+            predictedPrice = savedCocoaAnalysisEntity.predictedPrice,
+            detectedCocoas = detectedCocoas,
+            solutionId = savedCocoaAnalysisEntity.solutionId,
+            preventionsId = savedCocoaAnalysisEntity.preventionsId,
+            solutionEn = savedCocoaAnalysisEntity.solutionEn,
+            preventionsEn = savedCocoaAnalysisEntity.preventionsEn,
+        )
+    }
+
+    fun mapSavedDetectedCocoaEntityToDomain(
+        savedDetectedCocoaEntity: SavedDetectedCocoaEntity
+    ):DetectedCocoa? {
+        return DetectedCocoa(
+            id = savedDetectedCocoaEntity.id,
+            cacaoNumber = savedDetectedCocoaEntity.cocoaNumber.toShort(),
+            boundingBox = BoundingBox(
+                x1 = savedDetectedCocoaEntity.bbCoordinateLeft,
+                y1 = savedDetectedCocoaEntity.bbCoordinateTop,
+                x2 = savedDetectedCocoaEntity.bbCoordinateRight,
+                y2 = savedDetectedCocoaEntity.bbCoordinateBottom,
+                w = savedDetectedCocoaEntity.bbWidth,
+                h = savedDetectedCocoaEntity.bbHeight,
+                cx = savedDetectedCocoaEntity.bbCenterX,
+                cy = savedDetectedCocoaEntity.bbCenterY,
+                cls = savedDetectedCocoaEntity.bbCls,
+                cnf = savedDetectedCocoaEntity.bbConfidence,
+                label = savedDetectedCocoaEntity.bbLabel
+            ),
+            disease = CocoaDisease.getDiseaseFromId(savedDetectedCocoaEntity.diseaseId)
+                ?: return null
+        )
+    }
+
+    fun mapCocoaAnalysisPreviewRelationToDomain(
+        cocoaAnalysisPreviewRelation: CocoaAnalysisPreviewRelation
+    ): AnalysisSessionPreview {
+        val hasSynced = System.currentTimeMillis()
+            .minus(cocoaAnalysisPreviewRelation.lastSyncedTime) < DataPreference.SYNC_TIME_PERIOD_IN_MILLIS
+
+        return AnalysisSessionPreview(
+            id = cocoaAnalysisPreviewRelation.sessionId,
+            title = cocoaAnalysisPreviewRelation.sessionName,
+            imageUrlOrPath = cocoaAnalysisPreviewRelation.sessionImageUrlOrPath,
+            createdAt = cocoaAnalysisPreviewRelation.createdAt,
+            predictedPrice = cocoaAnalysisPreviewRelation.predictedPrice,
+            isDetailAvailableInLocal = cocoaAnalysisPreviewRelation.isDetailAvailableInLocalDB,
+            hasSynced = hasSynced,
+        )
+    }
+
+    fun mapSavedCocoaAnalysisEntityToCocoaAnalysisPreviewEntity(
+        savedCocoaAnalysisEntity: SavedCocoaAnalysisEntity
+    ):CocoaAnalysisPreviewEntity {
+        return CocoaAnalysisPreviewEntity(
+            sessionId = savedCocoaAnalysisEntity.sessionId,
+            createdAt = savedCocoaAnalysisEntity.createdAt,
+            sessionName = savedCocoaAnalysisEntity.sessionName,
+            sessionImageUrl = savedCocoaAnalysisEntity.sessionImageUrl,
+            predictedPrice = savedCocoaAnalysisEntity.predictedPrice,
+            lastSyncedTime = System.currentTimeMillis(),
+            isDeleted = false
+        )
+    }
 }

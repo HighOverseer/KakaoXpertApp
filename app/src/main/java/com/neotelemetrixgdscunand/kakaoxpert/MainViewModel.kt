@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(
         for (syncType in CocoaAnalysisSyncType.entries) {
             val result = syncCocoaAnalysisDataUseCase(syncType)
 
-            if (result is Result.Success && result.data == SyncSuccess.ALREADY_SYNCED_BEFORE) {
+            if (result is Result.Success && result.data == SyncSuccess.ALREADY_SYNCED_OR_IN_SYNCING) {
                 continue
             }
 

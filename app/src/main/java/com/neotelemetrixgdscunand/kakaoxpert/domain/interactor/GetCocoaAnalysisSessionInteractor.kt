@@ -1,5 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.interactor
 
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
+import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
@@ -7,7 +9,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSess
 class GetCocoaAnalysisSessionInteractor(
     private val cocoaAnalysisRepository: CocoaAnalysisRepository
 ) : GetCocoaAnalysisSessionUseCase {
-    override suspend fun invoke(id: Int): AnalysisSession {
+    override suspend fun invoke(id: Int): Result<AnalysisSession, DataError> {
         return cocoaAnalysisRepository.getDiagnosisSession(id)
     }
 }

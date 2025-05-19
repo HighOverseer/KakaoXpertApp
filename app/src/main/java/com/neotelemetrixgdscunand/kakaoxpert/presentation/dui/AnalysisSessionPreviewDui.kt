@@ -6,4 +6,6 @@ data class AnalysisSessionPreviewDui(
     val imageUrlOrPath: String,
     val date: String,
     val predictedPrice: Float,
+    val hasSynced: Boolean,
+    val availableOffline:Boolean
 )

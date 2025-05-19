@@ -103,6 +103,7 @@ class RegisterViewModel @Inject constructor(
             when (result) {
                 is Result.Success -> {
                     CocoaAnalysisSyncScheduler.startPeriodicSync(context)
+
                     val userName = result.data.split(" ").firstOrNull() ?: "Anonim"
                     _uiEvent.send(RegisterUIEvent.OnRegisterSuccess(userName))
                 }
