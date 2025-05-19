@@ -369,4 +369,5 @@
 
     <string name="berhasil_menambahkan_perangkat">Device added successfully…</string>
 
+    <string name="there_is_no_sensor_data_to_show">There is no sensor data to show..</string>
 </resources>

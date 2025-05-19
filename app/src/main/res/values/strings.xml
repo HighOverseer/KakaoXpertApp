@@ -357,5 +357,5 @@
     <string name="no_device_found">Maaf, tidak ada perangkat yang ditemukan..</string>
     <string name="perangkat_sudah_ditambahkan">Perangkat sudah Ditambahkan..</string>
     <string name="berhasil_menambahkan_perangkat">Berhasil menambahkan perangkat..</string>
-    <string name="there_is_no_sensor_data_to_show">There is no sensor data to show..</string>
+    <string name="there_is_no_sensor_data_to_show">Tidak ada data sensor yang dapat ditampilkan..</string>
 </resources>
