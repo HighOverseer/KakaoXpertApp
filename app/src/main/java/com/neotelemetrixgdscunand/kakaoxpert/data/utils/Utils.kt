@@ -15,6 +15,8 @@ val mapStatusCodeToError = hashMapOf(
     400 to RootNetworkError.BAD_REQUEST,
     401 to RootNetworkError.UNAUTHORIZED,
     403 to RootNetworkError.FORBIDDEN,
+    404 to RootNetworkError.NOT_FOUND,
+    409 to RootNetworkError.RESOURCE_CONFLICT,
     500 to RootNetworkError.INTERNAL_SERVER_ERROR,
     503 to RootNetworkError.SERVER_UNAVAILABLE
 )

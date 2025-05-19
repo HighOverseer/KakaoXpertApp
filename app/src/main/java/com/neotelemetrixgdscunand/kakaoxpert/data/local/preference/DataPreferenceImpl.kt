@@ -17,12 +17,6 @@ class DataPreferenceImpl @Inject constructor(
     private val dataStorePrefs: DataStore<Preferences>
 ) : DataPreference {
 
-    private val mapSyncTypeToLastSyncTimeKey = hashMapOf(
-        CocoaAnalysisSyncType.PREVIEWS to LAST_SYNC_PREVIEW_ANALYSIS_TIME,
-        CocoaAnalysisSyncType.REMOTE to LAST_SYNC_REMOTE_ANALYSIS_TIME,
-        CocoaAnalysisSyncType.LOCAL to LAST_SYNC_LOCAL_ANALYSIS_TIME
-    )
-
     private val mapSyncTypeToIsSyncingState = hashMapOf(
         CocoaAnalysisSyncType.PREVIEWS to IS_SYNCING_PREVIEWS_ANALYSIS,
         CocoaAnalysisSyncType.REMOTE to IS_SYNCING_REMOTE_ANALYSIS,
@@ -30,10 +24,10 @@ class DataPreferenceImpl @Inject constructor(
     )
 
     override suspend fun needToSync(syncType: CocoaAnalysisSyncType): Boolean {
-        val lastSyncTimeKey = mapSyncTypeToLastSyncTimeKey[syncType] ?: return false
-        val lastSyncTime = dataStorePrefs.data.map { it[lastSyncTimeKey] ?: 0L }.first()
-        val didPassPeriodThreshold =
+        val didPassPeriodThreshold = if(syncType == CocoaAnalysisSyncType.PREVIEWS){
+            val lastSyncTime = dataStorePrefs.data.map { it[LAST_SYNC_PREVIEW_ANALYSIS_TIME] ?: 0L }.first()
             System.currentTimeMillis() - lastSyncTime >= DataPreference.SYNC_TIME_PERIOD_IN_MILLIS
+        }else true
 
         val isSyncingKey = mapSyncTypeToIsSyncingState[syncType] ?: return false
         val isSyncing = dataStorePrefs.data.map { it[isSyncingKey] ?: false }.first()
@@ -51,11 +45,10 @@ class DataPreferenceImpl @Inject constructor(
     }
 
     override suspend fun updateLastSyncTime(syncType: CocoaAnalysisSyncType) {
-        val lastTimeSyncingKey = mapSyncTypeToLastSyncTimeKey[syncType]
-        if (lastTimeSyncingKey != null) {
-            dataStorePrefs.edit { prefs ->
-                prefs[lastTimeSyncingKey] = System.currentTimeMillis()
-            }
+        if(syncType != CocoaAnalysisSyncType.PREVIEWS) return
+
+        dataStorePrefs.edit { prefs ->
+            prefs[LAST_SYNC_PREVIEW_ANALYSIS_TIME] = System.currentTimeMillis()
         }
     }
 
@@ -66,8 +59,6 @@ class DataPreferenceImpl @Inject constructor(
             prefs[IS_SYNCING_LOCAL_ANALYSIS] = false
 
             prefs[LAST_SYNC_PREVIEW_ANALYSIS_TIME] = 0L
-            prefs[LAST_SYNC_REMOTE_ANALYSIS_TIME] = 0L
-            prefs[LAST_SYNC_LOCAL_ANALYSIS_TIME] = 0L
         }
     }
 
@@ -80,9 +71,5 @@ class DataPreferenceImpl @Inject constructor(
 
         private val LAST_SYNC_PREVIEW_ANALYSIS_TIME =
             longPreferencesKey("last_sync_preview_analysis_time")
-        private val LAST_SYNC_REMOTE_ANALYSIS_TIME =
-            longPreferencesKey("last_sync_remote_analysis_time")
-        private val LAST_SYNC_LOCAL_ANALYSIS_TIME =
-            longPreferencesKey("last_sync_local_analysis_time")
     }
 }

@@ -1,15 +1,20 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper
 
+import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDataOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsDetailsDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.ShopItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.formatFloat
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 import kotlinx.collections.immutable.toImmutableList
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -33,6 +38,22 @@ object DuiMapper {
             date = dateString,
             imageUrl = newsItem.imageUrl,
             headline = newsItem.headline
+        )
+    }
+
+    fun mapIoTDataOverviewToDui(
+        ioTDataOverview: IoTDataOverview
+    ):IoTDataOverviewDui{
+        return IoTDataOverviewDui(
+            averageTemperatureValue = UIText.StringResource(
+                R.string.suhu_format, arrayOf(ioTDataOverview.averageTemperatureValue?.formatFloat()?.toString() ?: "-")
+            ),
+            averageHumidityValue = UIText.StringResource(
+                R.string.humidity_format, arrayOf(ioTDataOverview.averageHumidityValue?.formatFloat()?.toString() ?: "-")
+            ),
+            averageLightIntensityValue = UIText.StringResource(
+                R.string.light_intensity_format, arrayOf(ioTDataOverview.averageLightIntensityValue?.formatFloat()?.toString() ?: "-")
+            ),
         )
     }
 

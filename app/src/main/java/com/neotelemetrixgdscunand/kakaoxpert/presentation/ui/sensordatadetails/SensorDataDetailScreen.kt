@@ -19,18 +19,25 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
@@ -38,64 +45,104 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails.component.SensorDataGraph
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import kotlin.random.Random
 
+
 @Composable
 fun SensorDataDetailScreen(
     modifier: Modifier = Modifier,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    viewModel: SensorDataDetailViewModel = hiltViewModel(),
+    showSnackbar: (String) -> Unit = {}
 ) {
 
-    val temperatureSensorItemDatas = remember {
-        List(14) { index ->
-            val randomAdditionalValue = Random.nextInt(0, 30)
-            SensorItemData.Temperature(
-                value = 10.0f + randomAdditionalValue,
-                timeInMillis = getTimeInMillis(
-                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
-                )
-            )
-        }.toImmutableList().apply {
-            this.forEach {
-                println(it)
+    val lifecycle = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    LaunchedEffect(true) {
+        lifecycle.collectChannelWhenStarted(viewModel.uiEvent){
+            when(it){
+                is SensorDataDetailUIEvent.OnFailedGettingSensorData -> {
+                    showSnackbar(it.errorUIText.getValue(context))
+                }
             }
         }
     }
 
-    val humiditySensorItemDatas = remember {
-        List(14) { index ->
-            val randomAdditionalValue = Random.nextInt(0, 30)
-            SensorItemData.Humidity(
-                value = 10.0f + randomAdditionalValue,
-                timeInMillis = getTimeInMillis(
-                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
-                )
-            )
-        }.toImmutableList().apply {
-            this.forEach {
-                println(it)
-            }
-        }
-    }
+    val temperatureSensorData by viewModel.temperatureSensorData.collectAsStateWithLifecycle()
+    val humiditySensorData by viewModel.humiditySensorData.collectAsStateWithLifecycle()
+    val lightIntensitySensorData by viewModel.lightIntensitySensorData.collectAsStateWithLifecycle()
 
-    val lightIntensitySensorItemDatas = remember {
-        List(14) { index ->
-            val randomAdditionalValue = Random.nextInt(0, 30)
-            SensorItemData.LightIntensity(
-                value = 10.0f + randomAdditionalValue,
-                timeInMillis = getTimeInMillis(
-                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
-                )
-            )
-        }.toImmutableList().apply {
-            this.forEach {
-                println(it)
-            }
-        }
-    }
+    SensorDataDetailContent(
+        modifier = modifier,
+        navigateUp = navigateUp,
+        temperatureSensorData = temperatureSensorData,
+        humiditySensorData = humiditySensorData,
+        lightIntensitySensorData = lightIntensitySensorData
+    )
+    
+}
+@Composable
+fun SensorDataDetailContent(
+    modifier: Modifier = Modifier,
+    navigateUp: () -> Unit = {},
+    temperatureSensorData:ImmutableList<SensorItemData>,
+    humiditySensorData:ImmutableList<SensorItemData>,
+    lightIntensitySensorData:ImmutableList<SensorItemData>
+) {
+
+//    val temperatureSensorItemDatas = remember {
+//        List(14) { index ->
+//            val randomAdditionalValue = Random.nextInt(0, 30)
+//            SensorItemData.Temperature(
+//                value = 10.0f + randomAdditionalValue,
+//                timeInMillis = getTimeInMillis(
+//                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
+//                )
+//            )
+//        }.toImmutableList().apply {
+//            this.forEach {
+//                println(it)
+//            }
+//        }
+//    }
+//
+//    val humiditySensorItemDatas = remember {
+//        List(14) { index ->
+//            val randomAdditionalValue = Random.nextInt(0, 30)
+//            SensorItemData.Humidity(
+//                value = 10.0f + randomAdditionalValue,
+//                timeInMillis = getTimeInMillis(
+//                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
+//                )
+//            )
+//        }.toImmutableList().apply {
+//            this.forEach {
+//                println(it)
+//            }
+//        }
+//    }
+//
+//    val lightIntensitySensorItemDatas = remember {
+//        List(14) { index ->
+//            val randomAdditionalValue = Random.nextInt(0, 30)
+//            SensorItemData.LightIntensity(
+//                value = 10.0f + randomAdditionalValue,
+//                timeInMillis = getTimeInMillis(
+//                    additionalTimesInMillis = (3600_000L * 24f * (index / 2f)).toLong()
+//                )
+//            )
+//        }.toImmutableList().apply {
+//            this.forEach {
+//                println(it)
+//            }
+//        }
+//    }
 
 
     val scrollState = rememberScrollState()
@@ -207,7 +254,7 @@ fun SensorDataDetailScreen(
             Spacer(Modifier.height(16.dp))
 
             SensorDataGraph(
-                sensorItemData = temperatureSensorItemDatas,
+                sensorItemData = temperatureSensorData,
                 onProcessSlidingGraphPointer = onSlidingGraphPointer,
                 onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
                 onDelegateScroll = onDelegateScroll,
@@ -243,7 +290,7 @@ fun SensorDataDetailScreen(
             Spacer(Modifier.height(16.dp))
 
             SensorDataGraph(
-                sensorItemData = humiditySensorItemDatas,
+                sensorItemData = humiditySensorData,
                 onProcessSlidingGraphPointer = onSlidingGraphPointer,
                 onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
                 onDelegateScroll = onDelegateScroll,
@@ -279,7 +326,7 @@ fun SensorDataDetailScreen(
             Spacer(Modifier.height(16.dp))
 
             SensorDataGraph(
-                sensorItemData = lightIntensitySensorItemDatas,
+                sensorItemData = lightIntensitySensorData,
                 onProcessSlidingGraphPointer = onSlidingGraphPointer,
                 onFinishSlidingGraphPointer = onFinishSlidingGraphPointer,
                 onDelegateScroll = onDelegateScroll,

@@ -23,6 +23,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey60
@@ -33,6 +34,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 fun IoTDeviceItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { },
+    ioTDevice: IoTDevice = IoTDevice(name = "", id = 0)
 ) {
     Card(
         modifier = modifier,
@@ -64,13 +66,13 @@ fun IoTDeviceItem(
                 Column {
                     Text(
                         modifier = Modifier.padding(),
-                        text = "Perangkat 1",
+                        text = ioTDevice.name,
                         style = MaterialTheme.typography.titleMedium,
                         color = Black10
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        text = "ABC12345DEF67890c3VwZXJfc2VjcmVfdG9rZW5fZm9yX3Byb2plY3Q=",
+                        text = ioTDevice.id.toString(),
                         style = MaterialTheme.typography.bodySmall,
                         color = Grey69
                     )

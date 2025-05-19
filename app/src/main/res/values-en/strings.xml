@@ -255,6 +255,7 @@
     <string name="suhu_format">%1$s°C</string>
     <string name="wind_velocity_format">%1$s Km/Hour</string>
     <string name="humidity_format">%1$s%%</string>
+    <string name="light_intensity_format">%1$s Lux</string>
     <string name="rainfall_format">%1$smm</string>
 
 
@@ -357,4 +358,15 @@
     <string name="info_penyakit">Diseases Info</string>
 
     <string name="analisis">Analysis</string>
+
+    <string name="syncing_data">Syncing data, this might take a moment…</string>
+    <string name="perlu_izin_notifikasi_agar">Notification permission is required for the app to function properly…</string>
+    <string name="offline">Offline</string>
+    <string name="tersinkron">Synced</string>
+    <string name="device_id_or_device_key_is_blank">Device ID or Device Key is blank</string>
+    <string name="no_device_found">Sorry, no device found…</string>
+    <string name="perangkat_sudah_ditambahkan">Device has already been added…</string>
+
+    <string name="berhasil_menambahkan_perangkat">Device added successfully…</string>
+
 </resources>

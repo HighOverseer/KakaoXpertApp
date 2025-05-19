@@ -250,6 +250,7 @@
     <string name="suhu_format">%1$s°C</string>
     <string name="wind_velocity_format">%1$s Km/Jam</string>
     <string name="humidity_format">%1$s%%</string>
+    <string name="light_intensity_format">%1$s Lux</string>
     <string name="rainfall_format">%1$smm</string>
 
     <string name="cuaca_hujan_lebat">Hujan Lebat</string>
@@ -347,9 +348,14 @@
 
     <string name="info_penyakit">Info Penyakit</string>
     <string name="analisis">Analisis</string>
-    <string name="syncing_data">Syncing Data</string>
-    <string name="just_need_a_moment">Just need a moment...</string>
-    <string name="perlu_izin_notifikasi_agar">Perlu izin notifikasi agar aplikasi dapat berjalan dengan semestinya...</string>
+
+    <string name="syncing_data">Sedang mensinkronkan data, butuh waktu beberapa saat…</string>
+    <string name="perlu_izin_notifikasi_agar">Perlu izin notifikasi agar aplikasi dapat berjalan dengan semestinya…</string>
     <string name="offline">Offline</string>
     <string name="tersinkron">Tersinkron</string>
+    <string name="device_id_or_device_key_is_blank">Device ID or Device Key is blank</string>
+    <string name="no_device_found">Maaf, tidak ada perangkat yang ditemukan..</string>
+    <string name="perangkat_sudah_ditambahkan">Perangkat sudah Ditambahkan..</string>
+    <string name="berhasil_menambahkan_perangkat">Berhasil menambahkan perangkat..</string>
+    <string name="there_is_no_sensor_data_to_show">There is no sensor data to show..</string>
 </resources>

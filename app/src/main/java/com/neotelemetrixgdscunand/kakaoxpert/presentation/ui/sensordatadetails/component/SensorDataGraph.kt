@@ -4,15 +4,19 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -36,11 +41,13 @@ import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
@@ -144,7 +151,9 @@ fun SensorDataGraph(
         }
 
 
-        val yTextMeasurables = remember {
+        val yTextMeasurables = remember(sensorItemData){
+            if(sensorItemData.isEmpty()) return@remember persistentListOf()
+
             val sensorDataUnit = sensorItemData.firstOrNull()?.unit ?: ""
             val minimumValue = sensorItemData
                 .minOfOrNull { it.value }
@@ -183,284 +192,304 @@ fun SensorDataGraph(
         var dataValuePath = remember<Path?> { null }
 
 
-        if (canDraw) {
-            val coroutineScope = rememberCoroutineScope()
-            var job = remember<Job?> { (null) }
-
-            val isNavigatingUpUpdated by rememberUpdatedState(isNavigatingUp)
-
-            val isPointerPopupVisible by remember {
-                derivedStateOf {
-                    !isMovingPointer && touchedPointInPath != null && !isNavigatingUpUpdated
-                }
-            }
-
-            var mapHeight by remember { mutableFloatStateOf(0f) }
-            val density = LocalDensity.current
-            val initialYAxisBottomPaddingDp = 32.dp
-            val canvasModifier = remember {
+        if(sensorItemData.isEmpty()){
+            Box(
                 Modifier
                     .fillMaxWidth()
                     .aspectRatio(1.35f)
-                    .padding(16.dp)
-                    .onGloballyPositioned {
-                        with(density) {
-                            mapHeight = it.size.height - initialYAxisBottomPaddingDp.toPx()
-                        }
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    stringResource(R.string.there_is_no_sensor_data_to_show),
+                    modifier = Modifier.align(Alignment.Center),
+                    style = MaterialTheme.typography.titleSmall,
+                    textAlign = TextAlign.Center,
+                    color = Black10
+                )
+            }
+        }else{
+            if (canDraw) {
+                val coroutineScope = rememberCoroutineScope()
+                var job = remember<Job?> { (null) }
 
+                val isNavigatingUpUpdated by rememberUpdatedState(isNavigatingUp)
+
+                val isPointerPopupVisible by remember {
+                    derivedStateOf {
+                        !isMovingPointer && touchedPointInPath != null && !isNavigatingUpUpdated
                     }
-                    .pointerInput(Unit) {
-                        // TRANSIENT STATE
-                        var isScrollingBeingDelegatedToParent = false
+                }
 
-                        awaitEachGesture {
-                            awaitFirstDown()
+                var mapHeight by remember { mutableFloatStateOf(0f) }
+                val density = LocalDensity.current
+                val initialYAxisBottomPaddingDp = 32.dp
+                val canvasModifier = remember {
+                    Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1.35f)
+                        .padding(16.dp)
+                        .onGloballyPositioned {
+                            with(density) {
+                                mapHeight = it.size.height - initialYAxisBottomPaddingDp.toPx()
+                            }
 
-                            val dataPath = dataValuePath ?: return@awaitEachGesture
+                        }
+                        .pointerInput(Unit) {
+                            // TRANSIENT STATE
+                            var isScrollingBeingDelegatedToParent = false
 
-                            var currentEventChanges: PointerInputChange
-                            var currentRelativePosition: Offset
+                            awaitEachGesture {
+                                awaitFirstDown()
 
-                            do {
-                                val event = awaitPointerEvent()
-                                currentEventChanges = event.changes.first()
-                                currentRelativePosition = currentEventChanges.position
-                                val isChangesInXGreaterThanY =
-                                    abs(currentRelativePosition.x - currentEventChanges.previousPosition.x) > abs(
-                                        currentRelativePosition.y - currentEventChanges.previousPosition.y
-                                    )
+                                val dataPath = dataValuePath ?: return@awaitEachGesture
 
-                                job?.cancel()
-                                if ((isChangesInXGreaterThanY || isMovingPointer) && !isScrollingBeingDelegatedToParent) {
+                                var currentEventChanges: PointerInputChange
+                                var currentRelativePosition: Offset
+
+                                do {
+                                    val event = awaitPointerEvent()
+                                    currentEventChanges = event.changes.first()
+                                    currentRelativePosition = currentEventChanges.position
+                                    val isChangesInXGreaterThanY =
+                                        abs(currentRelativePosition.x - currentEventChanges.previousPosition.x) > abs(
+                                            currentRelativePosition.y - currentEventChanges.previousPosition.y
+                                        )
+
+                                    job?.cancel()
+                                    if ((isChangesInXGreaterThanY || isMovingPointer) && !isScrollingBeingDelegatedToParent) {
+                                        job = coroutineScope.launch {
+                                            onProcessSlidingGraphPointer()
+                                            val nearestPointInPath =
+                                                getNearestPointOffsetInPathWithMatchingX(
+                                                    dataPath, currentRelativePosition
+                                                )
+                                            touchedPointInPath = nearestPointInPath
+                                            isMovingPointer = true
+                                        }
+                                    } else {
+                                        touchedPointInPath = null
+                                        onDelegateScroll(currentEventChanges.scrollDelta.y)
+                                        isScrollingBeingDelegatedToParent = true
+                                        isMovingPointer = false
+                                    }
+                                } while (event.changes.any { it.pressed })
+
+                                if (isMovingPointer) {
+                                    job?.cancel()
                                     job = coroutineScope.launch {
-                                        onProcessSlidingGraphPointer()
                                         val nearestPointInPath =
                                             getNearestPointOffsetInPathWithMatchingX(
-                                                dataPath, currentRelativePosition
+                                                dataPath,
+                                                currentRelativePosition
                                             )
                                         touchedPointInPath = nearestPointInPath
-                                        isMovingPointer = true
+                                        isMovingPointer = false
                                     }
-                                } else {
-                                    touchedPointInPath = null
-                                    onDelegateScroll(currentEventChanges.scrollDelta.y)
-                                    isScrollingBeingDelegatedToParent = true
-                                    isMovingPointer = false
-                                }
-                            } while (event.changes.any { it.pressed })
+                                } else touchedPointInPath = null
 
-                            if (isMovingPointer) {
-                                job?.cancel()
-                                job = coroutineScope.launch {
-                                    val nearestPointInPath =
-                                        getNearestPointOffsetInPathWithMatchingX(
-                                            dataPath,
-                                            currentRelativePosition
-                                        )
-                                    touchedPointInPath = nearestPointInPath
-                                    isMovingPointer = false
-                                }
-                            } else touchedPointInPath = null
+                                onFinishSlidingGraphPointer()
+                                isScrollingBeingDelegatedToParent = false
 
-                            onFinishSlidingGraphPointer()
-                            isScrollingBeingDelegatedToParent = false
-
+                            }
                         }
+                }
+
+                Canvas(
+                    modifier = canvasModifier
+                ) {
+                    val contentXWidth = xTextMeasurables[0].size.width
+                    val contentYHeight = yTextMeasurables[0].size.height
+
+                    val initialXAxisStartPadding = 40.dp.toPx()
+                    val xAxisBottomPadding = 32.dp.toPx()
+                    val initialYAxisBottomPadding = initialYAxisBottomPaddingDp.toPx()
+                    val spacePerDay =
+                        (size.width - initialXAxisStartPadding) / xAxisParametersCount
+                    val spacePerStepCelcius =
+                        (size.height - initialYAxisBottomPadding) / 5
+
+
+
+                    xTextMeasurables.forEachIndexed { index, it ->
+                        val xLowBound = initialXAxisStartPadding + index * spacePerDay
+                        val xHighBound = xLowBound + spacePerDay
+                        val x = ((xLowBound + xHighBound) / 2f)
+
+                        drawText(
+                            it,
+                            color = Grey60,
+                            topLeft = Offset(
+                                x = x.minus(contentXWidth / 2),
+                                y = size.height - xAxisBottomPadding
+                            ),
+                        )
                     }
-            }
 
-            Canvas(
-                modifier = canvasModifier
-            ) {
-                val contentXWidth = xTextMeasurables[0].size.width
-                val contentYHeight = yTextMeasurables[0].size.height
+                    yTextMeasurables.forEachIndexed { index, it ->
+                        val yLowBound =
+                            size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
+                        val yHighBound = yLowBound - spacePerStepCelcius
+                        val y = ((yLowBound + yHighBound) / 2f)
 
-                val initialXAxisStartPadding = 40.dp.toPx()
-                val xAxisBottomPadding = 32.dp.toPx()
-                val initialYAxisBottomPadding = initialYAxisBottomPaddingDp.toPx()
-                val spacePerDay =
-                    (size.width - initialXAxisStartPadding) / xAxisParametersCount
-                val spacePerStepCelcius =
-                    (size.height - initialYAxisBottomPadding) / 5
-
-
-
-                xTextMeasurables.forEachIndexed { index, it ->
-                    val xLowBound = initialXAxisStartPadding + index * spacePerDay
-                    val xHighBound = xLowBound + spacePerDay
-                    val x = ((xLowBound + xHighBound) / 2f)
-
-                    drawText(
-                        it,
-                        color = Grey60,
-                        topLeft = Offset(
-                            x = x.minus(contentXWidth / 2),
-                            y = size.height - xAxisBottomPadding
-                        ),
-                    )
-                }
-
-                yTextMeasurables.forEachIndexed { index, it ->
-                    val yLowBound =
-                        size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
-                    val yHighBound = yLowBound - spacePerStepCelcius
-                    val y = ((yLowBound + yHighBound) / 2f)
-
-                    drawText(
-                        it,
-                        color = Grey60,
-                        topLeft = Offset(
-                            x = 0f,
-                            y = y.minus(contentYHeight / 2)
+                        drawText(
+                            it,
+                            color = Grey60,
+                            topLeft = Offset(
+                                x = 0f,
+                                y = y.minus(contentYHeight / 2)
+                            )
                         )
-                    )
-                }
+                    }
 
-                for (index in 0 until xTextMeasurables.lastIndex) {
-                    val xLowBound = initialXAxisStartPadding + index * spacePerDay
-                    val xHighBound = xLowBound + (2 * spacePerDay)
-                    val x = ((xLowBound + xHighBound) / 2f)
-                    drawLine(
-                        color = Grey75,
-                        strokeWidth = 1.dp.toPx(),
-                        start = Offset(
-                            x = x,
-                            y = size.height - xAxisBottomPadding
-                        ),
-                        end = Offset(
-                            x = x,
-                            y = 0f
+                    for (index in 0 until xTextMeasurables.lastIndex) {
+                        val xLowBound = initialXAxisStartPadding + index * spacePerDay
+                        val xHighBound = xLowBound + (2 * spacePerDay)
+                        val x = ((xLowBound + xHighBound) / 2f)
+                        drawLine(
+                            color = Grey75,
+                            strokeWidth = 1.dp.toPx(),
+                            start = Offset(
+                                x = x,
+                                y = size.height - xAxisBottomPadding
+                            ),
+                            end = Offset(
+                                x = x,
+                                y = 0f
+                            )
                         )
-                    )
-                }
+                    }
 
 
-                for (index in 0 until yTextMeasurables.lastIndex) {
-                    val yLowBound =
-                        size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
-                    val yHighBound = yLowBound - spacePerStepCelcius
+                    for (index in 0 until yTextMeasurables.lastIndex) {
+                        val yLowBound =
+                            size.height - (initialYAxisBottomPadding + index * spacePerStepCelcius)
+                        val yHighBound = yLowBound - spacePerStepCelcius
 
-                    drawLine(
-                        color = Grey75,
-                        strokeWidth = 1.dp.toPx(),
-                        start = Offset(
-                            x = initialXAxisStartPadding,
-                            y = yHighBound
-                        ),
-                        end = Offset(
-                            x = size.width,
-                            y = yHighBound
+                        drawLine(
+                            color = Grey75,
+                            strokeWidth = 1.dp.toPx(),
+                            start = Offset(
+                                x = initialXAxisStartPadding,
+                                y = yHighBound
+                            ),
+                            end = Offset(
+                                x = size.width,
+                                y = yHighBound
+                            )
                         )
-                    )
-                }
+                    }
 
-                var lastX = 0f
-                var firstX = 0f
-                var maxY = 0f
-                val strokePath = Path()
-                    .apply {
-                        val height = size.height
+                    var lastX = 0f
+                    var firstX = 0f
+                    var maxY = 0f
+                    val strokePath = Path()
+                        .apply {
+                            val height = size.height
 
-                        for (i in sensorItemData.indices) {
-                            val data = sensorItemData[i]
+                            for (i in sensorItemData.indices) {
+                                val data = sensorItemData[i]
 
-                            val isDataOutOfBoundInXAxis =
-                                data.timeInMillis < lowerBoundDataX || data.timeInMillis > upperBoundDataX
-                            val isDataOutOfBoundInYAxis =
-                                data.value < lowerBoundDataY.minus(stepPerUnit / 2) || data.value > upperBoundDataY.plus(
-                                    stepPerUnit / 2
+                                val isDataOutOfBoundInXAxis =
+                                    data.timeInMillis < lowerBoundDataX || data.timeInMillis > upperBoundDataX
+                                val isDataOutOfBoundInYAxis =
+                                    data.value < lowerBoundDataY.minus(stepPerUnit / 2) || data.value > upperBoundDataY.plus(
+                                        stepPerUnit / 2
+                                    )
+
+                                val isDataOutOfBound =
+                                    isDataOutOfBoundInYAxis || isDataOutOfBoundInXAxis
+                                if (isDataOutOfBound) continue
+
+                                val numerator =
+                                    (data.value - lowerBoundDataY.toFloat().minus(stepPerUnit / 2f))
+                                val denominator = (upperBoundDataY.toFloat()
+                                    .plus(stepPerUnit / 2f) - lowerBoundDataY.toFloat()
+                                    .minus(stepPerUnit / 2f))
+                                val ratio = numerator / denominator
+                                val yValueRatio = (1 - ratio)
+
+                                // 2.dp -> to slide it to the end a little
+                                val x1 =
+                                    initialXAxisStartPadding + data.getDayInFraction(baseDayOfTheYear = baseDayOfTheYear) * spacePerDay + 2.dp.toPx()
+                                val y1 = (height - initialYAxisBottomPadding) * yValueRatio
+
+                                if (i == 0) {
+                                    moveTo(x1, y1)
+                                    firstX = x1
+                                }
+                                lastX = x1
+
+                                lineTo(
+                                    x1,
+                                    y1,
                                 )
 
-                            val isDataOutOfBound =
-                                isDataOutOfBoundInYAxis || isDataOutOfBoundInXAxis
-                            if (isDataOutOfBound) continue
-
-                            val numerator =
-                                (data.value - lowerBoundDataY.toFloat().minus(stepPerUnit / 2f))
-                            val denominator = (upperBoundDataY.toFloat()
-                                .plus(stepPerUnit / 2f) - lowerBoundDataY.toFloat()
-                                .minus(stepPerUnit / 2f))
-                            val ratio = numerator / denominator
-                            val yValueRatio = (1 - ratio)
-
-                            // 2.dp -> to slide it to the end a little
-                            val x1 =
-                                initialXAxisStartPadding + data.getDayInFraction(baseDayOfTheYear = baseDayOfTheYear) * spacePerDay + 2.dp.toPx()
-                            val y1 = (height - initialYAxisBottomPadding) * yValueRatio
-
-                            if (i == 0) {
-                                moveTo(x1, y1)
-                                firstX = x1
+                                if (y1 > maxY) maxY = y1
                             }
-                            lastX = x1
 
-                            lineTo(
-                                x1,
-                                y1,
-                            )
-
-                            if (y1 > maxY) maxY = y1
                         }
 
-                    }
+                    dataValuePath = strokePath
 
-                dataValuePath = strokePath
+                    val fillPath = strokePath.copy()
+                        .apply {
+                            lineTo(lastX, maxY)
+                            lineTo(firstX, maxY)
+                            close()
+                        }
 
-                val fillPath = strokePath.copy()
-                    .apply {
-                        lineTo(lastX, maxY)
-                        lineTo(firstX, maxY)
-                        close()
-                    }
-
-                drawPath(
-                    path = fillPath,
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Green55.copy(
-                                alpha = 0.3f
+                    drawPath(
+                        path = fillPath,
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Green55.copy(
+                                    alpha = 0.3f
+                                ),
+                                Color.Transparent
                             ),
-                            Color.Transparent
-                        ),
-                        endY = maxY
+                            endY = maxY
+                        )
                     )
-                )
 
-                drawPath(
-                    path = strokePath,
-                    color = Green55,
-                    style = Stroke(
-                        width = 2.dp.toPx(),
-                        cap = StrokeCap.Round
+                    drawPath(
+                        path = strokePath,
+                        color = Green55,
+                        style = Stroke(
+                            width = 2.dp.toPx(),
+                            cap = StrokeCap.Round
+                        )
                     )
-                )
 
-                touchedPointInPath?.let {
-                    drawPoints(
-                        points = listOf(it),
-                        color = Orange85,
-                        pointMode = PointMode.Points,
-                        cap = StrokeCap.Round,
-                        strokeWidth = 6.dp.toPx()
-                    )
+                    touchedPointInPath?.let {
+                        drawPoints(
+                            points = listOf(it),
+                            color = Orange85,
+                            pointMode = PointMode.Points,
+                            cap = StrokeCap.Round,
+                            strokeWidth = 6.dp.toPx()
+                        )
+                    }
                 }
+
+
+
+                PointerPopup(
+                    isVisibleProvider = { isPointerPopupVisible },
+                    textProvider = {
+                        val sensorDataUnit = sensorItemData.firstOrNull()?.unit ?: ""
+                        val value = computeTouchedPointValue(
+                            lowerBoundDataY = lowerBoundDataY,
+                            upperBoundDataY = upperBoundDataY,
+                            stepPerUnit = stepPerUnit,
+                            maxTouchYCoordinates = mapHeight,
+                            touchPointOffsetY = touchedPointInPath?.y?.toInt()
+                                ?: return@PointerPopup null
+                        )
+                        "$value$sensorDataUnit"
+                    }
+                )
             }
-
-            PointerPopup(
-                isVisibleProvider = { isPointerPopupVisible },
-                textProvider = {
-                    val sensorDataUnit = sensorItemData.firstOrNull()?.unit ?: ""
-                    val value = computeTouchedPointValue(
-                        lowerBoundDataY = lowerBoundDataY,
-                        upperBoundDataY = upperBoundDataY,
-                        stepPerUnit = stepPerUnit,
-                        maxTouchYCoordinates = mapHeight,
-                        touchPointOffsetY = touchedPointInPath?.y?.toInt()
-                            ?: return@PointerPopup null
-                    )
-                    "$value$sensorDataUnit"
-                }
-            )
         }
     }
 }
@@ -538,6 +567,27 @@ private fun SensorDataGraphPreview() {
             )
         }
 
+    }
+}
+
+@Preview
+@Composable
+private fun SensorDataGraphEmptyPreview() {
+    val baseDayOfTheYear = remember {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -6)
+        calendar.get(Calendar.DAY_OF_YEAR)
+    }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(color = Grey69)
+            .padding(16.dp)
+    ) {
+        SensorDataGraph(
+            sensorItemData = persistentListOf(),
+            baseDayOfTheYear = baseDayOfTheYear
+        )
     }
 }
 

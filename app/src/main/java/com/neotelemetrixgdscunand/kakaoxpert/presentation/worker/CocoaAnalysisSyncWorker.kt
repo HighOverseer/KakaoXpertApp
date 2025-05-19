@@ -65,8 +65,8 @@ class CocoaAnalysisSyncWorker @AssistedInject constructor(
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle(context.getString(R.string.syncing_data))
-            .setContentText(context.getString(R.string.just_need_a_moment))
+            .setContentTitle(context.getString(R.string.app_name))
+            .setContentText(context.getString(R.string.syncing_data))
             .setSmallIcon(R.drawable.ic_logo)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setAutoCancel(false)

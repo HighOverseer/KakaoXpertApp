@@ -158,8 +158,8 @@ fun HomeDiagnosisHistory(
                     .padding(horizontal = 4.dp, vertical = 2.dp)
             ) {
                 Image(
-                    modifier = Modifier.size(12.dp),
-                    imageVector = Icons.Default.Refresh,
+                    modifier = Modifier.size(8.dp),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_sync),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(Color.White)
                 )

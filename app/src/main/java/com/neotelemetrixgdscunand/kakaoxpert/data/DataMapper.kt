@@ -3,6 +3,9 @@ package com.neotelemetrixgdscunand.kakaoxpert.data
 import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.DetectedCocoaDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.IoTDataDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.IoTDataOverviewDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.IoTDeviceDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsDetailsDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsItemDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.ShopItemDto
@@ -10,8 +13,11 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDataOverview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -41,6 +47,53 @@ object DataMapper {
             time = time,
             imageUrl = newsItemDto.imageUrl ?: return null,
             headline = newsItemDto.headline ?: return null
+        )
+    }
+
+    fun mapIoTDeviceDtoToDomain(ioTDeviceDto: IoTDeviceDto):IoTDevice?{
+        return IoTDevice(
+            id = ioTDeviceDto.iotDeviceId ?: return null,
+            name = "IoT Device ${ioTDeviceDto.iotDeviceId}"
+        )
+    }
+
+    fun mapIoTDataOverviewDtoToDomain(
+        ioTDataOverviewDto: IoTDataOverviewDto
+    ):IoTDataOverview{
+        return IoTDataOverview(
+            averageTemperatureValue = ioTDataOverviewDto.temperatureValue ?: 0f,
+            averageHumidityValue = ioTDataOverviewDto.humidityValue ?: 0f,
+            averageLightIntensityValue = ioTDataOverviewDto.lightIntensityValue ?: 0f
+        )
+    }
+
+    fun mapIoTDataDtoToDomain(
+        ioTDataDto: IoTDataDto
+    ):Triple<SensorItemData.Temperature, SensorItemData.Humidity, SensorItemData.LightIntensity>?{
+
+        val dateDateString = ioTDataDto.date ?: return null
+        val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        val sdf = SimpleDateFormat(datePattern, Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+
+        val date = try {
+            sdf.parse(dateDateString)
+        } catch (e: ParseException) {
+            return null
+        }
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val timeInMillis = calendar.timeInMillis
+
+        val temperatureSensorData = SensorItemData.Temperature(value = ioTDataDto.temperatureValue ?: return null, timeInMillis = timeInMillis)
+        val humiditySensorData = SensorItemData.Humidity(value = ioTDataDto.humidityValue?: return null, timeInMillis)
+        val lightIntensitySensorData = SensorItemData.LightIntensity(value = ioTDataDto.lightIntensityValue?:return null, timeInMillis)
+
+        return Triple(
+            temperatureSensorData,
+            humiditySensorData,
+            lightIntensitySensorData
         )
     }
 

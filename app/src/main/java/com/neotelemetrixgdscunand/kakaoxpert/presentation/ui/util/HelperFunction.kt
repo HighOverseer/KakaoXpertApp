@@ -37,3 +37,7 @@ fun StringRes.getValue(context: Context): String {
     }
 }
 
+
+fun Float.formatFloat(): Number {
+    return if (this % 1.0f == 0.0f) this.toInt() else this
+}

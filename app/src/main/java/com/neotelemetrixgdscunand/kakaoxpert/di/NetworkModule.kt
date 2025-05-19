@@ -4,6 +4,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthInterceptor
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.CocoaAnalysisApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.IoTDeviceService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.NewsApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ShopApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.WeatherApiService
@@ -105,5 +106,18 @@ class NetworkModule {
             .client(client)
             .build()
             .create(AuthApiService::class.java)
+    }
+
+    @Provides
+    fun provideIoTDeviceService(
+        client: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): IoTDeviceService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .client(client)
+            .build()
+            .create(IoTDeviceService::class.java)
     }
 }

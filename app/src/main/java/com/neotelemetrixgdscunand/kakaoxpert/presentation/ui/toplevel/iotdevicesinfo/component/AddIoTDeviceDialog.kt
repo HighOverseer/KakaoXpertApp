@@ -45,12 +45,9 @@ fun AddIoTDeviceDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
     isShownProvider: () -> Boolean = { true },
-    onSubmit: () -> Unit = { },
+    onSubmit: (String, String) -> Unit = {_, _ -> },
 ) {
     if (isShownProvider()) {
-        var deviceNameText by rememberSaveable {
-            mutableStateOf("")
-        }
 
         var deviceIdText by rememberSaveable {
             mutableStateOf("")
@@ -96,21 +93,7 @@ fun AddIoTDeviceDialog(
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 32.dp)
                 ) {
-
-                    PrimaryTextField(
-                        contentPadding = PaddingValues(vertical = 13.5.dp, horizontal = 16.dp),
-                        valueProvider = { deviceNameText },
-                        hintText = stringResource(R.string.nama_perangkat_baru),
-                        onValueChange = { deviceNameText = it },
-                        textColor = Black10,
-                        backgroundColor = Grey90,
-                        isFocusedProvider = { isDeviceNameTextFieldFocused },
-                        interactionSource = deviceNameTextFieldInteractionSource,
-                        isBordered = false
-                    )
-
-                    Spacer(Modifier.height(24.dp))
-
+                    
                     PrimaryTextField(
                         contentPadding = PaddingValues(vertical = 13.5.dp, horizontal = 16.dp),
                         valueProvider = { deviceIdText },
@@ -173,7 +156,9 @@ fun AddIoTDeviceDialog(
                             modifier = Modifier.weight(1f),
                             text = stringResource(R.string.selesai),
                             contentPadding = PaddingValues(vertical = 14.dp),
-                            onClick = onSubmit,
+                            onClick = {
+                                onSubmit(deviceIdText, deviceKeyText)
+                            },
                         )
 
                     }

@@ -11,6 +11,8 @@ sealed interface DataError : Error {
             BAD_REQUEST,
             UNAUTHORIZED,
             FORBIDDEN,
+            NOT_FOUND,
+            RESOURCE_CONFLICT,
             SERVER_UNAVAILABLE,
             INTERNAL_SERVER_ERROR,
             UNEXPECTED_ERROR

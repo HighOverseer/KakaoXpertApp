@@ -157,7 +157,8 @@ fun MainPage(
 
                 composable<Navigation.Main.IoTDevicesInfo> {
                     IoTDevicesInfoScreen(
-                        navigateToSensorDataDetails = navigateToSensorDataDetails
+                        navigateToSensorDataDetails = navigateToSensorDataDetails,
+                        showSnackbar = showSnackbar
                     )
                 }
 
