@@ -17,7 +17,10 @@ interface CocoaAnalysisRepository {
         detectedCocoas: List<DetectedCocoa>
     ): Int
 
-    fun getAllSessionPreviews(query: String = "", category: SearchAnalysisHistoryCategory = SearchAnalysisHistoryCategory.ALL): Flow<PagingData<AnalysisSessionPreview>>
+    fun getAllSessionPreviews(
+        query: String = "",
+        category: SearchAnalysisHistoryCategory = SearchAnalysisHistoryCategory.ALL
+    ): Flow<PagingData<AnalysisSessionPreview>>
 
     fun getSomeSessionPreviews(): Flow<List<AnalysisSessionPreview>>
 

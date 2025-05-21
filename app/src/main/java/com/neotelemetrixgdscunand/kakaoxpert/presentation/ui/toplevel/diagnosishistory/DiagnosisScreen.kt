@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -102,7 +101,7 @@ fun DiagnosisContent(
     navigateToTakePhoto: () -> Unit = { },
     bottomBarHeightPxProvider: () -> Int = { 0 },
     searchBarQueryProvider: () -> String = { "" },
-    onSearchBarQueryChange:(String) -> Unit = { },
+    onSearchBarQueryChange: (String) -> Unit = { },
     analysisSessionPreviews: LazyPagingItems<AnalysisSessionPreviewDui>,
     selectedSearchAnalysisHistoryCategoryProvider: () -> SearchAnalysisHistoryCategory = { SearchAnalysisHistoryCategory.ALL },
     onSelectedSearchAnalysisCategoryChanged: (SearchAnalysisHistoryCategory) -> Unit = { }
@@ -124,16 +123,18 @@ fun DiagnosisContent(
         }
         val maxQueryLength = 30
         val searchBarPositionInList = 1
-        var scrollSearchBarToTopJob:Job? = remember { null }
-        val onSearchBarTapped: () -> Unit = remember {{
-            scrollSearchBarToTopJob?.cancel()
-            scrollSearchBarToTopJob = coroutineScope.launch {
-                parentListState.scrollToItem(searchBarPositionInList)
+        var scrollSearchBarToTopJob: Job? = remember { null }
+        val onSearchBarTapped: () -> Unit = remember {
+            {
+                scrollSearchBarToTopJob?.cancel()
+                scrollSearchBarToTopJob = coroutineScope.launch {
+                    parentListState.scrollToItem(searchBarPositionInList)
+                }
             }
-        } }
+        }
 
         val isEmptyInfoShown by remember {
-            derivedStateOf{
+            derivedStateOf {
                 analysisSessionPreviews.itemCount == 0
             }
         }
@@ -206,7 +207,7 @@ fun DiagnosisContent(
                     SearchBar(
                         queryProvider = searchBarQueryProvider,
                         onQueryChange = { newQuery ->
-                            if(newQuery.length <= maxQueryLength){
+                            if (newQuery.length <= maxQueryLength) {
                                 onSearchBarQueryChange(newQuery)
                             }
                         },
@@ -245,9 +246,9 @@ fun DiagnosisContent(
                 Spacer(Modifier.height(8.dp))
             }
 
-            if(isEmptyInfoShown){
+            if (isEmptyInfoShown) {
                 item {
-                    Column(Modifier.fillMaxWidth()){
+                    Column(Modifier.fillMaxWidth()) {
                         Spacer(Modifier.height(32.dp))
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -257,7 +258,7 @@ fun DiagnosisContent(
                         )
                     }
                 }
-            }else{
+            } else {
                 items(
                     analysisSessionPreviews.itemCount,
                     key = { index: Int -> analysisSessionPreviews[index]?.id ?: -1 }) {
@@ -290,7 +291,6 @@ fun DiagnosisContent(
                 )
             }
         }
-
 
 
         val onScrollUpButtonClicked: () -> Unit = remember {

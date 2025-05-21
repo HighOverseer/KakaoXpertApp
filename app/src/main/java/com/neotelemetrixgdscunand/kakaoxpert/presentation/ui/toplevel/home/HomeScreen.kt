@@ -74,7 +74,7 @@ fun HomeScreen(
     navigateToNewsDetail: (Int) -> Unit = {},
     navigateToDiagnosisResult: (Int) -> Unit = { _ -> },
     navigateToNotification: () -> Unit = {},
-    navigateToAnalysisHistoryMenu : () -> Unit = {},
+    navigateToAnalysisHistoryMenu: () -> Unit = {},
     showSnackbar: (String) -> Unit = {}
 ) {
 

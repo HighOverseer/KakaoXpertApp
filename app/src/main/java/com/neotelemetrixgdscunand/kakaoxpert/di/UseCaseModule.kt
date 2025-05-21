@@ -28,7 +28,11 @@ class UseCaseModule {
         cocoaImageDetectorHelper: CocoaImageDetectorHelper,
         cocoaPricePredictionHelper: CocoaPricePredictionHelper
     ): AnalysisCocoaUseCase {
-        return AnalysisCocoaInteractor(cocoaImageDetectorHelper, cocoaPricePredictionHelper, cocoaAnalysisRepository)
+        return AnalysisCocoaInteractor(
+            cocoaImageDetectorHelper,
+            cocoaPricePredictionHelper,
+            cocoaAnalysisRepository
+        )
     }
 
     @Provides

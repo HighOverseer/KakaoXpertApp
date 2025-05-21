@@ -39,6 +39,6 @@ fun StringRes.getValue(context: Context): String {
 }
 
 
-fun Float.formatFloat(n:Int = 2): Number {
+fun Float.formatFloat(n: Int = 2): Number {
     return if (this % 1.0f == 0.0f) this.toInt() else this.roundOffDecimal(n = n)
 }

@@ -52,11 +52,13 @@ class AnalysisCocoaInteractor(
                     )
                 }
 
-                val predictedPricesResult = cocoaPricePredictionHelper.predict(imagePath, result.boundingBoxes)
-                when(predictedPricesResult){
+                val predictedPricesResult =
+                    cocoaPricePredictionHelper.predict(imagePath, result.boundingBoxes)
+                when (predictedPricesResult) {
                     is CocoaPredictionResult.Error -> {
                         return Result.Error(CocoaAnalysisError.FAILED_TO_DETECT_COCOA)
                     }
+
                     is CocoaPredictionResult.Success -> {
                         val predictedPrices = predictedPricesResult.prices
                         println("predictedPrices: $predictedPrices")

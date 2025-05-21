@@ -10,7 +10,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -33,17 +32,18 @@ class DiagnosisViewModel @Inject constructor(
     val selectedSearchCategory = _selectedSearchCategory.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val diagnosisHistoryPreview = _searchQuery.combine(selectedSearchCategory){ query, selectedSearchCategory ->
-        Pair(query, selectedSearchCategory)
-    }.flatMapLatest { (searchQuery, selectedSearchCategory) ->
-        cocoaAnalysisRepository.getAllSessionPreviews(searchQuery, selectedSearchCategory)
-            .map { pagingData ->
-                pagingData.map {
-                    duiMapper.mapDiagnosisSessionPreviewToDui(it)
+    val diagnosisHistoryPreview =
+        _searchQuery.combine(selectedSearchCategory) { query, selectedSearchCategory ->
+            Pair(query, selectedSearchCategory)
+        }.flatMapLatest { (searchQuery, selectedSearchCategory) ->
+            cocoaAnalysisRepository.getAllSessionPreviews(searchQuery, selectedSearchCategory)
+                .map { pagingData ->
+                    pagingData.map {
+                        duiMapper.mapDiagnosisSessionPreviewToDui(it)
+                    }
                 }
-            }
-    }.flowOn(Dispatchers.Default)
-        .cachedIn(viewModelScope)
+        }.flowOn(Dispatchers.Default)
+            .cachedIn(viewModelScope)
 
     fun onSearchBarQueryChange(query: String) {
         _searchQuery.update { query }

@@ -7,10 +7,11 @@ import java.util.Calendar
 object QueryUtil {
 
     fun getSearchAnalysisPreviewQuery(
-        searchQuery:String,
-        category:SearchAnalysisHistoryCategory
-    ):SimpleSQLiteQuery{
-        val query = StringBuilder().append("""
+        searchQuery: String,
+        category: SearchAnalysisHistoryCategory
+    ): SimpleSQLiteQuery {
+        val query = StringBuilder().append(
+            """
         SELECT * FROM
             (
                 SELECT preview.session_id, 
@@ -41,13 +42,14 @@ object QueryUtil {
                 1 AS is_details_available_in_local_db
                 FROM unsaved_cocoa_analysis AS unsaved
             ) AS final
-    """)
+    """
+        )
 
         val arguments = mutableListOf<Any>()
         query.append(" WHERE final.session_name LIKE '%' || ? || '%'")
         arguments.add(searchQuery)
 
-        val timeThreshold = when(category){
+        val timeThreshold = when (category) {
             SearchAnalysisHistoryCategory.TODAY -> {
                 val calendar = Calendar.getInstance()
                 calendar[Calendar.HOUR_OF_DAY] = 0
@@ -58,6 +60,7 @@ object QueryUtil {
                 val todayTimeThreshold = calendar.timeInMillis
                 todayTimeThreshold
             }
+
             SearchAnalysisHistoryCategory.WEEK -> {
                 val calendar = Calendar.getInstance()
                 calendar[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
@@ -69,6 +72,7 @@ object QueryUtil {
                 val weekTimeThreshold = calendar.timeInMillis
                 weekTimeThreshold
             }
+
             SearchAnalysisHistoryCategory.MONTH -> {
                 val calendar = Calendar.getInstance()
                 calendar[Calendar.DAY_OF_MONTH] = 1
@@ -80,6 +84,7 @@ object QueryUtil {
                 val monthTimeThreshold = calendar.timeInMillis
                 monthTimeThreshold
             }
+
             SearchAnalysisHistoryCategory.ALL -> {
                 //No Time Filter Needed
                 null

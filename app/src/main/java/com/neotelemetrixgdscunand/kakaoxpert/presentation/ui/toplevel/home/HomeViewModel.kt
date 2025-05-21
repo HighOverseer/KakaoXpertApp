@@ -9,7 +9,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.IoTDeviceRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.WeatherRepository
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDataOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.Location
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
@@ -17,7 +16,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.WeatherDuiMapper
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDeviceInfoUIEvent
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel

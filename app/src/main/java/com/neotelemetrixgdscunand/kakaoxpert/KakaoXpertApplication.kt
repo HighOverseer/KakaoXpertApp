@@ -10,8 +10,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.worker.CommonWorkerFac
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,7 +20,7 @@ class KakaoXpertApplication : Application(), Configuration.Provider {
     lateinit var workerFactory: CommonWorkerFactory
 
     @Inject
-    lateinit var syncCocoaAnalysisDataUseCase:SyncCocoaAnalysisDataUseCase
+    lateinit var syncCocoaAnalysisDataUseCase: SyncCocoaAnalysisDataUseCase
 
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -37,7 +35,7 @@ class KakaoXpertApplication : Application(), Configuration.Provider {
     }
 
     private fun syncAnyCocoaAnalysisTypeThatNeedTo() {
-        applicationScope.launch(Dispatchers.IO){
+        applicationScope.launch(Dispatchers.IO) {
             for (syncType in CocoaAnalysisSyncType.entries) {
                 val result = syncCocoaAnalysisDataUseCase(syncType)
 

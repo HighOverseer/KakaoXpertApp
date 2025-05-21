@@ -22,13 +22,12 @@ import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.image.ops.TransformToGrayscaleOp
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 class CocoaPricePredictionHelperImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageConverter: ImageConverter
-): CocoaPricePredictionHelper {
+) : CocoaPricePredictionHelper {
 
     private var interpreter: Interpreter? = null
 
@@ -37,7 +36,7 @@ class CocoaPricePredictionHelperImpl @Inject constructor(
     private var numChannel = 0
     //private var numElements = 0
 
-    override suspend fun setup() = withContext(Dispatchers.Default){
+    override suspend fun setup() = withContext(Dispatchers.Default) {
         cleanResource()
 
         val model = FileUtil.loadMappedFile(context, MODEL_PATH)
@@ -55,8 +54,10 @@ class CocoaPricePredictionHelperImpl @Inject constructor(
         numChannel = inputShape[3]
     }
 
-    override suspend fun predict(imagePath: String, boundingBoxes:List<BoundingBox>):CocoaPredictionResult
-    = withContext(Dispatchers.Default) {
+    override suspend fun predict(
+        imagePath: String,
+        boundingBoxes: List<BoundingBox>
+    ): CocoaPredictionResult = withContext(Dispatchers.Default) {
         val isNeedSetupDetectorFirst =
             interpreter == null || tensorWidth == 0 || tensorHeight == 0 || numChannel == 0
         if (isNeedSetupDetectorFirst) {
@@ -104,8 +105,8 @@ class CocoaPricePredictionHelperImpl @Inject constructor(
                 val predictedPrice = output.floatArray.first()
                 predictedPrices.add(predictedPrice)
 
-            }catch (e:Exception){
-                if(e is CancellationException) throw e
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
 
                 return@withContext CocoaPredictionResult.Error(exception = e)
             }
@@ -121,7 +122,7 @@ class CocoaPricePredictionHelperImpl @Inject constructor(
     private fun cropBoundingBoxFromBitmap(
         bitmap: Bitmap,
         box: BoundingBox
-    ):Bitmap{
+    ): Bitmap {
         val left = (box.x1 * bitmap.width).toInt().coerceIn(0, bitmap.width - 1)
         val top = (box.y1 * bitmap.height).toInt().coerceIn(0, bitmap.height - 1)
         val right = (box.x2 * bitmap.width).toInt().coerceIn(left + 1, bitmap.width)
@@ -144,7 +145,7 @@ class CocoaPricePredictionHelperImpl @Inject constructor(
 //        return file // return the File object in case you want to log the path
 //    }
 
-    companion object{
+    companion object {
         private val INPUT_IMAGE_TYPE = DataType.FLOAT32
         private val OUTPUT_IMAGE_TYPE = DataType.FLOAT32
         const val INPUT_MEAN = 0f

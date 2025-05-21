@@ -6,7 +6,7 @@ interface CocoaPricePredictionHelper {
 
     suspend fun setup()
 
-    suspend fun predict(imagePath:String, boundingBoxes:List<BoundingBox>):CocoaPredictionResult
+    suspend fun predict(imagePath: String, boundingBoxes: List<BoundingBox>): CocoaPredictionResult
 
     fun cleanResource()
 }

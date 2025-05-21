@@ -4,7 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import androidx.room.util.query
 import androidx.room.withTransaction
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaAnalysisDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.EntityMapper
