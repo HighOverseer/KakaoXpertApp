@@ -40,7 +40,7 @@
     <string name="berita_mingguan_kamek">Our Weekly News</string>
     <string name="ambil_foto_penyakit_pada_tanaman">Take Photos of Plant Diseases</string>
     <string name="tekan_gambar_di_atas">Tap the Above Image to Take a Photo of the Plant and Let the App Analyze and Provide Solutions.</string>
-    <string name="cari_histori_hasil_diagnosis">Search Analysis Results and Selling Prices Here</string>
+    <string name="cari_histori_hasil_diagnosis">Search analysis session history here..</string>
     <string name="masukkan_password_kamu_disini">Enter Your Password Here</string>
     <string name="semua">All</string>
     <string name="hari_ini">Today</string>
@@ -363,8 +363,8 @@
     <string name="perlu_izin_notifikasi_agar">Notification permission is required for the app to function properly…</string>
     <string name="offline">Offline</string>
     <string name="tersinkron">Synced</string>
-    <string name="device_id_or_device_key_is_blank">Device ID or Device Key is blank</string>
-    <string name="no_device_found">Sorry, no device found…</string>
+    <string name="device_id_or_device_key_is_blank">Device ID or Device Key cannot be blank..</string>
+    <string name="no_device_found">Sorry, no device with given ID, and Key found…</string>
     <string name="perangkat_sudah_ditambahkan">Device has already been added…</string>
 
     <string name="berhasil_menambahkan_perangkat">Device added successfully…</string>

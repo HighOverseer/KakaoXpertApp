@@ -61,9 +61,9 @@ object DataMapper {
         ioTDataOverviewDto: IoTDataOverviewDto
     ): IoTDataOverview {
         return IoTDataOverview(
-            averageTemperatureValue = ioTDataOverviewDto.temperatureValue ?: 0f,
-            averageHumidityValue = ioTDataOverviewDto.humidityValue ?: 0f,
-            averageLightIntensityValue = ioTDataOverviewDto.lightIntensityValue ?: 0f
+            averageTemperatureValue = ioTDataOverviewDto.temperatureValue,
+            averageHumidityValue = ioTDataOverviewDto.humidityValue,
+            averageLightIntensityValue = ioTDataOverviewDto.lightIntensityValue
         )
     }
 

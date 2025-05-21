@@ -7,6 +7,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.AnalysisCocoaInte
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.GetCocoaAnalysisSessionInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.LogoutInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaPricePredictionHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.LogoutUseCase
@@ -24,9 +25,10 @@ class UseCaseModule {
     @ViewModelScoped
     fun provideAnalysisCocoaUseCase(
         cocoaAnalysisRepository: CocoaAnalysisRepository,
-        cocoaImageDetectorHelper: CocoaImageDetectorHelper
+        cocoaImageDetectorHelper: CocoaImageDetectorHelper,
+        cocoaPricePredictionHelper: CocoaPricePredictionHelper
     ): AnalysisCocoaUseCase {
-        return AnalysisCocoaInteractor(cocoaImageDetectorHelper, cocoaAnalysisRepository)
+        return AnalysisCocoaInteractor(cocoaImageDetectorHelper, cocoaPricePredictionHelper, cocoaAnalysisRepository)
     }
 
     @Provides

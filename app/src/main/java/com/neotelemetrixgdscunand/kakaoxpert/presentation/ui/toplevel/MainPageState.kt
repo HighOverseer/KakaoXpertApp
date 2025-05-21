@@ -74,12 +74,12 @@ class MainPageState(
         ) {
             // To have a fresh top level destination instance when navigating in top level
             popUpTo(navHostController.graph.startDestinationId) {
-                //inclusive = nextDestination == Navigation.Main.Home
-                saveState = true
+                inclusive = nextDestination == Navigation.Main.Home
+                saveState = false
 
             }
             launchSingleTop = true
-            restoreState = true
+            restoreState = false
         }
     }
 

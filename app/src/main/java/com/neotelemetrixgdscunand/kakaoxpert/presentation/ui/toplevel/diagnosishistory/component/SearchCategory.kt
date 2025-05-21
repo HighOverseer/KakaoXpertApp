@@ -12,9 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SearchAnalysisHistoryCategory
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey68
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosishistory.getTabText
 
 @Composable
 fun SearchCategory(
@@ -47,7 +49,7 @@ private fun DiagnosisHistoryCategoryPreview() {
     KakaoXpertTheme {
         SearchCategory(
             isSelected = true,
-            text = stringResource(SearchHistoryCategory.ALL.textResId)
+            text = SearchAnalysisHistoryCategory.ALL.getTabText().getValue()
         )
     }
 }

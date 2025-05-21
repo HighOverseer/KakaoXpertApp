@@ -37,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
@@ -73,6 +74,7 @@ fun HomeScreen(
     navigateToNewsDetail: (Int) -> Unit = {},
     navigateToDiagnosisResult: (Int) -> Unit = { _ -> },
     navigateToNotification: () -> Unit = {},
+    navigateToAnalysisHistoryMenu : () -> Unit = {},
     showSnackbar: (String) -> Unit = {}
 ) {
 
@@ -124,6 +126,10 @@ fun HomeScreen(
                 is HomeUIEvent.OnFailedFetchNewsItems -> {
                     showSnackbar(it.errorUIText.getValue(context))
                 }
+
+                is HomeUIEvent.OnFailedGetIoTDataOverview -> {
+                    showSnackbar(it.errorUIText.getValue(context))
+                }
             }
         }
     }
@@ -134,6 +140,7 @@ fun HomeScreen(
     val currentLocation by viewModel.currentLocation.collectAsStateWithLifecycle()
     val newsItems by viewModel.newsItems.collectAsStateWithLifecycle()
     val isLoadingNewsItemsPreview by viewModel.isLoadingNewsItemsPreview.collectAsStateWithLifecycle()
+    val ioTDataOverviewDui by viewModel.iotDataOverview.collectAsStateWithLifecycle()
 
 
     HomeContent(
@@ -145,10 +152,11 @@ fun HomeScreen(
         analysisSessionPreviews = diagnosisSessionPreviews,
         navigateToDiagnosisResult = navigateToDiagnosisResult,
         navigateToNotification = navigateToNotification,
-        showSnackbar = showSnackbar,
+        navigateToAnalysisHistoryMenu = navigateToAnalysisHistoryMenu,
         weatherForecastOverview = weatherForecastOverview,
         currentLocationNameProvider = { currentLocation?.name },
         newsItems = newsItems,
+        ioTDataOverviewDui = ioTDataOverviewDui,
         isLoadingNewsItemsPreviewProvider = { isLoadingNewsItemsPreview }
     )
 }
@@ -166,8 +174,9 @@ fun HomeContent(
     analysisSessionPreviews: ImmutableList<AnalysisSessionPreviewDui> = persistentListOf(),
     navigateToDiagnosisResult: (Int) -> Unit = { _ -> },
     navigateToNotification: () -> Unit = {},
-    showSnackbar: (String) -> Unit = {},
+    navigateToAnalysisHistoryMenu: () -> Unit = { },
     newsItems: ImmutableList<NewsItemDui> = persistentListOf(),
+    ioTDataOverviewDui: IoTDataOverviewDui = IoTDataOverviewDui(),
     isLoadingNewsItemsPreviewProvider: () -> Boolean = { false }
 ) {
 
@@ -205,23 +214,24 @@ fun HomeContent(
             navigateToNews = navigateToNews,
             navigateToShop = navigateToShop,
             navigateToWeather = navigateToWeather,
-            showSnackbar = showSnackbar
+            ioTDataOverviewDui = ioTDataOverviewDui
         )
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(8.dp))
 
         SectionHeadline(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(horizontal = 16.dp),
+                .padding(start = 16.dp, end = 2.dp),
             leadingIconResId = R.drawable.ic_camera_menu,
             trailingIconResId = R.drawable.ic_right_arrow,
+            onTrailingIconClicked = navigateToAnalysisHistoryMenu,
             title = stringResource(R.string.riwayat_diagnosis)
         )
 
         Spacer(
-            Modifier.height(16.dp)
+            Modifier.height(2.dp)
         )
 
         val diagnosisHistoryListState = rememberLazyListState()

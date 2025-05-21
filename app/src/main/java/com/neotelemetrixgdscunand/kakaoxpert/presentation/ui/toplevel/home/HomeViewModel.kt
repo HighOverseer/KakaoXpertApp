@@ -5,15 +5,19 @@ import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.LocationError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.IoTDeviceRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.WeatherRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDataOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.Location
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.WeatherDuiMapper
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDeviceInfoUIEvent
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +49,7 @@ class HomeViewModel @Inject constructor(
     private val locationManager: LocationManager,
     private val weatherMapper: WeatherDuiMapper,
     private val newsRepository: NewsRepository,
+    private val iotDeviceRepository: IoTDeviceRepository,
     private val duiMapper: DuiMapper
 ) : ViewModel() {
 
@@ -80,8 +85,12 @@ class HomeViewModel @Inject constructor(
     private val _isLoadingNewsItemsPreview = MutableStateFlow(false)
     val isLoadingNewsItemsPreview = _isLoadingNewsItemsPreview.asStateFlow()
 
+    private val _iotDataOverview = MutableStateFlow(IoTDataOverviewDui())
+    val iotDataOverview = _iotDataOverview.asStateFlow()
+
     init {
         getNewsItemsPreview()
+        getIoTDataOverview()
     }
 
     private var locationUpdateJob: Job? = null
@@ -155,6 +164,24 @@ class HomeViewModel @Inject constructor(
             SharingStarted.WhileSubscribed(5000),
             null
         )
+
+    private fun getIoTDataOverview() {
+        viewModelScope.launch {
+            when (val result = iotDeviceRepository.getIoTOverviewData()) {
+                is Result.Error -> {
+                    val errorUIText = result.toErrorUIText()
+                    _uiEvent.send(
+                        HomeUIEvent.OnFailedGetIoTDataOverview(errorUIText)
+                    )
+                }
+
+                is Result.Success -> {
+                    val ioTDataOverview = result.data
+                    _iotDataOverview.update { DuiMapper.mapIoTDataOverviewToDui(ioTDataOverview) }
+                }
+            }
+        }
+    }
 
     private fun getNewsItemsPreview() {
         viewModelScope.launch(Dispatchers.Default) {

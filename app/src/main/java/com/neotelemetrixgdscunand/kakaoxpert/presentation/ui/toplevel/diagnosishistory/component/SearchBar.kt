@@ -2,6 +2,8 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosis
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
@@ -17,12 +19,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +37,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey50
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.component.mapConnectivityToIconResId
 
 @Composable
 fun SearchBar(
@@ -40,10 +46,17 @@ fun SearchBar(
     onQueryChange: (String) -> Unit = {},
     hint: String = "",
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    backgroundColor: Color = Color.White
+    backgroundColor: Color = Color.White,
+    onTextFieldTapped: () -> Unit = {}
 ) {
 
     val isSearchBarFocused by interactionSource.collectIsFocusedAsState()
+
+    LaunchedEffect(isSearchBarFocused) {
+        if(isSearchBarFocused){
+            onTextFieldTapped()
+        }
+    }
 
     val localModifier = remember {
         modifier
@@ -64,7 +77,7 @@ fun SearchBar(
         interactionSource = interactionSource,
         decorationBox = @Composable { innerTextField: @Composable () -> Unit ->
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     modifier = Modifier
@@ -79,6 +92,7 @@ fun SearchBar(
 
                 if (!isSearchBarFocused && queryProvider().isEmpty()) {
                     Text(
+                        modifier = Modifier.fillMaxWidth(),
                         text = hint,
                         style = MaterialTheme.typography.labelMedium,
                         color = Grey50
@@ -86,7 +100,8 @@ fun SearchBar(
                 }
 
                 Box(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
                 ) {
                     innerTextField()
                 }

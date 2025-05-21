@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.StringRes
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -38,6 +39,6 @@ fun StringRes.getValue(context: Context): String {
 }
 
 
-fun Float.formatFloat(): Number {
-    return if (this % 1.0f == 0.0f) this.toInt() else this
+fun Float.formatFloat(n:Int = 2): Number {
+    return if (this % 1.0f == 0.0f) this.toInt() else this.roundOffDecimal(n = n)
 }

@@ -7,4 +7,5 @@ sealed interface HomeUIEvent {
     data class OnLocationUnknownError(val errorUIText: UIText) : HomeUIEvent
     data class OnFailedFetchWeatherForecast(val errorUIText: UIText) : HomeUIEvent
     data class OnFailedFetchNewsItems(val errorUIText: UIText) : HomeUIEvent
+    data class OnFailedGetIoTDataOverview(val errorUIText: UIText) : HomeUIEvent
 }

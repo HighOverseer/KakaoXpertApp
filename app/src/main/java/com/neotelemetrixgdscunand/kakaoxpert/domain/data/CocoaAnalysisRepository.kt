@@ -6,6 +6,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SearchAnalysisHistoryCategory
 import kotlinx.coroutines.flow.Flow
 
 interface CocoaAnalysisRepository {
@@ -16,7 +17,7 @@ interface CocoaAnalysisRepository {
         detectedCocoas: List<DetectedCocoa>
     ): Int
 
-    fun getAllSessionPreviews(query: String = ""): Flow<PagingData<AnalysisSessionPreview>>
+    fun getAllSessionPreviews(query: String = "", category: SearchAnalysisHistoryCategory = SearchAnalysisHistoryCategory.ALL): Flow<PagingData<AnalysisSessionPreview>>
 
     fun getSomeSessionPreviews(): Flow<List<AnalysisSessionPreview>>
 

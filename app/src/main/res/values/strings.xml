@@ -40,7 +40,7 @@
     <string name="berita_mingguan_kamek">Berita Mingguan KakaoXpert</string>
     <string name="ambil_foto_penyakit_pada_tanaman">Ambil Foto Penyakit Pada tanaman</string>
     <string name="tekan_gambar_di_atas">Tekan Gambar di Atas untuk memfoto tanaman dan biarkan aplikasi menganalisis serta memberikan solusinya.</string>
-    <string name="cari_histori_hasil_diagnosis">Cari Histori Hasil Analisis dan Harga Jual Disini</string>
+    <string name="cari_histori_hasil_diagnosis">Cari sesi riwayat hasil analisis disini..</string>
     <string name="masukkan_password_kamu_disini">Masukkan Password Kamu disini</string>
     <string name="semua">Semua</string>
     <string name="hari_ini">Hari Ini</string>
@@ -353,9 +353,10 @@
     <string name="perlu_izin_notifikasi_agar">Perlu izin notifikasi agar aplikasi dapat berjalan dengan semestinya…</string>
     <string name="offline">Offline</string>
     <string name="tersinkron">Tersinkron</string>
-    <string name="device_id_or_device_key_is_blank">Device ID or Device Key is blank</string>
-    <string name="no_device_found">Maaf, tidak ada perangkat yang ditemukan..</string>
+    <string name="device_id_or_device_key_is_blank">ID dan Kunci Perangkat tidak boleh kosong..</string>
+    <string name="no_device_found">Maaf, tidak ada perangkat dengan ID dan kunci yang cocok ditemukan..</string>
     <string name="perangkat_sudah_ditambahkan">Perangkat sudah Ditambahkan..</string>
     <string name="berhasil_menambahkan_perangkat">Berhasil menambahkan perangkat..</string>
     <string name="there_is_no_sensor_data_to_show">Tidak ada data sensor yang dapat ditampilkan..</string>
+    <string name="tidak_ada_item_yang_ditemukan">Tidak ada item yang ditemukan</string>
 </resources>

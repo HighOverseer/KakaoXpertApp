@@ -27,6 +27,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
@@ -38,7 +39,7 @@ fun IoTDataOverviewSection(
     navigateToNews: () -> Unit = {},
     navigateToShop: () -> Unit = {},
     navigateToWeather: () -> Unit = {},
-    showSnackbar: (String) -> Unit = {}
+    ioTDataOverviewDui: IoTDataOverviewDui = IoTDataOverviewDui()
 ) {
 
     Column(
@@ -93,7 +94,7 @@ fun IoTDataOverviewSection(
                     .aspectRatio(1.24f),
                 iconResId = R.drawable.ic_thermometer,
                 label = stringResource(R.string.suhu),
-                value = "15-16°C",
+                value = ioTDataOverviewDui.averageTemperatureValue.getValue(),
                 onClick = navigateToWeather
             )
             Spacer(Modifier.width(12.dp))
@@ -104,7 +105,7 @@ fun IoTDataOverviewSection(
                     .aspectRatio(1.24f),
                 iconResId = R.drawable.ic_drop,
                 label = stringResource(R.string.kelembapan),
-                value = "96%",
+                value = ioTDataOverviewDui.averageHumidityValue.getValue(),
                 onClick = navigateToNews
             )
             Spacer(Modifier.width(12.dp))
@@ -115,7 +116,7 @@ fun IoTDataOverviewSection(
                     .aspectRatio(1.24f),
                 iconResId = R.drawable.ic_sun,
                 label = stringResource(R.string.intensitas_cahaya),
-                value = "100 Lux",
+                value = ioTDataOverviewDui.averageLightIntensityValue.getValue(),
                 onClick = navigateToShop
             )
             Spacer(Modifier.width(16.dp))

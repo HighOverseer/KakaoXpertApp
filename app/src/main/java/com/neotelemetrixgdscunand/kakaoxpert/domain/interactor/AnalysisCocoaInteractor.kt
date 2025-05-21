@@ -8,6 +8,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaPredictionResult
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaPricePredictionHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorResult
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import kotlinx.coroutines.ensureActive
@@ -15,6 +17,7 @@ import kotlin.coroutines.coroutineContext
 
 class AnalysisCocoaInteractor(
     private val cacaoImageDetectorHelper: CocoaImageDetectorHelper,
+    private val cocoaPricePredictionHelper: CocoaPricePredictionHelper,
     private val cocoaAnalysisRepository: CocoaAnalysisRepository
 ) : AnalysisCocoaUseCase {
     override suspend fun invoke(
@@ -47,6 +50,17 @@ class AnalysisCocoaInteractor(
                             name = item.label
                         )
                     )
+                }
+
+                val predictedPricesResult = cocoaPricePredictionHelper.predict(imagePath, result.boundingBoxes)
+                when(predictedPricesResult){
+                    is CocoaPredictionResult.Error -> {
+                        return Result.Error(CocoaAnalysisError.FAILED_TO_DETECT_COCOA)
+                    }
+                    is CocoaPredictionResult.Success -> {
+                        val predictedPrices = predictedPricesResult.prices
+                        println("predictedPrices: $predictedPrices")
+                    }
                 }
 
                 coroutineContext.ensureActive()

@@ -147,6 +147,7 @@ class IoTDeviceInfoViewModel @Inject constructor(
             job.invokeOnCompletion {
                 _isLoading.update { false }
                 _uiState.update { it.copy(isAddDeviceDialogShown = false) }
+                getIoTDataOverview()
             }
         }
     }

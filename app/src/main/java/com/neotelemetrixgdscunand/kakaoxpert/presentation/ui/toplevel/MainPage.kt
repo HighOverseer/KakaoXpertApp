@@ -143,6 +143,9 @@ fun MainPage(
                         navigateToNewsDetail = navigateToNewsDetail,
                         navigateToDiagnosisResult = navigateToDiagnosisResult,
                         navigateToNotification = navigateToNotification,
+                        navigateToAnalysisHistoryMenu = {
+                            state.navigateToTopLevel(Navigation.Main.Diagnosis)
+                        },
                         showSnackbar = showSnackbar
                     )
                 }

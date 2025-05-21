@@ -5,9 +5,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Update
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAnalysisPreviewEntity
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCocoaAnalysisEntity
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.relations.CocoaAnalysisPreviewRelation
 import kotlinx.coroutines.flow.Flow
 
@@ -48,44 +52,8 @@ interface CocoaAnalysisPreviewDao {
     )
     suspend fun getFiveOldestWhichNotHaveDetailsYet(): List<Int>
 
-    @Query(
-        """
-        SELECT * FROM
-            (
-                SELECT preview.session_id, 
-                preview.created_at,
-                preview.session_name, 
-                preview.session_image_url AS session_image_url_or_path,
-                preview.predicted_price, 
-                preview.last_synced_time,
-                (
-                    SELECT EXISTS (
-                        SELECT * FROM saved_cocoa_analysis AS saved
-                        WHERE saved.session_id = preview.session_id
-                        LIMIT 1
-                    )
-                ) 
-                AS is_details_available_in_local_db
-                FROM cocoa_analysis_preview AS preview
-                WHERE preview.is_deleted = 0
-                
-                UNION
-                
-                SELECT unsaved.unsaved_session_id AS session_id,
-                unsaved.created_at,
-                unsaved.session_name,
-                unsaved.session_image_path AS session_image_url_or_path,
-                2100 AS predicted_price,
-                0 AS last_synced_time,
-                1 AS is_details_available_in_local_db
-                FROM unsaved_cocoa_analysis AS unsaved
-            ) AS final
-        
-        WHERE final.session_name LIKE '%' || :query || '%'
-        ORDER BY final.created_at DESC
-    """
-    )
-    fun getAllAsPagingSource(query: String): PagingSource<Int, CocoaAnalysisPreviewRelation>
+    @RawQuery(observedEntities = [CocoaAnalysisPreviewEntity::class, SavedCocoaAnalysisEntity::class, UnsavedCocoaAnalysisEntity::class])
+    fun getAllAsPagingSource(query: SupportSQLiteQuery): PagingSource<Int, CocoaAnalysisPreviewRelation>
 
 
     @Query(

@@ -4,9 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import androidx.room.util.query
 import androidx.room.withTransaction
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaAnalysisDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.EntityMapper
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.QueryUtil
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedDetectedCocoaEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedCocoaAnalysisEntity
@@ -21,6 +23,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SearchAnalysisHistoryCategory
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getDetectedDiseaseCacaos
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -226,14 +229,18 @@ class CocoaAnalysisRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getAllSessionPreviews(query: String): Flow<PagingData<AnalysisSessionPreview>> {
+    override fun getAllSessionPreviews(
+        query: String,
+        category: SearchAnalysisHistoryCategory
+    ): Flow<PagingData<AnalysisSessionPreview>> {
+        val rawQuery = QueryUtil.getSearchAnalysisPreviewQuery(query, category)
         return Pager(
             config = PagingConfig(
                 pageSize = CocoaAnalysisRepository.PAGE_SIZE,
                 enablePlaceholders = CocoaAnalysisRepository.ENABLE_PLACE_HOLDERS
             ),
             pagingSourceFactory = {
-                cocoaAnalysisPreviewDao.getAllAsPagingSource(query)
+                cocoaAnalysisPreviewDao.getAllAsPagingSource(rawQuery)
             }
         ).flow
             .flowOn(Dispatchers.IO)
