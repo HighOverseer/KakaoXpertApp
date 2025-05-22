@@ -8,5 +8,5 @@ data class IoTDeviceDto(
     val iotDeviceId: Int? = null,
 
     @field:SerializedName("is_active")
-    val isActive:Boolean? = false
+    val isActive: Boolean? = false
 )

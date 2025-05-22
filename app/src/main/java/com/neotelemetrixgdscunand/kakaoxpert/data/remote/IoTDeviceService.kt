@@ -31,11 +31,11 @@ interface IoTDeviceService {
 
     @GET("sensor-data/{id}")
     suspend fun getDataOfSelectedIoTDevice(
-        @Path("id") iotDeviceId:Int
+        @Path("id") iotDeviceId: Int
     ): Response<List<IoTDataDto>>
 
     @DELETE("user-iot-device/{id}")
     suspend fun deleteSelectedIoTDeviceIdFromAccount(
-        @Path("id") iotDeviceId:Int
+        @Path("id") iotDeviceId: Int
     ): Response<List<IoTDeviceDto>>
 }

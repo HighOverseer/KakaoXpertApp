@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,7 +38,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey69
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Red50
 
 @Composable
 fun IoTDeviceItem(
@@ -96,13 +94,13 @@ fun IoTDeviceItem(
                         ) {
                             Image(
                                 modifier = Modifier.size(8.dp),
-                                imageVector = ImageVector.vectorResource(if(ioTDevice.isActive) R.drawable.ic_checklist else R.drawable.ic_close),
+                                imageVector = ImageVector.vectorResource(if (ioTDevice.isActive) R.drawable.ic_checklist else R.drawable.ic_close),
                                 contentDescription = null,
                                 colorFilter = ColorFilter.tint(Color.White)
                             )
                             Spacer(Modifier.width(4.dp))
                             Text(
-                                text = if(ioTDevice.isActive) stringResource(R.string.aktif) else stringResource(
+                                text = if (ioTDevice.isActive) stringResource(R.string.aktif) else stringResource(
                                     R.string.tidak_aktif
                                 ),
                                 color = Color.White,
