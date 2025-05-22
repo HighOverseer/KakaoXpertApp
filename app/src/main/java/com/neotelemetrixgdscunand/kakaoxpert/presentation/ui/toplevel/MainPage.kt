@@ -50,7 +50,7 @@ fun MainPage(
     navigateToNotification: () -> Unit = {},
     navigateToTakePhoto: () -> Unit = {},
     navigateToProfile: () -> Unit = {},
-    navigateToSensorDataDetails: () -> Unit = {},
+    navigateToSensorDataDetails: (Int?, String?) -> Unit = {_, _ -> },
     navigateToAuth: (String) -> Unit = {},
     isLocationPermissionGrantedProvider: () -> Boolean? = { false },
     checkLocationPermission: (Context, ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>) -> Unit = { _, _ -> },

@@ -80,4 +80,38 @@ class IoTDeviceRepositoryImpl @Inject constructor(
             Result.Success(ioTDataOverview)
         }
     }
+
+    override suspend fun getIoTDataOfSelectedDevice(iotDeviceId: Int): Result<List<SensorItemData>, DataError.NetworkError> {
+        return callApiFromNetwork {
+            val response = iotDeviceService.getDataOfSelectedIoTDevice(iotDeviceId)
+            val ioTDataDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
+
+            val sensorItemDatas = mutableListOf<SensorItemData>()
+            ioTDataDto.forEach { dto ->
+                dataMapper.mapIoTDataDtoToDomain(dto)?.also {
+                    sensorItemDatas.addAll(
+                        listOf(it.first, it.second, it.third)
+                    )
+                }
+            }
+
+            return@callApiFromNetwork Result.Success(sensorItemDatas)
+        }
+    }
+
+    override suspend fun deleteIoTDeviceFromAccount(deviceId: Int): Result<List<IoTDevice>, DataError.NetworkError> {
+        return callApiFromNetwork {
+            val response = iotDeviceService.deleteSelectedIoTDeviceIdFromAccount(deviceId)
+            val iotDevicesDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
+            val iotDevices = iotDevicesDto.mapNotNull {
+                dataMapper.mapIoTDeviceDtoToDomain(it)
+            }
+
+            Result.Success(iotDevices)
+        }
+    }
 }

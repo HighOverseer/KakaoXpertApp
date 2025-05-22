@@ -241,7 +241,6 @@ fun HomeContent(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             state = diagnosisHistoryListState
         ) {
-            println(analysisSessionPreviews.map { "${it.id}, ${it.title}" })
             items(analysisSessionPreviews, { it.id }) { item ->
                 HomeDiagnosisHistory(
                     modifier = Modifier

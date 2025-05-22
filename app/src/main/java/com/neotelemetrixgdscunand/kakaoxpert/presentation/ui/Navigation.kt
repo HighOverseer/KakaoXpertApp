@@ -98,6 +98,6 @@ sealed interface Navigation {
     data object Profile : Route
 
     @Serializable
-    data object SensorDataDetails : Route
+    data class  SensorDataDetails(val iotDeviceId:Int? = null, val iotDeviceName:String? = null) : Route // id will null if its overview
 }
 

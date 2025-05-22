@@ -17,4 +17,10 @@ interface IoTDeviceRepository {
     suspend fun getAllConnectedIoTDevices(): Result<List<IoTDevice>, DataError.NetworkError>
 
     suspend fun getAllIoTData(): Result<List<SensorItemData>, DataError.NetworkError>
+
+    suspend fun getIoTDataOfSelectedDevice(iotDeviceId:Int):Result<List<SensorItemData>, DataError.NetworkError>
+
+    suspend fun deleteIoTDeviceFromAccount(
+        deviceId: Int,
+    ): Result<List<IoTDevice>, DataError.NetworkError>
 }

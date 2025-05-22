@@ -18,6 +18,8 @@ val Green58 = Color(0xFF368219)
 val Green55Alpha70 = Green55.copy(alpha = 0.7f)
 
 val Red = Color(0xFFDF1206)
+val Red50 = Color(0xFFD32F2F)
+
 
 val Grey60 = Color(0xFF908E8E)
 val Grey68 = Color(0xFFBEBEBE)

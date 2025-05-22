@@ -6,6 +6,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.IoTDeviceRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
@@ -54,6 +55,18 @@ class IoTDeviceInfoViewModel @Inject constructor(
         }
     }
 
+    fun showDeviceDetailDialog(selectedIoTDevice: IoTDevice){
+        _uiState.update {
+            it.copy(selectedDeviceForDetailDialog = selectedIoTDevice)
+        }
+    }
+
+    fun dismissDeviceDetailDialog(){
+        _uiState.update {
+            it.copy(selectedDeviceForDetailDialog = null)
+        }
+    }
+
     private fun getIoTDataOverview() {
         viewModelScope.launch {
             when (val result = iotDeviceRepository.getIoTOverviewData()) {
@@ -86,6 +99,31 @@ class IoTDeviceInfoViewModel @Inject constructor(
                     }
                     _event.send(
                         IoTDeviceInfoUIEvent.OnFailedAddingDeviceIoT(errorUIText)
+                    )
+                }
+
+                is Result.Success -> {
+                    val iotDevices = result.data
+                    _uiState.update {
+                        it.copy(
+                            connectedDevices = iotDevices.toImmutableList()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deleteSelectedIoTDevice(iotDeviceId:Int) {
+        viewModelScope.launch {
+            when (val result = iotDeviceRepository.deleteIoTDeviceFromAccount(iotDeviceId)) {
+                is Result.Error -> {
+                    val errorUIText = when (result.error) {
+                        RootNetworkError.NOT_FOUND -> return@launch
+                        else -> result.toErrorUIText()
+                    }
+                    _event.send(
+                        IoTDeviceInfoUIEvent.OnFailedDeletingIoTDeviceIdFromAccount(errorUIText)
                     )
                 }
 

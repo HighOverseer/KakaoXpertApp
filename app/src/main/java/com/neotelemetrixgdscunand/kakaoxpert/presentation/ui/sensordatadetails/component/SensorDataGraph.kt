@@ -413,8 +413,12 @@ fun SensorDataGraph(
                                         baseDayOfTheYear = baseDayOfTheYear
                                     ) * spacePerDay + 2.dp.toPx()
                                 val y1 = (height - initialYAxisBottomPadding) * yValueRatio
+//                                if(sensorItemData.firstOrNull() is SensorItemData.Temperature){
+//                                    println("x1 : $x1, y1 : $y1")
+//                                }
 
-                                if (i == 0) {
+                                //Check if firstX is in its initial Value (0f)
+                                if (firstX == 0f) {
                                     moveTo(x1, y1)
                                     firstX = x1
                                 }
@@ -712,9 +716,7 @@ private fun SensorDataGraphTest(
 //                        )
 
                         if (i == 0) {
-                            println(
-                                "move x1 : $x1, y1 : $y1\n day : ${data.getDayInFraction()}"
-                            )
+
                             moveTo(x1, y1)
                         }
                         lastX = (x1 + x2) / 2f
@@ -742,9 +744,7 @@ private fun SensorDataGraphTest(
 
                 // 15.dp and 8.dp in the code below, is random number after some testing, to keep the horizontal line of each point exacly match the y axis
                 val y = ((size.height - 32.dp.toPx() - 15.dp.toPx()) * leftRatio) + 8.dp.toPx()
-                println(
-                    "x1 : $x, y1 : $y"
-                )
+
                 Offset(x = x, y = y)
             }.apply {
                 this.forEach {

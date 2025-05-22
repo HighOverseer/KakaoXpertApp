@@ -119,7 +119,8 @@ fun BottomBarTakePhoto(
                 TertiaryButton(
                     modifier = Modifier
                         .height(33.dp)
-                        .alignByBaseline()
+                        .alignByBaseline(),
+                    text = stringResource(R.string.selesai)
                 )
                 Spacer(
                     Modifier.width(bottomBarMarginEnd)

@@ -359,4 +359,11 @@
     <string name="berhasil_menambahkan_perangkat">Berhasil menambahkan perangkat..</string>
     <string name="there_is_no_sensor_data_to_show">Tidak ada data sensor yang dapat ditampilkan..</string>
     <string name="tidak_ada_item_yang_ditemukan">Tidak ada item yang ditemukan</string>
+    <string name="nama_perangkat">Nama Perangkat</string>
+    <string name="id_perangkat">ID Perangkat</string>
+    <string name="reset">Reset</string>
+    <string name="hapus">Hapus</string>
+    <string name="status">Status</string>
+    <string name="aktif">Aktif</string>
+    <string name="tidak_aktif">Tidak Aktif</string>
 </resources>

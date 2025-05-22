@@ -61,11 +61,6 @@ fun AddIoTDeviceDialog(
             mutableStateOf(false)
         }
 
-        val deviceNameTextFieldInteractionSource = remember {
-            MutableInteractionSource()
-        }
-        val isDeviceNameTextFieldFocused by deviceNameTextFieldInteractionSource.collectIsFocusedAsState()
-
         val deviceIdTextFieldInteractionSource = remember {
             MutableInteractionSource()
         }

@@ -279,9 +279,9 @@ fun KakaoXpertApp(
                             }
                         }
                     },
-                    navigateToSensorDataDetails = {
+                    navigateToSensorDataDetails = { iotDeviceId, iotDeviceName ->
                         rootNavHostController.navigate(
-                            Navigation.SensorDataDetails
+                            Navigation.SensorDataDetails(iotDeviceId, iotDeviceName)
                         )
                     }
                 )

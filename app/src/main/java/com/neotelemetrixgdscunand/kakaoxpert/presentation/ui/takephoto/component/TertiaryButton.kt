@@ -21,6 +21,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 fun TertiaryButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
+    text: String = "",
     cornerRadius: Dp = 4.dp
 ) {
     Button(
@@ -35,7 +36,7 @@ fun TertiaryButton(
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) {
         Text(
-            stringResource(R.string.selesai),
+            text,
             style = MaterialTheme.typography.labelMedium,
             color = Black10
         )

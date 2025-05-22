@@ -1,10 +1,13 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.sensordatadetails
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.IoTDeviceRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.Navigation
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.toErrorUIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -22,8 +25,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SensorDataDetailViewModel @Inject constructor(
-    private val ioTDeviceRepository: IoTDeviceRepository
+    private val ioTDeviceRepository: IoTDeviceRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val isOverview:Boolean
 
     private val _uiEvent = Channel<SensorDataDetailUIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -40,14 +46,28 @@ class SensorDataDetailViewModel @Inject constructor(
         MutableStateFlow<ImmutableList<SensorItemData.LightIntensity>>(persistentListOf())
     val lightIntensitySensorData = _lightIntensitySensorData.asStateFlow()
 
+    var iotDeviceName:String? = null
+        private set
 
     init {
-        getAllSensorData()
+        val extras = savedStateHandle.toRoute<Navigation.SensorDataDetails>()
+        isOverview = extras.iotDeviceId == null || extras.iotDeviceName == null
+
+        if(!isOverview){
+            iotDeviceName = extras.iotDeviceName
+        }
+
+        getAllSensorData(extras.iotDeviceId)
     }
 
-    private fun getAllSensorData() {
+    private fun getAllSensorData(iotDeviceId: Int? = null) {
+
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = ioTDeviceRepository.getAllIoTData()) {
+            val result = if(iotDeviceId == null) {
+                ioTDeviceRepository.getAllIoTData()
+            } else ioTDeviceRepository.getIoTDataOfSelectedDevice(iotDeviceId)
+
+            when (result) {
                 is Result.Error -> {
                     val errorUIText = result.toErrorUIText()
                     _uiEvent.send(
@@ -60,6 +80,7 @@ class SensorDataDetailViewModel @Inject constructor(
                     withContext(Dispatchers.Default) {
                         val temperatureSensorData =
                             sensorsData.filterIsInstance<SensorItemData.Temperature>()
+                        //println(temperatureSensorData)
                         val humiditySensorData =
                             sensorsData.filterIsInstance<SensorItemData.Humidity>()
                         val lightIntensitySensorData =

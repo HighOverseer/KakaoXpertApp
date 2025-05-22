@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
@@ -39,6 +40,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.IoTDataOverviewMenu
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.AddIoTDeviceDialog
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.AddIoTDeviceSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.IoTDeviceDetailDialog
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.IoTDeviceItem
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.SeeMoreMenu
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
@@ -46,7 +48,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWh
 @Composable
 fun IoTDevicesInfoScreen(
     modifier: Modifier = Modifier,
-    navigateToSensorDataDetails: () -> Unit = {},
+    navigateToSensorDataDetails: (Int?, String?) -> Unit = {_, _ -> },
     showSnackbar: (String) -> Unit = {},
     viewModel: IoTDeviceInfoViewModel = hiltViewModel()
 ) {
@@ -75,6 +77,9 @@ fun IoTDevicesInfoScreen(
                 is IoTDeviceInfoUIEvent.OnFailedGetIoTDataOverview -> {
                     showSnackbar(it.errorUIText.getValue(context))
                 }
+                is IoTDeviceInfoUIEvent.OnFailedDeletingIoTDeviceIdFromAccount -> {
+                    showSnackbar(it.errorUIText.getValue(context))
+                }
             }
         }
     }
@@ -87,7 +92,9 @@ fun IoTDevicesInfoScreen(
         uiState = uiState,
         onShowAddDeviceDialog = viewModel::showAddIoTDeviceDialog,
         onSubmitAddDevice = viewModel::addIoTDeviceToAccount,
-        onDismissAddDeviceDialog = viewModel::dismissAddIoTDeviceDialog
+        onDismissAddDeviceDialog = viewModel::dismissAddIoTDeviceDialog,
+        onShowDeviceDetailDialog = viewModel::showDeviceDetailDialog,
+        onDismissDeviceDetailDialog = viewModel::dismissDeviceDetailDialog
     )
 }
 
@@ -95,11 +102,13 @@ fun IoTDevicesInfoScreen(
 @Composable
 fun IoTDevicesInfoContent(
     modifier: Modifier = Modifier,
-    navigateToSensorDataDetails: () -> Unit = {},
+    navigateToSensorDataDetails: (Int?, String?) -> Unit = {_, _ -> },
     uiState: IoTDeviceInfoUIState = IoTDeviceInfoUIState(),
     onShowAddDeviceDialog: () -> Unit = {},
     onSubmitAddDevice: (String, String) -> Unit = { _, _ -> },
     onDismissAddDeviceDialog: () -> Unit = {},
+    onShowDeviceDetailDialog:(IoTDevice) -> Unit = { },
+    onDismissDeviceDetailDialog: () -> Unit = { }
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -185,7 +194,7 @@ fun IoTDevicesInfoContent(
                 Modifier
                     .weight(1f)
                     .aspectRatio(1.17f),
-                onClick = navigateToSensorDataDetails
+                onClick = { navigateToSensorDataDetails(null, null) }
             )
         }
 
@@ -219,10 +228,18 @@ fun IoTDevicesInfoContent(
             onClick = onShowAddDeviceDialog
         )
 
-        uiState.connectedDevices.forEach {
+        uiState.connectedDevices.forEach { iotDevice ->
             Spacer(Modifier.height(16.dp))
 
-            IoTDeviceItem(ioTDevice = it)
+            IoTDeviceItem(
+                ioTDevice = iotDevice,
+                onMoreMenuClicked = {
+                    onShowDeviceDetailDialog(iotDevice)
+                },
+                onClick = {
+                    navigateToSensorDataDetails(iotDevice.id, iotDevice.name)
+                }
+            )
         }
 
         Spacer(Modifier.height(32.dp))
@@ -236,6 +253,10 @@ fun IoTDevicesInfoContent(
         onSubmit = onSubmitAddDevice,
     )
 
+    IoTDeviceDetailDialog(
+        ioTDevice = uiState.selectedDeviceForDetailDialog,
+        onDismiss = onDismissDeviceDetailDialog,
+    )
 
 }
 

@@ -53,7 +53,8 @@ object DataMapper {
     fun mapIoTDeviceDtoToDomain(ioTDeviceDto: IoTDeviceDto): IoTDevice? {
         return IoTDevice(
             id = ioTDeviceDto.iotDeviceId ?: return null,
-            name = "IoT Device ${ioTDeviceDto.iotDeviceId}"
+            name = "IoT Device ${ioTDeviceDto.iotDeviceId}",
+            isActive = ioTDeviceDto.isActive ?: return null
         )
     }
 
@@ -83,6 +84,7 @@ object DataMapper {
         }
 
         val calendar = Calendar.getInstance()
+        calendar.timeZone = TimeZone.getDefault()
         calendar.time = date
         val timeInMillis = calendar.timeInMillis
 
@@ -92,6 +94,7 @@ object DataMapper {
         )
         val humiditySensorData =
             SensorItemData.Humidity(value = ioTDataDto.humidityValue ?: return null, timeInMillis)
+
         val lightIntensitySensorData = SensorItemData.LightIntensity(
             value = ioTDataDto.lightIntensityValue ?: return null,
             timeInMillis

@@ -78,7 +78,8 @@ fun SensorDataDetailScreen(
         navigateUp = navigateUp,
         temperatureSensorData = temperatureSensorData,
         humiditySensorData = humiditySensorData,
-        lightIntensitySensorData = lightIntensitySensorData
+        lightIntensitySensorData = lightIntensitySensorData,
+        iotDeviceName = viewModel.iotDeviceName
     )
 
 }
@@ -89,7 +90,8 @@ fun SensorDataDetailContent(
     navigateUp: () -> Unit = {},
     temperatureSensorData: ImmutableList<SensorItemData>,
     humiditySensorData: ImmutableList<SensorItemData>,
-    lightIntensitySensorData: ImmutableList<SensorItemData>
+    lightIntensitySensorData: ImmutableList<SensorItemData>,
+    iotDeviceName: String? = null
 ) {
 
 //    val temperatureSensorItemDatas = remember {
@@ -211,7 +213,7 @@ fun SensorDataDetailContent(
             Text(
                 modifier = Modifier
                     .align(Alignment.Center),
-                text = stringResource(R.string.overview),
+                text = iotDeviceName ?: stringResource(R.string.overview),
                 style = MaterialTheme.typography.headlineSmall,
                 color = Black10
             )
