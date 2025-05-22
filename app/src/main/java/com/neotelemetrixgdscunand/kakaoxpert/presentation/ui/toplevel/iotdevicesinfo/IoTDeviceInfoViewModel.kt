@@ -55,13 +55,13 @@ class IoTDeviceInfoViewModel @Inject constructor(
         }
     }
 
-    fun showDeviceDetailDialog(selectedIoTDevice: IoTDevice){
+    fun showDeviceDetailDialog(selectedIoTDevice: IoTDevice) {
         _uiState.update {
             it.copy(selectedDeviceForDetailDialog = selectedIoTDevice)
         }
     }
 
-    fun dismissDeviceDetailDialog(){
+    fun dismissDeviceDetailDialog() {
         _uiState.update {
             it.copy(selectedDeviceForDetailDialog = null)
         }
@@ -114,7 +114,7 @@ class IoTDeviceInfoViewModel @Inject constructor(
         }
     }
 
-    private fun deleteSelectedIoTDevice(iotDeviceId:Int) {
+    private fun deleteSelectedIoTDevice(iotDeviceId: Int) {
         viewModelScope.launch {
             when (val result = iotDeviceRepository.deleteIoTDeviceFromAccount(iotDeviceId)) {
                 is Result.Error -> {

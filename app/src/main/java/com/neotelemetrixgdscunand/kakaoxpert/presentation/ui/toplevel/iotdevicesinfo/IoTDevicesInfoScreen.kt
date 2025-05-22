@@ -48,7 +48,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWh
 @Composable
 fun IoTDevicesInfoScreen(
     modifier: Modifier = Modifier,
-    navigateToSensorDataDetails: (Int?, String?) -> Unit = {_, _ -> },
+    navigateToSensorDataDetails: (Int?, String?) -> Unit = { _, _ -> },
     showSnackbar: (String) -> Unit = {},
     viewModel: IoTDeviceInfoViewModel = hiltViewModel()
 ) {
@@ -77,6 +77,7 @@ fun IoTDevicesInfoScreen(
                 is IoTDeviceInfoUIEvent.OnFailedGetIoTDataOverview -> {
                     showSnackbar(it.errorUIText.getValue(context))
                 }
+
                 is IoTDeviceInfoUIEvent.OnFailedDeletingIoTDeviceIdFromAccount -> {
                     showSnackbar(it.errorUIText.getValue(context))
                 }
@@ -102,12 +103,12 @@ fun IoTDevicesInfoScreen(
 @Composable
 fun IoTDevicesInfoContent(
     modifier: Modifier = Modifier,
-    navigateToSensorDataDetails: (Int?, String?) -> Unit = {_, _ -> },
+    navigateToSensorDataDetails: (Int?, String?) -> Unit = { _, _ -> },
     uiState: IoTDeviceInfoUIState = IoTDeviceInfoUIState(),
     onShowAddDeviceDialog: () -> Unit = {},
     onSubmitAddDevice: (String, String) -> Unit = { _, _ -> },
     onDismissAddDeviceDialog: () -> Unit = {},
-    onShowDeviceDetailDialog:(IoTDevice) -> Unit = { },
+    onShowDeviceDetailDialog: (IoTDevice) -> Unit = { },
     onDismissDeviceDetailDialog: () -> Unit = { }
 ) {
     val scrollState = rememberScrollState()

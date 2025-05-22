@@ -29,7 +29,7 @@ class SensorDataDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val isOverview:Boolean
+    private val isOverview: Boolean
 
     private val _uiEvent = Channel<SensorDataDetailUIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -46,14 +46,14 @@ class SensorDataDetailViewModel @Inject constructor(
         MutableStateFlow<ImmutableList<SensorItemData.LightIntensity>>(persistentListOf())
     val lightIntensitySensorData = _lightIntensitySensorData.asStateFlow()
 
-    var iotDeviceName:String? = null
+    var iotDeviceName: String? = null
         private set
 
     init {
         val extras = savedStateHandle.toRoute<Navigation.SensorDataDetails>()
         isOverview = extras.iotDeviceId == null || extras.iotDeviceName == null
 
-        if(!isOverview){
+        if (!isOverview) {
             iotDeviceName = extras.iotDeviceName
         }
 
@@ -63,7 +63,7 @@ class SensorDataDetailViewModel @Inject constructor(
     private fun getAllSensorData(iotDeviceId: Int? = null) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result = if(iotDeviceId == null) {
+            val result = if (iotDeviceId == null) {
                 ioTDeviceRepository.getAllIoTData()
             } else ioTDeviceRepository.getIoTDataOfSelectedDevice(iotDeviceId)
 
