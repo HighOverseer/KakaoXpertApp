@@ -230,7 +230,8 @@ object DataMapper {
     fun mapCocoaDiseaseSellPriceInfoEntityToDomain(
         cocoaDiseaseSellPriceInfoEntity: CocoaDiseaseSellPriceInfoEntity
     ): CocoaDiseaseSellPriceInfo? {
-        val disease = CocoaDisease.getDiseaseFromId(cocoaDiseaseSellPriceInfoEntity.diseaseId) ?: return null
+        val disease =
+            CocoaDisease.getDiseaseFromId(cocoaDiseaseSellPriceInfoEntity.diseaseId) ?: return null
         return CocoaDiseaseSellPriceInfo(
             disease = disease,
             highestPrice = cocoaDiseaseSellPriceInfoEntity.highestPrice,

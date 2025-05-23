@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CocoaPriceInfoRepository {
 
-    suspend fun syncAllPricesInfo():Result<Unit, DataError>
+    suspend fun syncAllPricesInfo(): Result<Unit, DataError>
 
     fun getCocoaPriceInfo(): Flow<CocoaAverageSellPriceInfo?>
 }

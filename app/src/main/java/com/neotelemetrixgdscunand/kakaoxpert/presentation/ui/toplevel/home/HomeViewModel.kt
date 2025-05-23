@@ -59,9 +59,9 @@ class HomeViewModel @Inject constructor(
     val cocoaPriceInfo = cocoaPriceInfoRepository.getCocoaPriceInfo()
         .flowOn(Dispatchers.IO)
         .map {
-            if(it != null){
+            if (it != null) {
                 duiMapper.mapCocoaAverageSellPriceInfoToDui(it)
-            }else null
+            } else null
         }
         .flowOn(Dispatchers.Default)
         .stateIn(

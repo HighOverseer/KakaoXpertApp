@@ -133,22 +133,24 @@ object DuiMapper {
 
     fun mapCocoaAverageSellPriceInfoToDui(
         cocoaAverageSellPriceInfo: CocoaAverageSellPriceInfo
-    ):CocoaAverageSellPriceInfoDui{
+    ): CocoaAverageSellPriceInfoDui {
         val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
 
         val currentAveragePrice = cocoaAverageSellPriceInfo.currentAveragePrice.formatFloat().let {
             formatter.format(it)
                 .replace("Rp", "Rp ")
         }
-        val previousAveragePriceFormatted = cocoaAverageSellPriceInfo.previousAveragePrice?.formatFloat()?.let {
-            formatter.format(it)
-                .replace("Rp", "Rp ")
-        }
+        val previousAveragePriceFormatted =
+            cocoaAverageSellPriceInfo.previousAveragePrice?.formatFloat()?.let {
+                formatter.format(it)
+                    .replace("Rp", "Rp ")
+            }
 
         return CocoaAverageSellPriceInfoDui(
             currentAveragePrice = currentAveragePrice,
             previousAveragePrice = previousAveragePriceFormatted,
-            rateFromPrevious = cocoaAverageSellPriceInfo.rateFromPrevious?.times(100f)?.formatFloat()?.toString()
+            rateFromPrevious = cocoaAverageSellPriceInfo.rateFromPrevious?.times(100f)
+                ?.formatFloat()?.toString()
         )
     }
 

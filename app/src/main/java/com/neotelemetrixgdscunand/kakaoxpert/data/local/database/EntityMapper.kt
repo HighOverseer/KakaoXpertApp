@@ -30,7 +30,7 @@ object EntityMapper {
 
     fun mapCocoaSellPriceInfoDtoToEntity(
         cocoaSellPriceInfoDto: CocoaSellPriceInfoDto
-    ): CocoaAverageSellPriceHistoryEntity?{
+    ): CocoaAverageSellPriceHistoryEntity? {
         return CocoaAverageSellPriceHistoryEntity(
             currentAveragePrice = cocoaSellPriceInfoDto.averageSellPrice ?: return null,
             previousAveragePrice = cocoaSellPriceInfoDto.averageSellPricePrevious,
@@ -41,12 +41,13 @@ object EntityMapper {
 
     fun mapCocoaDiseasePriceInfoDtoToEntity(
         cocoaDiseaseSellPriceInfoDto: CocoaDiseaseSellPriceInfoDto
-    ):CocoaDiseaseSellPriceInfoEntity?{
+    ): CocoaDiseaseSellPriceInfoEntity? {
         return CocoaDiseaseSellPriceInfoEntity(
             diseaseId = cocoaDiseaseSellPriceInfoDto.diseaseId ?: return null,
             highestPrice = cocoaDiseaseSellPriceInfoDto.highestPrice ?: return null,
             lowestPrice = cocoaDiseaseSellPriceInfoDto.lowestPrice ?: return null,
-            decreasingRatePerDamageLevel = cocoaDiseaseSellPriceInfoDto.sellPriceDecreasingRatePerOnePercentDamageLevel ?: return null
+            decreasingRatePerDamageLevel = cocoaDiseaseSellPriceInfoDto.sellPriceDecreasingRatePerOnePercentDamageLevel
+                ?: return null
         )
     }
 

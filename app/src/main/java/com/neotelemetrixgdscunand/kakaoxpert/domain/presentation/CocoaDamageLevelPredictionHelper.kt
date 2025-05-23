@@ -6,7 +6,10 @@ interface CocoaDamageLevelPredictionHelper {
 
     suspend fun setup()
 
-    suspend fun predict(imagePath: String, boundingBoxes: List<BoundingBox>): CocoaDamageLevelPredictionResult
+    suspend fun predict(
+        imagePath: String,
+        boundingBoxes: List<BoundingBox>
+    ): CocoaDamageLevelPredictionResult
 
     fun cleanResource()
 }

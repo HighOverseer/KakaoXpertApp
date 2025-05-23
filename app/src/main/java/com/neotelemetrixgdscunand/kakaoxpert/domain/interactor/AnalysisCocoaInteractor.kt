@@ -7,9 +7,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionResult
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionResult
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorResult
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import kotlinx.coroutines.ensureActive

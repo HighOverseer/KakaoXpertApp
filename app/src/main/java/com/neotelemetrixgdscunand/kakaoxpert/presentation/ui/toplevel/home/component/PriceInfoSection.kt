@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceInfo
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.CocoaAverageSellPriceInfoDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
@@ -76,7 +75,7 @@ fun PriceInfoSection(
                 Spacer(Modifier.height(16.dp))
 
                 Text(
-                    cocoaAverageSellPriceInfo ?.currentAveragePrice ?: "Rp -",
+                    cocoaAverageSellPriceInfo?.currentAveragePrice ?: "Rp -",
                     style = MaterialTheme.typography.titleMedium,
                     color = Black10
                 )

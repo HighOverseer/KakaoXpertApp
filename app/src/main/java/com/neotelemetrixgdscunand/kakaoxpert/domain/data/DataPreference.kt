@@ -1,7 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.data
 
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisSyncType
-import kotlinx.coroutines.flow.Flow
 
 interface DataPreference {
 

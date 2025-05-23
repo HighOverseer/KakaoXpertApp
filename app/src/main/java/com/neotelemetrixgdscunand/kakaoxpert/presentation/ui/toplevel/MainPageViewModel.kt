@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainPageViewModel @Inject constructor():ViewModel() {
+class MainPageViewModel @Inject constructor() : ViewModel() {
     private val _userMessage = Channel<String>()
     val userMessage = _userMessage.receiveAsFlow()
 
-    fun showUserMessage(message:String){
+    fun showUserMessage(message: String) {
         viewModelScope.launch {
             _userMessage.send(message)
         }

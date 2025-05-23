@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity("cocoa_average_sell_price_history")
-data class CocoaAverageSellPriceHistoryEntity (
+data class CocoaAverageSellPriceHistoryEntity(
     @ColumnInfo("id")
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
@@ -20,5 +20,5 @@ data class CocoaAverageSellPriceHistoryEntity (
     val rateFromPrevious: Float?,
 
     @ColumnInfo("time")
-    val time:Long,
+    val time: Long,
 )

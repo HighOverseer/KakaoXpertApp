@@ -9,5 +9,5 @@ import kotlinx.collections.immutable.persistentListOf
 data class IoTDeviceInfoUIState(
     val connectedDevices: ImmutableList<IoTDevice> = persistentListOf(),
     val ioTDataOverviewDui: IoTDataOverviewDui = IoTDataOverviewDui(),
-    val isLoading:Boolean = false,
+    val isLoading: Boolean = false,
 )

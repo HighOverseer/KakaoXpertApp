@@ -3,13 +3,11 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.local.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.CocoaAnalysisPreviewDao
-import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.CocoaDiseaseSellPriceInfoDao
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.SavedCocoaAnalysisDao
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.SavedDetectedCocoaDao
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.UnsavedCocoaAnalysisDao
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.dao.UnsavedDetectedCocoaDao
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAnalysisPreviewEntity
-import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaDiseaseSellPriceInfoEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedDetectedCocoaEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedCocoaAnalysisEntity

@@ -36,11 +36,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green60
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey60
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.PrimaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DetectedCacaoImageGrid
 import kotlinx.collections.immutable.ImmutableList

@@ -70,4 +70,4 @@ data class SavedDetectedCocoaEntity(
     @ColumnInfo("bb_coordinate_right")
     val bbCoordinateRight: Float,
 
-)
+    )

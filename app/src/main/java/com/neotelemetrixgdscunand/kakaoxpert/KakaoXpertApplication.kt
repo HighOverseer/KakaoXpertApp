@@ -39,11 +39,11 @@ class KakaoXpertApplication : Application(), Configuration.Provider {
             var syncRequiredSuccess = 0
 
             for (syncType in CocoaAnalysisSyncType.entries) {
-                if(syncRequiredSuccess > 1) break
+                if (syncRequiredSuccess > 1) break
 
                 val result = syncCocoaAnalysisDataUseCase(syncType)
 
-                if(result is Result.Success && result.data == SyncSuccess.NORMAL){
+                if (result is Result.Success && result.data == SyncSuccess.NORMAL) {
                     syncRequiredSuccess += 1
                     continue
                 }

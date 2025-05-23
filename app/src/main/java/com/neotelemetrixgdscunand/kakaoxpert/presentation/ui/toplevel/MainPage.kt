@@ -17,15 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -39,7 +35,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosish
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.HomeScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDevicesInfoScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.MessageSnackbar
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -84,9 +79,9 @@ fun MainPage(
     }
 
     LaunchedEffect(Unit) {
-        var showingSnackbarJob:Job? = null
-        viewModel.userMessage.collect{ message ->
-            withContext(Dispatchers.Main.immediate){
+        var showingSnackbarJob: Job? = null
+        viewModel.userMessage.collect { message ->
+            withContext(Dispatchers.Main.immediate) {
                 showingSnackbarJob?.cancel()
                 showingSnackbarJob = launch {
                     snackbarHostState.showSnackbar(message)

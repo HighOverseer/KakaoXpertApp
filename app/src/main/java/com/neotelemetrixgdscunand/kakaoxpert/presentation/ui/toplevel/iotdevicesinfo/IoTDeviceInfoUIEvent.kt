@@ -10,6 +10,7 @@ sealed class IoTDeviceInfoUIEvent {
     data class OnFailedGetIoTDataOverview(val errorUIText: UIText) : IoTDeviceInfoUIEvent()
     data class OnFailedDeletingIoTDeviceIdFromAccount(val errorUIText: UIText) :
         IoTDeviceInfoUIEvent()
+
     data object OnSuccessDeletingIoTDeviceIdFromAccount : IoTDeviceInfoUIEvent()
     data object OnSuccessResettingSensorData : IoTDeviceInfoUIEvent()
 }

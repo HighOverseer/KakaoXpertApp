@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -20,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
@@ -65,7 +62,8 @@ fun IoTDevicesInfoScreen(
     val deviceNotFoundMessage = stringResource(R.string.no_device_found)
     val successAddingDeviceIoTMessage = stringResource(R.string.berhasil_menambahkan_perangkat)
     val successDeletingDeviceIoTMessage = stringResource(R.string.berhasil_menghapus_perangkat)
-    val successResettingSensorDataMessage = stringResource(R.string.data_sensor_dari_perangkat_iot_yang_dipilih_telah_direset)
+    val successResettingSensorDataMessage =
+        stringResource(R.string.data_sensor_dari_perangkat_iot_yang_dipilih_telah_direset)
 
     LaunchedEffect(true) {
         lifecycle.collectChannelWhenStarted(viewModel.event) {
@@ -94,7 +92,8 @@ fun IoTDevicesInfoScreen(
                 IoTDeviceInfoUIEvent.OnSuccessDeletingIoTDeviceIdFromAccount -> {
                     showSnackbar(successDeletingDeviceIoTMessage)
                 }
-                IoTDeviceInfoUIEvent.OnSuccessResettingSensorData ->{
+
+                IoTDeviceInfoUIEvent.OnSuccessResettingSensorData -> {
                     showSnackbar(successResettingSensorDataMessage)
                 }
             }

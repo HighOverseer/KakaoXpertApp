@@ -39,10 +39,13 @@ class IoTDeviceInfoViewModel @Inject constructor(
     private val _iotDeviceDetailDialogState = MutableStateFlow(IoTDeviceDetailDialogState())
     val iotDeviceDetailDialogState = _iotDeviceDetailDialogState.asStateFlow()
 
-    private val _iotDeviceDeleteConfirmationDialogState = MutableStateFlow(IoTDeviceDeleteConfirmationDialogState())
-    val iotDeviceDeleteConfirmationDialogState = _iotDeviceDeleteConfirmationDialogState.asStateFlow()
+    private val _iotDeviceDeleteConfirmationDialogState =
+        MutableStateFlow(IoTDeviceDeleteConfirmationDialogState())
+    val iotDeviceDeleteConfirmationDialogState =
+        _iotDeviceDeleteConfirmationDialogState.asStateFlow()
 
-    private val _iotDeviceResetConfirmationDialogState = MutableStateFlow(IoTDeviceResetConfirmationDialogState())
+    private val _iotDeviceResetConfirmationDialogState =
+        MutableStateFlow(IoTDeviceResetConfirmationDialogState())
     val iotDeviceResetConfirmationDialogState = _iotDeviceResetConfirmationDialogState.asStateFlow()
 
     private var addJob: Job? = null
@@ -188,7 +191,12 @@ class IoTDeviceInfoViewModel @Inject constructor(
             }
         }.also {
             it.invokeOnCompletion {
-                _iotDeviceDeleteConfirmationDialogState.update { it.copy(selectedIoTDeviceId = null, canInteract = true) }
+                _iotDeviceDeleteConfirmationDialogState.update {
+                    it.copy(
+                        selectedIoTDeviceId = null,
+                        canInteract = true
+                    )
+                }
                 getIoTDataOverview()
             }
         }
@@ -198,7 +206,8 @@ class IoTDeviceInfoViewModel @Inject constructor(
         viewModelScope.launch {
             _iotDeviceResetConfirmationDialogState.update { it.copy(canInteract = false) }
 
-            when (val result = iotDeviceRepository.resetSensorDataOfSelectedIoTDevice(iotDeviceId)) {
+            when (val result =
+                iotDeviceRepository.resetSensorDataOfSelectedIoTDevice(iotDeviceId)) {
                 is Result.Error -> {
                     val errorUIText = result.toErrorUIText()
                     _event.send(
@@ -219,7 +228,12 @@ class IoTDeviceInfoViewModel @Inject constructor(
                 }
             }
         }.invokeOnCompletion {
-            _iotDeviceResetConfirmationDialogState.update { it.copy(selectedIoTDeviceId = null, canInteract = true) }
+            _iotDeviceResetConfirmationDialogState.update {
+                it.copy(
+                    selectedIoTDeviceId = null,
+                    canInteract = true
+                )
+            }
         }
     }
 

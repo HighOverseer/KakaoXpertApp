@@ -19,8 +19,8 @@ fun PrimaryDescription(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    titleTextColor:Color = Black10,
-    descriptionTextColor:Color = Grey60,
+    titleTextColor: Color = Black10,
+    descriptionTextColor: Color = Grey60,
     descriptionTextAlign: TextAlign? = null
 ) {
     Text(

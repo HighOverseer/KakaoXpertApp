@@ -24,13 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Red50
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.AuthTextField
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.component.SecondaryButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDeviceDeleteConfirmationDialogState
@@ -39,7 +36,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevices
 fun IoTDeviceDeleteConfirmationDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
-    state:IoTDeviceDeleteConfirmationDialogState = IoTDeviceDeleteConfirmationDialogState(),
+    state: IoTDeviceDeleteConfirmationDialogState = IoTDeviceDeleteConfirmationDialogState(),
     onDelete: (Int) -> Unit = { },
 ) {
     state.selectedIoTDeviceId?.let { iotDeviceId ->

@@ -36,7 +36,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceInfo
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.CocoaAverageSellPriceInfoDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
@@ -95,9 +94,11 @@ fun HomeScreen(
                     locationPermissionRequest
                 )
             }
+
             true -> {
                 viewModel.startLocationUpdates()
             }
+
             else -> {
                 showSnackbar(locationPermissionDeniedMessage)
                 viewModel.stopLocationUpdates()

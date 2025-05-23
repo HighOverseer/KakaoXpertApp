@@ -4,11 +4,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisSyncType
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -59,17 +57,19 @@ class DataPreferenceImpl @Inject constructor(
     }
 
     override suspend fun updateLastSyncTime(syncType: CocoaAnalysisSyncType) {
-        when(syncType){
+        when (syncType) {
             CocoaAnalysisSyncType.SELL_PRICE_INFO -> {
                 dataStorePrefs.edit { prefs ->
                     prefs[LAST_SYNC_SELL_PRICE_INFO_TIME] = System.currentTimeMillis()
                 }
             }
+
             CocoaAnalysisSyncType.PREVIEWS -> {
                 dataStorePrefs.edit { prefs ->
                     prefs[LAST_SYNC_PREVIEW_ANALYSIS_TIME] = System.currentTimeMillis()
                 }
             }
+
             else -> return
         }
     }
@@ -95,6 +95,7 @@ class DataPreferenceImpl @Inject constructor(
 
         private val LAST_SYNC_PREVIEW_ANALYSIS_TIME =
             longPreferencesKey("last_sync_preview_analysis_time")
-        private val LAST_SYNC_SELL_PRICE_INFO_TIME = longPreferencesKey("last_sync_sell_price_info_time")
+        private val LAST_SYNC_SELL_PRICE_INFO_TIME =
+            longPreferencesKey("last_sync_sell_price_info_time")
     }
 }

@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
@@ -34,7 +33,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevices
 fun IoTDeviceDetailDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
-    state:IoTDeviceDetailDialogState = IoTDeviceDetailDialogState(),
+    state: IoTDeviceDetailDialogState = IoTDeviceDetailDialogState(),
     onResetPressed: (Int) -> Unit = { },
     onDeletePressed: (Int) -> Unit = { }
 ) {

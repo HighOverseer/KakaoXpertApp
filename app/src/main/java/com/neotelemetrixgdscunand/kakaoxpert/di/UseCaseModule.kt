@@ -6,8 +6,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.AnalysisCocoaInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.GetCocoaAnalysisSessionInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.LogoutInteractor
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.LogoutUseCase

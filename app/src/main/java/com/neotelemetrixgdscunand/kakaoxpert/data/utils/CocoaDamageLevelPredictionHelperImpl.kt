@@ -5,8 +5,8 @@ import android.graphics.Bitmap
 import androidx.core.net.toUri
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionResult
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionResult
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -31,8 +31,8 @@ class CocoaDamageLevelPredictionHelperImpl @Inject constructor(
 ) : CocoaDamageLevelPredictionHelper {
 
     private var blackpodModelInterpreter: Interpreter? = null
-    private var helopeltisModelInterpreter:Interpreter? = null
-    private var podborerModelInterpreter:Interpreter? = null
+    private var helopeltisModelInterpreter: Interpreter? = null
+    private var podborerModelInterpreter: Interpreter? = null
 
     private var tensorWidth = 0
     private var tensorHeight = 0
@@ -72,7 +72,7 @@ class CocoaDamageLevelPredictionHelperImpl @Inject constructor(
         boundingBoxes: List<BoundingBox>
     ): CocoaDamageLevelPredictionResult = withContext(Dispatchers.Default) {
         val isNeedSetupDetectorFirst =
-            blackpodModelInterpreter == null || helopeltisModelInterpreter == null || podborerModelInterpreter == null|| tensorWidth == 0 || tensorHeight == 0 || numChannel == 0
+            blackpodModelInterpreter == null || helopeltisModelInterpreter == null || podborerModelInterpreter == null || tensorWidth == 0 || tensorHeight == 0 || numChannel == 0
         if (isNeedSetupDetectorFirst) {
             ensureActive()
             setup()
@@ -116,10 +116,22 @@ class CocoaDamageLevelPredictionHelperImpl @Inject constructor(
             try {
                 val disease = CocoaDisease.getDiseaseFromName(currentBoundingBox.label)
 
-                when(disease){
-                    CocoaDisease.BLACKPOD -> blackpodModelInterpreter?.run(imageBuffer, output.buffer)
-                    CocoaDisease.HELOPELTIS -> helopeltisModelInterpreter?.run(imageBuffer, output.buffer)
-                    CocoaDisease.POD_BORER -> podborerModelInterpreter?.run(imageBuffer, output.buffer)
+                when (disease) {
+                    CocoaDisease.BLACKPOD -> blackpodModelInterpreter?.run(
+                        imageBuffer,
+                        output.buffer
+                    )
+
+                    CocoaDisease.HELOPELTIS -> helopeltisModelInterpreter?.run(
+                        imageBuffer,
+                        output.buffer
+                    )
+
+                    CocoaDisease.POD_BORER -> podborerModelInterpreter?.run(
+                        imageBuffer,
+                        output.buffer
+                    )
+
                     else -> throw IllegalArgumentException("Invalid disease type")
                 }
 

@@ -1,7 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import androidx.room.withTransaction
-import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaAnalysisDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaSellPriceInfoDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.EntityMapper
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.CocoaPriceInfoService
@@ -11,8 +10,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaPriceInfoRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceInfo
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDiseaseSellPriceInfo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
@@ -28,30 +25,43 @@ class CocoaPriceInfoRepositoryImpl @Inject constructor(
     private val cocoaSellPriceInfoDatabase: CocoaSellPriceInfoDatabase,
     private val dataMapper: DataMapper,
     private val entityMapper: EntityMapper,
-): CocoaPriceInfoRepository{
+) : CocoaPriceInfoRepository {
 
-    private val cocoaDiseaseSellPriceInfoDao = cocoaSellPriceInfoDatabase.cocoaDiseaseSellPriceInfoDao()
-    private val cocoaAverageSellPriceHistoryDao = cocoaSellPriceInfoDatabase.cocoaAverageSellPriceInfoDao()
+    private val cocoaDiseaseSellPriceInfoDao =
+        cocoaSellPriceInfoDatabase.cocoaDiseaseSellPriceInfoDao()
+    private val cocoaAverageSellPriceHistoryDao =
+        cocoaSellPriceInfoDatabase.cocoaAverageSellPriceInfoDao()
 
-    override suspend fun syncAllPricesInfo():Result<Unit, DataError> {
+    override suspend fun syncAllPricesInfo(): Result<Unit, DataError> {
         val result = callApiFromNetwork {
             val response = cocaPriceInfoService.getAllLatest()
-            val cocoaSellPriceInfoDto = response.data ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val cocoaSellPriceInfoDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
 
-            val cocoaAverageSellPriceHistoryEntity = entityMapper.mapCocoaSellPriceInfoDtoToEntity(cocoaSellPriceInfoDto) ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
-            val cocoaDiseaseSellPriceEntities = cocoaSellPriceInfoDto.latestDiseasePriceInfo.mapNotNull {
-                entityMapper.mapCocoaDiseasePriceInfoDtoToEntity(it ?: return@mapNotNull null)
-            }
+            val cocoaAverageSellPriceHistoryEntity =
+                entityMapper.mapCocoaSellPriceInfoDtoToEntity(cocoaSellPriceInfoDto)
+                    ?: return@callApiFromNetwork Result.Error(RootNetworkError.UNEXPECTED_ERROR)
+            val cocoaDiseaseSellPriceEntities =
+                cocoaSellPriceInfoDto.latestDiseasePriceInfo.mapNotNull {
+                    entityMapper.mapCocoaDiseasePriceInfoDtoToEntity(it ?: return@mapNotNull null)
+                }
 
-            return@callApiFromNetwork Result.Success(Pair(cocoaAverageSellPriceHistoryEntity, cocoaDiseaseSellPriceEntities))
+            return@callApiFromNetwork Result.Success(
+                Pair(
+                    cocoaAverageSellPriceHistoryEntity,
+                    cocoaDiseaseSellPriceEntities
+                )
+            )
         }
 
-        when(result){
+        when (result) {
             is Result.Error -> {
                 return Result.Error(result.error)
             }
+
             is Result.Success -> {
-                withContext(NonCancellable){
+                withContext(NonCancellable) {
                     val (cocoaAverageSellPriceHistoryEntity, cocoaDiseaseSellPriceEntities) = result.data
                     cocoaSellPriceInfoDatabase.withTransaction {
                         cocoaDiseaseSellPriceInfoDao.deleteAllCocoaDiseaseSellPriceInfo()
@@ -67,17 +77,17 @@ class CocoaPriceInfoRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getCocoaPriceInfo(): Flow<CocoaAverageSellPriceInfo?> = flow{
+    override fun getCocoaPriceInfo(): Flow<CocoaAverageSellPriceInfo?> = flow {
         val isDataExist = cocoaAverageSellPriceHistoryDao.checkIfDataExists()
-        if(!isDataExist){
+        if (!isDataExist) {
             syncAllPricesInfo()
         }
 
         emitAll(
             cocoaAverageSellPriceHistoryDao.getLatest().map {
-            if (it != null) {
-                dataMapper.mapCocoaAverageSellPriceInfoEntityToDomain(it)
-            } else null
+                if (it != null) {
+                    dataMapper.mapCocoaAverageSellPriceInfoEntityToDomain(it)
+                } else null
             }
         )
     }

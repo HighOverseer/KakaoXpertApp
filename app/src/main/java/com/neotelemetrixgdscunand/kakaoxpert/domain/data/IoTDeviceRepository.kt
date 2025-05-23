@@ -26,5 +26,5 @@ interface IoTDeviceRepository {
 
     suspend fun resetSensorDataOfSelectedIoTDevice(
         deviceId: Int
-    ):Result<IoTDataOverview, DataError.NetworkError>
+    ): Result<IoTDataOverview, DataError.NetworkError>
 }
