@@ -61,6 +61,18 @@ class OnBoardingViewModel @Inject constructor(
 
     private fun syncAllSessions() {
         syncJob = viewModelScope.launch(Dispatchers.IO) {
+            when(val result = syncCocoaAnalysisDataUseCase(CocoaAnalysisSyncType.SELL_PRICE_INFO)){
+                is Result.Error -> {
+                    val errorUIText = result.toErrorUIText()
+                    _uiEvent.send(OnBoardingUIEvent.OnFailedFinishingSession(errorUIText))
+                    _userHasPressedStartButton.update { false }
+                    return@launch
+                }
+
+                is Result.Success -> { /*Proceed to the next sync*/ }
+            }
+
+
             when (val result = syncCocoaAnalysisDataUseCase(CocoaAnalysisSyncType.PREVIEWS)) {
                 is Result.Error -> {
                     val errorUIText = result.toErrorUIText()

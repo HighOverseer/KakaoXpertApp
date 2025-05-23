@@ -36,12 +36,23 @@ class KakaoXpertApplication : Application(), Configuration.Provider {
 
     private fun syncAnyCocoaAnalysisTypeThatNeedTo() {
         applicationScope.launch(Dispatchers.IO) {
+            var syncRequiredSuccess = 0
+
             for (syncType in CocoaAnalysisSyncType.entries) {
+                if(syncRequiredSuccess > 1) break
+
                 val result = syncCocoaAnalysisDataUseCase(syncType)
+
+                if(result is Result.Success && result.data == SyncSuccess.NORMAL){
+                    syncRequiredSuccess += 1
+                    continue
+                }
 
                 if (result is Result.Success && result.data == SyncSuccess.ALREADY_SYNCED_OR_IN_SYNCING) {
                     continue
                 }
+
+
 
                 break
             }

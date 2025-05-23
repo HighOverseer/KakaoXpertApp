@@ -6,6 +6,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.DataMapper
 import com.neotelemetrixgdscunand.kakaoxpert.data.WeatherDtoMapper
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.EntityMapper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaPriceInfoRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.SyncCocoaAnalysisDataInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
@@ -47,10 +48,12 @@ class AppModule {
     @Singleton
     fun provideSyncCocoaAnalysisDataInteractor(
         dataPreference: DataPreference,
-        cocoaAnalysisRepository: CocoaAnalysisRepository
+        cocoaAnalysisRepository: CocoaAnalysisRepository,
+        cocoaSellPriceInfoRepository: CocoaPriceInfoRepository
     ): SyncCocoaAnalysisDataInteractor {
         return SyncCocoaAnalysisDataInteractor(
             cocoaAnalysisRepository,
+            cocoaSellPriceInfoRepository,
             dataPreference
         )
     }

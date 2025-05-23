@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.LocationError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaPriceInfoRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.IoTDeviceRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
@@ -48,11 +49,26 @@ class HomeViewModel @Inject constructor(
     private val weatherMapper: WeatherDuiMapper,
     private val newsRepository: NewsRepository,
     private val iotDeviceRepository: IoTDeviceRepository,
+    private val cocoaPriceInfoRepository: CocoaPriceInfoRepository,
     private val duiMapper: DuiMapper
 ) : ViewModel() {
 
     private val _uiEvent = Channel<HomeUIEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+    val cocoaPriceInfo = cocoaPriceInfoRepository.getCocoaPriceInfo()
+        .flowOn(Dispatchers.IO)
+        .map {
+            if(it != null){
+                duiMapper.mapCocoaAverageSellPriceInfoToDui(it)
+            }else null
+        }
+        .flowOn(Dispatchers.Default)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            null
+        )
 
     val diagnosisHistory: StateFlow<ImmutableList<AnalysisSessionPreviewDui>> =
         cocoaAnalysisRepository.getSomeSessionPreviews()

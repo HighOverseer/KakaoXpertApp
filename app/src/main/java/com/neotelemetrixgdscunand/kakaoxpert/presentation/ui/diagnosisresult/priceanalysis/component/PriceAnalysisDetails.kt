@@ -1,6 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,14 +27,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DamageLevelCategory
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DamageLevelSubCategory
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green60
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.PrimaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DetectedCacaoImageGrid
 import kotlinx.collections.immutable.ImmutableList
@@ -60,14 +67,15 @@ fun PriceAnalysisDetails(
 
     Column(
         modifier = modifier
-            .background(color = Grey90, shape = RoundedCornerShape(8.dp))
+            .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+            .border(shape = RoundedCornerShape(8.dp), color = Green55, width = 1.dp)
             .padding(vertical = 16.dp, horizontal = 8.dp),
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 stringResource(subDamageLevelSubCategory.subTitleResId),
-                style = MaterialTheme.typography.labelMedium,
-                color = Black10,
+                style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.sp),
+                color = Green60,
                 modifier = Modifier.weight(1f)
             )
 
@@ -112,6 +120,8 @@ fun PriceAnalysisDetails(
             Spacer(Modifier.height(24.dp))
 
             PrimaryDescription(
+                titleTextColor = Green60,
+                descriptionTextColor = Black10,
                 title = stringResource(R.string.sub_harga_satuan),
                 description = "Rp 3.000 - Rp 6.000/kg."
             )
@@ -119,6 +129,8 @@ fun PriceAnalysisDetails(
             Spacer(Modifier.height(24.dp))
 
             PrimaryDescription(
+                titleTextColor = Green60,
+                descriptionTextColor = Black10,
                 title = stringResource(R.string.sub_total_harga),
                 description = "Rp 3.000 - Rp 6.000/kg."
             )

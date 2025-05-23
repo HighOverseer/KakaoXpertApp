@@ -28,9 +28,6 @@ data class UnsavedDetectedCocoaEntity(
     @ColumnInfo("bb_label")
     val bbLabel: String,
 
-    @ColumnInfo("damage_percentage")
-    val damagePercentage: Float,
-
     @ColumnInfo("bb_coordinate_top")
     val bbCoordinateTop: Float,
 
@@ -71,5 +68,5 @@ data class UnsavedDetectedCocoaEntity(
     val bbCoordinateRight: Float,
 
     @ColumnInfo("damage_level")
-    val damageLevel: Int
+    val damageLevel: Float
 )

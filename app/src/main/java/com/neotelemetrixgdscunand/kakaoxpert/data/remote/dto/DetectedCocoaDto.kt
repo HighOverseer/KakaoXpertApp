@@ -7,8 +7,8 @@ data class DetectedCocoaDto(
     @field:SerializedName("bb_label")
     val bbLabel: String? = null,
 
-    @field:SerializedName("damage_percentage")
-    val damagePercentage: Float? = null,
+    @field:SerializedName("damage_level")
+    val damageLevel: Float? = null,
 
     @field:SerializedName("bb_coordinate_top")
     val bbCoordinateTop: Float? = null,
@@ -54,7 +54,4 @@ data class DetectedCocoaDto(
 
     @field:SerializedName("bb_coordinate_right")
     val bbCoordinateRight: Float? = null,
-
-    @field:SerializedName("damage_level")
-    val damageLevel: Int? = null
 )

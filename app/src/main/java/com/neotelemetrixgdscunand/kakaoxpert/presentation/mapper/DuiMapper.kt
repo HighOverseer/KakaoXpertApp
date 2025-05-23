@@ -3,12 +3,14 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSessionPreview
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceInfo
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDataOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.CocoaAverageSellPriceInfoDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsDetailsDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
@@ -16,6 +18,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.ShopItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.formatFloat
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
 import kotlinx.collections.immutable.toImmutableList
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -125,6 +128,27 @@ object DuiMapper {
             predictedPrice = analysisSessionPreview.predictedPrice,
             hasSynced = analysisSessionPreview.hasSynced,
             availableOffline = analysisSessionPreview.isDetailAvailableInLocal
+        )
+    }
+
+    fun mapCocoaAverageSellPriceInfoToDui(
+        cocoaAverageSellPriceInfo: CocoaAverageSellPriceInfo
+    ):CocoaAverageSellPriceInfoDui{
+        val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+
+        val currentAveragePrice = cocoaAverageSellPriceInfo.currentAveragePrice.formatFloat().let {
+            formatter.format(it)
+                .replace("Rp", "Rp ")
+        }
+        val previousAveragePriceFormatted = cocoaAverageSellPriceInfo.previousAveragePrice?.formatFloat()?.let {
+            formatter.format(it)
+                .replace("Rp", "Rp ")
+        }
+
+        return CocoaAverageSellPriceInfoDui(
+            currentAveragePrice = currentAveragePrice,
+            previousAveragePrice = previousAveragePriceFormatted,
+            rateFromPrevious = cocoaAverageSellPriceInfo.rateFromPrevious?.times(100f)?.formatFloat()?.toString()
         )
     }
 

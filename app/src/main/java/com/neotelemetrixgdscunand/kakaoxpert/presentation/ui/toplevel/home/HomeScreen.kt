@@ -36,7 +36,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceInfo
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.CocoaAverageSellPriceInfoDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.WeatherForecastOverviewDui
@@ -86,16 +88,20 @@ fun HomeScreen(
     val locationPermissionDeniedMessage = stringResource(R.string.fitur_prediksi_cuaca_tidak_bisa)
 
     LaunchedEffect(isLocationPermissionGranted) {
-        if (isLocationPermissionGranted == null) {
-            checkLocationPermission(
-                context,
-                locationPermissionRequest
-            )
-        } else if (isLocationPermissionGranted == true) {
-            viewModel.startLocationUpdates()
-        } else {
-            showSnackbar(locationPermissionDeniedMessage)
-            viewModel.stopLocationUpdates()
+        when (isLocationPermissionGranted) {
+            null -> {
+                checkLocationPermission(
+                    context,
+                    locationPermissionRequest
+                )
+            }
+            true -> {
+                viewModel.startLocationUpdates()
+            }
+            else -> {
+                showSnackbar(locationPermissionDeniedMessage)
+                viewModel.stopLocationUpdates()
+            }
         }
     }
 
@@ -141,6 +147,7 @@ fun HomeScreen(
     val newsItems by viewModel.newsItems.collectAsStateWithLifecycle()
     val isLoadingNewsItemsPreview by viewModel.isLoadingNewsItemsPreview.collectAsStateWithLifecycle()
     val ioTDataOverviewDui by viewModel.iotDataOverview.collectAsStateWithLifecycle()
+    val cocoaAverageSellPriceInfo by viewModel.cocoaPriceInfo.collectAsStateWithLifecycle()
 
 
     HomeContent(
@@ -157,7 +164,8 @@ fun HomeScreen(
         currentLocationNameProvider = { currentLocation?.name },
         newsItems = newsItems,
         ioTDataOverviewDui = ioTDataOverviewDui,
-        isLoadingNewsItemsPreviewProvider = { isLoadingNewsItemsPreview }
+        isLoadingNewsItemsPreviewProvider = { isLoadingNewsItemsPreview },
+        cocoaAverageSellPriceInfo = cocoaAverageSellPriceInfo
     )
 }
 
@@ -175,6 +183,7 @@ fun HomeContent(
     navigateToDiagnosisResult: (Int) -> Unit = { _ -> },
     navigateToNotification: () -> Unit = {},
     navigateToAnalysisHistoryMenu: () -> Unit = { },
+    cocoaAverageSellPriceInfo: CocoaAverageSellPriceInfoDui? = null,
     newsItems: ImmutableList<NewsItemDui> = persistentListOf(),
     ioTDataOverviewDui: IoTDataOverviewDui = IoTDataOverviewDui(),
     isLoadingNewsItemsPreviewProvider: () -> Boolean = { false }
@@ -205,7 +214,8 @@ fun HomeContent(
         PriceInfoSection(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
+            cocoaAverageSellPriceInfo = cocoaAverageSellPriceInfo
         )
 
         IoTDataOverviewSection(

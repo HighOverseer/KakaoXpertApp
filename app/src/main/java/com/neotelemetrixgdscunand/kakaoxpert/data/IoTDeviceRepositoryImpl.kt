@@ -114,4 +114,16 @@ class IoTDeviceRepositoryImpl @Inject constructor(
             Result.Success(iotDevices)
         }
     }
+
+    override suspend fun resetSensorDataOfSelectedIoTDevice(deviceId: Int): Result<IoTDataOverview, DataError.NetworkError> {
+        return callApiFromNetwork {
+            val response = iotDeviceService.resetSensorDataOfSelectedIoTDeviceId(deviceId)
+            val ioTDataOverviewDto = response.data ?: return@callApiFromNetwork Result.Error(
+                RootNetworkError.UNEXPECTED_ERROR
+            )
+            val ioTDataOverview = dataMapper.mapIoTDataOverviewDtoToDomain(ioTDataOverviewDto)
+
+            Result.Success(ioTDataOverview)
+        }
+    }
 }

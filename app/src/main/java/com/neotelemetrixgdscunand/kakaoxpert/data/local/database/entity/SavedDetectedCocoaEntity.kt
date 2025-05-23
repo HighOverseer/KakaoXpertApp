@@ -28,8 +28,8 @@ data class SavedDetectedCocoaEntity(
     @ColumnInfo("bb_label")
     val bbLabel: String,
 
-    @ColumnInfo("damage_percentage")
-    val damagePercentage: Float,
+    @ColumnInfo("damage_level")
+    val damageLevel: Float,
 
     @ColumnInfo("bb_coordinate_top")
     val bbCoordinateTop: Float,
@@ -39,7 +39,6 @@ data class SavedDetectedCocoaEntity(
 
     @ColumnInfo("bb_height")
     val bbHeight: Float,
-
 
     @ColumnInfo("bb_center_x")
     val bbCenterX: Float,
@@ -71,6 +70,4 @@ data class SavedDetectedCocoaEntity(
     @ColumnInfo("bb_coordinate_right")
     val bbCoordinateRight: Float,
 
-    @ColumnInfo("damage_level")
-    val damageLevel: Int
 )

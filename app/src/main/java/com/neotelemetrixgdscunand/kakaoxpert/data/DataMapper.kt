@@ -1,6 +1,8 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data
 
 import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAverageSellPriceHistoryEntity
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaDiseaseSellPriceInfoEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.DetectedCocoaDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.IoTDataDto
@@ -11,7 +13,9 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.NewsItemDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.ShopItemDto
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceInfo
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDiseaseSellPriceInfo
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDataOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
@@ -209,6 +213,29 @@ object DataMapper {
             ),
             disease = CocoaDisease.getDiseaseFromId(detectedCocoaDto.diseaseId ?: return null)
                 ?: return null
+        )
+    }
+
+    fun mapCocoaAverageSellPriceInfoEntityToDomain(
+        cocoaAverageSellPriceHistoryEntity: CocoaAverageSellPriceHistoryEntity
+    ): CocoaAverageSellPriceInfo {
+        return CocoaAverageSellPriceInfo(
+            currentAveragePrice = cocoaAverageSellPriceHistoryEntity.currentAveragePrice,
+            previousAveragePrice = cocoaAverageSellPriceHistoryEntity.previousAveragePrice,
+            rateFromPrevious = cocoaAverageSellPriceHistoryEntity.rateFromPrevious,
+            time = cocoaAverageSellPriceHistoryEntity.time
+        )
+    }
+
+    fun mapCocoaDiseaseSellPriceInfoEntityToDomain(
+        cocoaDiseaseSellPriceInfoEntity: CocoaDiseaseSellPriceInfoEntity
+    ): CocoaDiseaseSellPriceInfo? {
+        val disease = CocoaDisease.getDiseaseFromId(cocoaDiseaseSellPriceInfoEntity.diseaseId) ?: return null
+        return CocoaDiseaseSellPriceInfo(
+            disease = disease,
+            highestPrice = cocoaDiseaseSellPriceInfoEntity.highestPrice,
+            lowestPrice = cocoaDiseaseSellPriceInfoEntity.lowestPrice,
+            decreasingRatePerDamageLevel = cocoaDiseaseSellPriceInfoEntity.decreasingRatePerDamageLevel,
         )
     }
 

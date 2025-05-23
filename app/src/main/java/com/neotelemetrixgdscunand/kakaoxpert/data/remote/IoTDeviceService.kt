@@ -38,4 +38,9 @@ interface IoTDeviceService {
     suspend fun deleteSelectedIoTDeviceIdFromAccount(
         @Path("id") iotDeviceId: Int
     ): Response<List<IoTDeviceDto>>
+
+    @GET("user-iot-device-reset/{id}")
+    suspend fun resetSensorDataOfSelectedIoTDeviceId(
+        @Path("id") iotDeviceId: Int
+    ): Response<IoTDataOverviewDto>
 }

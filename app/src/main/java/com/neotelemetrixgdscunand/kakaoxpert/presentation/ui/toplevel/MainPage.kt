@@ -14,13 +14,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -34,12 +39,16 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.diagnosish
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.home.HomeScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDevicesInfoScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.MessageSnackbar
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun MainPage(
     modifier: Modifier = Modifier,
+    viewModel: MainPageViewModel = hiltViewModel(),
     state: MainPageState = rememberMainPageState(),
     mainNavHostController: NavHostController = rememberNavController(),
     navigateToNews: () -> Unit = {},
@@ -69,22 +78,21 @@ fun MainPage(
     val snackbarHostState = remember {
         SnackbarHostState()
     }
-    val coroutineScope = rememberCoroutineScope()
-    var showingSnackbarJob: Job? = remember {
-        null
-    }
-    val showSnackbar: (String) -> Unit = remember {
-        { message: String ->
-            showingSnackbarJob?.cancel()
-            showingSnackbarJob = coroutineScope.launch {
-                snackbarHostState.showSnackbar(message)
-            }
-        }
-    }
-
 
     var bottomBarHeightPx by remember {
         mutableIntStateOf(0)
+    }
+
+    LaunchedEffect(Unit) {
+        var showingSnackbarJob:Job? = null
+        viewModel.userMessage.collect{ message ->
+            withContext(Dispatchers.Main.immediate){
+                showingSnackbarJob?.cancel()
+                showingSnackbarJob = launch {
+                    snackbarHostState.showSnackbar(message)
+                }
+            }
+        }
     }
 
     Scaffold(
@@ -146,7 +154,7 @@ fun MainPage(
                         navigateToAnalysisHistoryMenu = {
                             state.navigateToTopLevel(Navigation.Main.Diagnosis)
                         },
-                        showSnackbar = showSnackbar
+                        showSnackbar = viewModel::showUserMessage
                     )
                 }
 
@@ -161,7 +169,7 @@ fun MainPage(
                 composable<Navigation.Main.IoTDevicesInfo> {
                     IoTDevicesInfoScreen(
                         navigateToSensorDataDetails = navigateToSensorDataDetails,
-                        showSnackbar = showSnackbar
+                        showSnackbar = viewModel::showUserMessage
                     )
                 }
 

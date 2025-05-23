@@ -26,13 +26,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceInfo
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.CocoaAverageSellPriceInfoDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey69
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 
 @Composable
-fun PriceInfoSection(modifier: Modifier = Modifier) {
+fun PriceInfoSection(
+    modifier: Modifier = Modifier,
+    cocoaAverageSellPriceInfo: CocoaAverageSellPriceInfoDui? = null
+) {
     val cardModifier = remember {
         Modifier
             .background(color = Color.White, shape = RoundedCornerShape(4.dp))
@@ -71,7 +76,7 @@ fun PriceInfoSection(modifier: Modifier = Modifier) {
                 Spacer(Modifier.height(16.dp))
 
                 Text(
-                    "Rp 10.000",
+                    cocoaAverageSellPriceInfo ?.currentAveragePrice ?: "Rp -",
                     style = MaterialTheme.typography.titleMedium,
                     color = Black10
                 )
@@ -90,7 +95,7 @@ fun PriceInfoSection(modifier: Modifier = Modifier) {
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        "0.57%",
+                        cocoaAverageSellPriceInfo?.rateFromPrevious ?: "-%",
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Normal
                         ),
@@ -101,7 +106,7 @@ fun PriceInfoSection(modifier: Modifier = Modifier) {
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    "Rp9.500",
+                    cocoaAverageSellPriceInfo?.previousAveragePrice ?: "Rp -",
                     style = MaterialTheme.typography.bodySmall,
                     color = Grey69
                 )

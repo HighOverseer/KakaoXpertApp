@@ -39,15 +39,16 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryTextField
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.component.SecondaryButton
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.AddIoTDeviceDialogState
 
 @Composable
 fun AddIoTDeviceDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
-    isShownProvider: () -> Boolean = { true },
+    state: AddIoTDeviceDialogState = AddIoTDeviceDialogState(),
     onSubmit: (String, String) -> Unit = { _, _ -> },
 ) {
-    if (isShownProvider()) {
+    if (state.isShown) {
 
         var deviceIdText by rememberSaveable {
             mutableStateOf("")
@@ -98,7 +99,8 @@ fun AddIoTDeviceDialog(
                         backgroundColor = Grey90,
                         isFocusedProvider = { isDeviceIdTextFieldFocused },
                         interactionSource = deviceIdTextFieldInteractionSource,
-                        isBordered = false
+                        isBordered = false,
+                        enabled = state.canInteract
                     )
 
                     Spacer(Modifier.height(24.dp))
@@ -131,7 +133,8 @@ fun AddIoTDeviceDialog(
                                 tint = Grey60,
                                 contentDescription = stringResource(R.string.visibilitas_kunci_perangkat)
                             )
-                        }
+                        },
+                        enabled = state.canInteract
                     )
 
                     Spacer(Modifier.height(24.dp))
@@ -142,6 +145,7 @@ fun AddIoTDeviceDialog(
                             text = stringResource(R.string.batal),
                             contentPadding = PaddingValues(vertical = 14.dp),
                             onClick = onDismiss,
+                            enabled = state.canInteract
                         )
 
                         Spacer(Modifier.width(14.dp))
@@ -154,6 +158,7 @@ fun AddIoTDeviceDialog(
                             onClick = {
                                 onSubmit(deviceIdText, deviceKeyText)
                             },
+                            enabled = state.canInteract
                         )
 
                     }

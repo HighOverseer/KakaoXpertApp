@@ -4,6 +4,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.AuthInterceptor
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.CocoaAnalysisApiService
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.CocoaPriceInfoService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.IoTDeviceService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.NewsApiService
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.ShopApiService
@@ -119,5 +120,18 @@ class NetworkModule {
             .client(client)
             .build()
             .create(IoTDeviceService::class.java)
+    }
+
+    @Provides
+    fun provideCocoaPriceInfoService(
+        client: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): CocoaPriceInfoService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
+            .client(client)
+            .build()
+            .create(CocoaPriceInfoService::class.java)
     }
 }

@@ -23,4 +23,8 @@ interface IoTDeviceRepository {
     suspend fun deleteIoTDeviceFromAccount(
         deviceId: Int,
     ): Result<List<IoTDevice>, DataError.NetworkError>
+
+    suspend fun resetSensorDataOfSelectedIoTDevice(
+        deviceId: Int
+    ):Result<IoTDataOverview, DataError.NetworkError>
 }

@@ -11,16 +11,21 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
@@ -28,17 +33,16 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Red50
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.AuthTextField
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.takephoto.component.SecondaryButton
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDeviceDetailDialogState
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.IoTDeviceDeleteConfirmationDialogState
 
 @Composable
-fun IoTDeviceDetailDialog(
+fun IoTDeviceDeleteConfirmationDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
-    state:IoTDeviceDetailDialogState = IoTDeviceDetailDialogState(),
-    onResetPressed: (Int) -> Unit = { },
-    onDeletePressed: (Int) -> Unit = { }
+    state:IoTDeviceDeleteConfirmationDialogState = IoTDeviceDeleteConfirmationDialogState(),
+    onDelete: (Int) -> Unit = { },
 ) {
-    state.selectedIoTDevice?.let { ioTDevice ->
+    state.selectedIoTDeviceId?.let { iotDeviceId ->
         Dialog(
             onDismissRequest = onDismiss
         ) {
@@ -61,28 +65,13 @@ fun IoTDeviceDetailDialog(
                             .heightIn(min = 16.dp, max = 64.dp)
                     )
 
-                    AuthTextField(
-                        title = stringResource(R.string.nama_perangkat),
-                        valueProvider = { ioTDevice.name },
-                        enabled = false
-                    )
-
-                    Spacer(Modifier.height(16.dp))
-
-                    AuthTextField(
-                        title = stringResource(R.string.id_perangkat),
-                        valueProvider = { ioTDevice.id.toString() },
-                        enabled = false
-                    )
-
-                    Spacer(Modifier.height(16.dp))
-
-                    val active = stringResource(R.string.aktif)
-                    val inactive = stringResource(R.string.tidak_aktif)
-                    AuthTextField(
-                        title = stringResource(R.string.status),
-                        valueProvider = { if (ioTDevice.isActive) active else inactive },
-                        enabled = false
+                    Text(
+                        stringResource(R.string.apakah_anda_yakin_ingin_menghapus),
+                        textAlign = TextAlign.Center,
+                        color = Black10,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            lineHeight = 21.sp
+                        )
                     )
 
                     Spacer(
@@ -95,14 +84,11 @@ fun IoTDeviceDetailDialog(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        SecondaryButton(
+                        PrimaryButton(
                             modifier = Modifier.weight(1f),
-                            text = stringResource(R.string.hapus),
-                            textColor = Red50,
-                            borderColor = Red50,
-                            onClick = {
-                                onDeletePressed(ioTDevice.id)
-                            }
+                            text = stringResource(R.string.batal),
+                            onClick = onDismiss,
+                            enabled = state.canInteract
                         )
 
                         Spacer(
@@ -112,27 +98,16 @@ fun IoTDeviceDetailDialog(
 
                         SecondaryButton(
                             modifier = Modifier.weight(1f),
-                            text = stringResource(R.string.reset),
-                            textColor = Orange85,
+                            text = stringResource(R.string.iya),
+                            textColor = Red50,
                             borderColor = Green55,
                             onClick = {
-                                onResetPressed(ioTDevice.id)
-                            }
+                                onDelete(iotDeviceId)
+                            },
+                            enabled = state.canInteract
                         )
                     }
 
-
-                    Spacer(
-                        Modifier
-                            .height(8.dp)
-                    )
-
-
-                    PrimaryButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.selesai),
-                        onClick = onDismiss
-                    )
 
                     Spacer(
                         Modifier
@@ -147,8 +122,8 @@ fun IoTDeviceDetailDialog(
 
 @Preview
 @Composable
-private fun IoTDeviceDetailDialogPreview() {
+private fun IoTDeviceDeleteConfirmationDialogPreview() {
     KakaoXpertTheme {
-        IoTDeviceDetailDialog()
+        IoTDeviceDeleteConfirmationDialog()
     }
 }

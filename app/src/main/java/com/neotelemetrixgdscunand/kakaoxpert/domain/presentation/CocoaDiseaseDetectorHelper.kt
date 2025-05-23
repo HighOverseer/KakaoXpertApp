@@ -1,7 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.domain.presentation
 
 
-interface CocoaImageDetectorHelper {
+interface CocoaDiseaseDetectorHelper {
 
     suspend fun setupImageDetector()
 

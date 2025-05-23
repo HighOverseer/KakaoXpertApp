@@ -6,10 +6,10 @@ import android.graphics.Matrix
 import androidx.core.net.toUri
 import androidx.exifinterface.media.ExifInterface
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.BoundingBoxProcessor
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper.Companion.INPUT_MEAN
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper.Companion.INPUT_STANDARD_DEVIATION
-import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaImageDetectorHelper.Companion.TEMP_CLASSES
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper.Companion.INPUT_MEAN
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper.Companion.INPUT_STANDARD_DEVIATION
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper.Companion.TEMP_CLASSES
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ImageDetectorResult
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ModelLabelExtractor
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,11 +28,11 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
 import javax.inject.Inject
 
-class CocoaImageDetectorHelperImpl @Inject constructor(
+class CocoaDiseaseDetectorHelperImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageConverter: ImageConverter,
     private val modelLabelExtractor: ModelLabelExtractor
-) : CocoaImageDetectorHelper {
+) : CocoaDiseaseDetectorHelper {
 
     private var interpreter: Interpreter? = null
     private var labels = mutableListOf<String>()
@@ -149,7 +149,7 @@ class CocoaImageDetectorHelperImpl @Inject constructor(
     companion object {
         private val INPUT_IMAGE_TYPE = DataType.FLOAT32
         private val OUTPUT_IMAGE_TYPE = DataType.FLOAT32
-        private const val MODEL_PATH = "rev_3.tflite"
+        private const val MODEL_PATH = "cocoa_disease_detection.tflite"
         private const val LABEL_PATH: String = "labels.txt"
     }
 

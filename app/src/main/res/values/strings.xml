@@ -366,4 +366,9 @@
     <string name="status">Status</string>
     <string name="aktif">Aktif</string>
     <string name="tidak_aktif">Tidak Aktif</string>
+    <string name="iya">Iya</string>
+    <string name="apakah_anda_yakin_ingin_mereset_data_sensor_dari_perangkat_iot_ini">Apakah anda yakin ingin mereset data sensor dari perangkat IoT ini?</string>
+    <string name="apakah_anda_yakin_ingin_menghapus">Apakah anda yakin ingin menghapus perangkat ini dari daftar perangkat yang tersambung di akun Anda?</string>
+    <string name="berhasil_menghapus_perangkat">Berhasil Menghapus Perangkat..</string>
+    <string name="data_sensor_dari_perangkat_iot_yang_dipilih_telah_direset">Data Sensor dari Perangkat Iot yang dipilih telah direset..</string>
 </resources>

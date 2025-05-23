@@ -2,6 +2,8 @@ package com.neotelemetrixgdscunand.kakaoxpert.data.local.database
 
 import com.neotelemetrixgdscunand.kakaoxpert.BuildConfig
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAnalysisPreviewEntity
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaAverageSellPriceHistoryEntity
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.CocoaDiseaseSellPriceInfoEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedCocoaAnalysisEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.SavedDetectedCocoaEntity
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedCocoaAnalysisEntity
@@ -9,6 +11,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.UnsavedD
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.entity.relations.CocoaAnalysisPreviewRelation
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.AnalysisSessionPreviewDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.CocoaDiseaseSellPriceInfoDto
+import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.CocoaSellPriceInfoDto
 import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.DetectedCocoaDto
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
@@ -23,6 +27,30 @@ import java.util.Locale
 import java.util.TimeZone
 
 object EntityMapper {
+
+    fun mapCocoaSellPriceInfoDtoToEntity(
+        cocoaSellPriceInfoDto: CocoaSellPriceInfoDto
+    ): CocoaAverageSellPriceHistoryEntity?{
+        return CocoaAverageSellPriceHistoryEntity(
+            currentAveragePrice = cocoaSellPriceInfoDto.averageSellPrice ?: return null,
+            previousAveragePrice = cocoaSellPriceInfoDto.averageSellPricePrevious,
+            rateFromPrevious = cocoaSellPriceInfoDto.rateFromPrevious,
+            time = System.currentTimeMillis()
+        )
+    }
+
+    fun mapCocoaDiseasePriceInfoDtoToEntity(
+        cocoaDiseaseSellPriceInfoDto: CocoaDiseaseSellPriceInfoDto
+    ):CocoaDiseaseSellPriceInfoEntity?{
+        return CocoaDiseaseSellPriceInfoEntity(
+            diseaseId = cocoaDiseaseSellPriceInfoDto.diseaseId ?: return null,
+            highestPrice = cocoaDiseaseSellPriceInfoDto.highestPrice ?: return null,
+            lowestPrice = cocoaDiseaseSellPriceInfoDto.lowestPrice ?: return null,
+            decreasingRatePerDamageLevel = cocoaDiseaseSellPriceInfoDto.sellPriceDecreasingRatePerOnePercentDamageLevel ?: return null
+        )
+    }
+
+
     fun mapCocoaAnalysisSessionPreviewDtoToEntity(
         analysisSessionPreviewDto: AnalysisSessionPreviewDto
     ): CocoaAnalysisPreviewEntity? {
@@ -97,8 +125,7 @@ object EntityMapper {
             bbConfidence = detectedCocoa.boundingBox.cnf,
             diseaseId = detectedCocoa.disease.id,
             varietyInfoId = 1,
-            damagePercentage = 0.5f,
-            damageLevel = 50
+            damageLevel = 0.5f
         )
     }
 
@@ -161,8 +188,7 @@ object EntityMapper {
             diseaseId = detectedCocoaDto.diseaseId ?: return null,
             varietyInfoId = 1,
             sessionId = sessionId,
-            damagePercentage = 0.5f,
-            damageLevel = 50
+            damageLevel = detectedCocoaDto.damageLevel ?: return null
         )
     }
 

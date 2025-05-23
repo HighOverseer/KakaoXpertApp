@@ -2,6 +2,7 @@ package com.neotelemetrixgdscunand.kakaoxpert.di
 
 import com.neotelemetrixgdscunand.kakaoxpert.data.AuthRepositoryImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.CocoaAnalysisRepositoryImpl
+import com.neotelemetrixgdscunand.kakaoxpert.data.CocoaPriceInfoRepositoryImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.IoTDeviceRepositoryImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.NewsRepositoryImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.ShopRepositoryImpl
@@ -11,6 +12,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.local.preference.DataPreferenc
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaPriceInfoRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.IoTDeviceRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.NewsRepository
@@ -51,6 +53,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindIoTDeviceRepository(iotDeviceRepositoryImpl: IoTDeviceRepositoryImpl): IoTDeviceRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCocoaSellPriceInfoRepository(cocoaSellPriceInfoRepositoryImpl: CocoaPriceInfoRepositoryImpl): CocoaPriceInfoRepository
 
     @Binds
     abstract fun bindAuthPreference(authPreferenceImpl: AuthPreferenceImpl): AuthPreference

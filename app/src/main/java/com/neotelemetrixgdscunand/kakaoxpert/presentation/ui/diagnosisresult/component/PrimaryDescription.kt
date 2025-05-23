@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,13 +19,15 @@ fun PrimaryDescription(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
+    titleTextColor:Color = Black10,
+    descriptionTextColor:Color = Grey60,
     descriptionTextAlign: TextAlign? = null
 ) {
     Text(
         modifier = modifier,
         text = title,
         style = MaterialTheme.typography.titleMedium,
-        color = Black10
+        color = titleTextColor
     )
 
     Spacer(Modifier.height(8.dp))
@@ -32,7 +35,7 @@ fun PrimaryDescription(
     Text(
         description,
         style = MaterialTheme.typography.labelMedium,
-        color = Grey60,
+        color = descriptionTextColor,
         textAlign = descriptionTextAlign
     )
 }

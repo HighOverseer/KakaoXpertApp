@@ -5,6 +5,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.DataError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.SyncSuccess
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
+import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaPriceInfoRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import kotlinx.coroutines.NonCancellable
@@ -12,6 +13,7 @@ import kotlinx.coroutines.withContext
 
 class SyncCocoaAnalysisDataInteractor(
     private val cocoaAnalysisRepository: CocoaAnalysisRepository,
+    private val cocoaPriceInfoRepository: CocoaPriceInfoRepository,
     private val dataPreference: DataPreference
 ) : SyncCocoaAnalysisDataUseCase {
 
@@ -24,6 +26,7 @@ class SyncCocoaAnalysisDataInteractor(
             dataPreference.setIsSyncing(syncType, true)
 
             val result = when (syncType) {
+                CocoaAnalysisSyncType.SELL_PRICE_INFO -> cocoaPriceInfoRepository.syncAllPricesInfo()
                 CocoaAnalysisSyncType.PREVIEWS -> cocoaAnalysisRepository.syncAllSessionPreviewsFromRemote()
                 CocoaAnalysisSyncType.REMOTE -> cocoaAnalysisRepository.syncAllSavedSessionsFromRemote()
                 CocoaAnalysisSyncType.LOCAL -> cocoaAnalysisRepository.syncAllUnsavedSessionsFromLocal()

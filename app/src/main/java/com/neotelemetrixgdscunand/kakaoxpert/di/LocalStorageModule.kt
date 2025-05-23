@@ -8,6 +8,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaAnalysisDatabase
+import com.neotelemetrixgdscunand.kakaoxpert.data.local.database.CocoaSellPriceInfoDatabase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 import dagger.Module
 import dagger.Provides
@@ -47,5 +48,17 @@ class LocalStorageModule {
                 }
             })
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCocoaSellPriceInfoDatabase(
+        @ApplicationContext context: Context
+    ): CocoaSellPriceInfoDatabase {
+        return Room.databaseBuilder(
+            context.applicationContext,
+            CocoaSellPriceInfoDatabase::class.java,
+            CocoaSellPriceInfoDatabase.DATABASE_NAME
+        ).build()
     }
 }

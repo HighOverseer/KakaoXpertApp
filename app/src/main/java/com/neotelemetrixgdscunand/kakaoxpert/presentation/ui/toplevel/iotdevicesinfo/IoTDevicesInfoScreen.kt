@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDevice
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
@@ -40,8 +43,10 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.IoTDataOverviewMenu
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.AddIoTDeviceDialog
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.AddIoTDeviceSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.IoTDeviceDeleteConfirmationDialog
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.IoTDeviceDetailDialog
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.IoTDeviceItem
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.IoTDeviceResetConfirmationDialog
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.toplevel.iotdevicesinfo.component.SeeMoreMenu
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 
@@ -55,9 +60,13 @@ fun IoTDevicesInfoScreen(
 
     val lifecycle = LocalLifecycleOwner.current
     val context = LocalContext.current
+
     val deviceFormIsNotValidMessage = stringResource(R.string.device_id_or_device_key_is_blank)
     val deviceNotFoundMessage = stringResource(R.string.no_device_found)
     val successAddingDeviceIoTMessage = stringResource(R.string.berhasil_menambahkan_perangkat)
+    val successDeletingDeviceIoTMessage = stringResource(R.string.berhasil_menghapus_perangkat)
+    val successResettingSensorDataMessage = stringResource(R.string.data_sensor_dari_perangkat_iot_yang_dipilih_telah_direset)
+
     LaunchedEffect(true) {
         lifecycle.collectChannelWhenStarted(viewModel.event) {
             when (it) {
@@ -81,11 +90,22 @@ fun IoTDevicesInfoScreen(
                 is IoTDeviceInfoUIEvent.OnFailedDeletingIoTDeviceIdFromAccount -> {
                     showSnackbar(it.errorUIText.getValue(context))
                 }
+
+                IoTDeviceInfoUIEvent.OnSuccessDeletingIoTDeviceIdFromAccount -> {
+                    showSnackbar(successDeletingDeviceIoTMessage)
+                }
+                IoTDeviceInfoUIEvent.OnSuccessResettingSensorData ->{
+                    showSnackbar(successResettingSensorDataMessage)
+                }
             }
         }
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val addDeviceDialogState by viewModel.addIoTDeviceDialog.collectAsStateWithLifecycle()
+    val deviceDetailDialogState by viewModel.iotDeviceDetailDialogState.collectAsStateWithLifecycle()
+    val deviceDeleteConfirmationDialogState by viewModel.iotDeviceDeleteConfirmationDialogState.collectAsStateWithLifecycle()
+    val deviceResetConfirmationDialogState by viewModel.iotDeviceResetConfirmationDialogState.collectAsStateWithLifecycle()
 
     IoTDevicesInfoContent(
         modifier = modifier,
@@ -95,7 +115,17 @@ fun IoTDevicesInfoScreen(
         onSubmitAddDevice = viewModel::addIoTDeviceToAccount,
         onDismissAddDeviceDialog = viewModel::dismissAddIoTDeviceDialog,
         onShowDeviceDetailDialog = viewModel::showDeviceDetailDialog,
-        onDismissDeviceDetailDialog = viewModel::dismissDeviceDetailDialog
+        onDismissDeviceDetailDialog = viewModel::dismissDeviceDetailDialog,
+        onShowDeleteDeviceConfirmationDialog = viewModel::showDeleteDeviceDialogConfirmation,
+        onDismissDeleteDeviceConfirmationDialog = viewModel::dismissDeleteDeviceDialogConfirmation,
+        onShowResetDeviceConfirmationDialog = viewModel::showResetDeviceDialogConfirmation,
+        onDismissResetDeviceConfirmationDialog = viewModel::dismissResetDeviceDialogConfirmation,
+        addDeviceDialogState = addDeviceDialogState,
+        deviceDetailDialogState = deviceDetailDialogState,
+        deviceDeleteConfirmationDialogState = deviceDeleteConfirmationDialogState,
+        deviceResetConfirmationDialogState = deviceResetConfirmationDialogState,
+        onConfirmResetDevice = viewModel::resetSelectedIoTDevice,
+        onConfirmDeleteDevice = viewModel::deleteSelectedIoTDevice
     )
 }
 
@@ -109,7 +139,17 @@ fun IoTDevicesInfoContent(
     onSubmitAddDevice: (String, String) -> Unit = { _, _ -> },
     onDismissAddDeviceDialog: () -> Unit = {},
     onShowDeviceDetailDialog: (IoTDevice) -> Unit = { },
-    onDismissDeviceDetailDialog: () -> Unit = { }
+    onDismissDeviceDetailDialog: () -> Unit = { },
+    onShowDeleteDeviceConfirmationDialog: (Int) -> Unit = { },
+    onDismissDeleteDeviceConfirmationDialog: () -> Unit = { },
+    onShowResetDeviceConfirmationDialog: (Int) -> Unit = { },
+    onDismissResetDeviceConfirmationDialog: () -> Unit = { },
+    deviceDetailDialogState: IoTDeviceDetailDialogState = IoTDeviceDetailDialogState(),
+    deviceDeleteConfirmationDialogState: IoTDeviceDeleteConfirmationDialogState = IoTDeviceDeleteConfirmationDialogState(),
+    deviceResetConfirmationDialogState: IoTDeviceResetConfirmationDialogState = IoTDeviceResetConfirmationDialogState(),
+    addDeviceDialogState: AddIoTDeviceDialogState = AddIoTDeviceDialogState(),
+    onConfirmResetDevice: (Int) -> Unit = { },
+    onConfirmDeleteDevice: (Int) -> Unit = { },
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -249,14 +289,28 @@ fun IoTDevicesInfoContent(
 
 
     AddIoTDeviceDialog(
-        isShownProvider = { uiState.isAddDeviceDialogShown },
+        state = addDeviceDialogState,
         onDismiss = onDismissAddDeviceDialog,
         onSubmit = onSubmitAddDevice,
     )
 
     IoTDeviceDetailDialog(
-        ioTDevice = uiState.selectedDeviceForDetailDialog,
+        state = deviceDetailDialogState,
         onDismiss = onDismissDeviceDetailDialog,
+        onResetPressed = onShowResetDeviceConfirmationDialog,
+        onDeletePressed = onShowDeleteDeviceConfirmationDialog
+    )
+
+    IoTDeviceResetConfirmationDialog(
+        state = deviceResetConfirmationDialogState,
+        onDismiss = onDismissResetDeviceConfirmationDialog,
+        onConfirm = onConfirmResetDevice
+    )
+
+    IoTDeviceDeleteConfirmationDialog(
+        state = deviceDeleteConfirmationDialogState,
+        onDismiss = onDismissDeleteDeviceConfirmationDialog,
+        onDelete = onConfirmDeleteDevice
     )
 
 }

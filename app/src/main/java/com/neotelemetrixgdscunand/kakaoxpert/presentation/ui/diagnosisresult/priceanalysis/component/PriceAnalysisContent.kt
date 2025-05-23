@@ -34,6 +34,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.SecondaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.TitleShimmeringLoading
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DescriptionShimmeringLoading
@@ -44,7 +45,7 @@ import kotlinx.collections.immutable.toImmutableMap
 @Composable
 fun PriceAnalysisContent(
     modifier: Modifier = Modifier,
-    isInitiallyExpanded: Boolean = true,
+    isInitiallyExpanded: Boolean = false,
     groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
         emptyMap<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
     damageLevelCategory: DamageLevelCategory = DamageLevelCategory.High,
@@ -141,7 +142,7 @@ fun PriceAnalysisContent(
         Row(
             Modifier
                 .fillMaxWidth()
-                .border(1.dp, color = Green55, shape = RoundedCornerShape(8.dp))
+                .background(color = Yellow90, shape = RoundedCornerShape(8.dp))
                 .padding(vertical = 12.dp, horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
