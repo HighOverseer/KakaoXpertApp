@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,21 +25,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.PriceAnalysisOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryTextField
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.SecondaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.dashedBorder
 
 @Composable
-fun PriceAnalysisOverview(modifier: Modifier = Modifier) {
+fun PriceAnalysisOverviewSection(
+    modifier: Modifier = Modifier,
+    priceAnalysisOverviewDui: PriceAnalysisOverviewDui = PriceAnalysisOverviewDui(totalPredictedSellPrice = "")
+) {
     Column(
         modifier
             .fillMaxWidth()
@@ -46,7 +58,7 @@ fun PriceAnalysisOverview(modifier: Modifier = Modifier) {
     ) {
         SecondaryDescription(
             title = stringResource(R.string.total_buah_keseluruhan),
-            description = "3 Buah"
+            description = stringResource(R.string.buah, priceAnalysisOverviewDui.detectedCocoaCount)
         )
 
         Spacer(Modifier.height(16.dp))
@@ -67,7 +79,7 @@ fun PriceAnalysisOverview(modifier: Modifier = Modifier) {
             MutableInteractionSource()
         }
 
-        var cacaoAverageWeightInput by remember { mutableStateOf("1") }
+        var cacaoAverageWeightInput by remember { mutableStateOf(priceAnalysisOverviewDui.cocoaAverageWeight) }
         val isFocused by interactionSource.collectIsFocusedAsState()
 
         PrimaryTextField(
@@ -87,44 +99,53 @@ fun PriceAnalysisOverview(modifier: Modifier = Modifier) {
 
         Spacer(Modifier.height(16.dp))
 
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .background(color = Green55, shape = RoundedCornerShape(8.dp))
-                .padding(vertical = 8.dp, horizontal = 16.dp)
+        Card(
+            colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+            shape = RoundedCornerShape(8.dp),
+            onClick = {}
         ) {
-            Row(
-                Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .background(color = Yellow90, shape = RoundedCornerShape(8.dp))
+                    .dashedBorder(color = Orange90, shape = RoundedCornerShape(8.dp))
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
             ) {
-                ImagePainterStable(
-                    drawableResId = R.drawable.ic_price,
-                    contentScale = ContentScale.Fit,
-                    contentDescription = null
-                )
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ImagePainterStable(
+                        drawableResId = R.drawable.ic_price,
+                        contentScale = ContentScale.Fit,
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(Orange80)
+                    )
 
-                Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(8.dp))
+
+                    Text(
+                        stringResource(R.string.prediksi_harga_jual),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Orange80
+                    )
+                }
+
+                Spacer(Modifier.height(8.dp))
 
                 Text(
-                    stringResource(R.string.prediksi_harga_jual),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Orange90
+                    "≈${priceAnalysisOverviewDui.totalPredictedSellPrice}",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Black10
                 )
             }
-
-            Spacer(Modifier.height(16.dp))
-
-            Text(
-                "Rp20.000-30.000",
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.White
-            )
         }
+
 
         Spacer(Modifier.height(16.dp))
 
         Text(
-            "*Cek rincian prediksi harga jual dibawah ini",
+            stringResource(R.string.cek_rincian_prediksi_harga_jual_dibawah_ini),
             style = MaterialTheme.typography.labelMedium,
             color = Black10
         )
@@ -133,8 +154,10 @@ fun PriceAnalysisOverview(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun PriceAnalysisOverviewPreview() {
+private fun PriceAnalysisOverviewSectionPreview() {
     KakaoXpertTheme {
-        PriceAnalysisOverview()
+        PriceAnalysisOverviewSection(
+            priceAnalysisOverviewDui = PriceAnalysisOverviewDui(totalPredictedSellPrice = "Rp 2.000,00")
+        )
     }
 }

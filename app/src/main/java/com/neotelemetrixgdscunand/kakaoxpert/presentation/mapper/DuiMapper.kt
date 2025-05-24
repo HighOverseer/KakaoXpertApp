@@ -7,6 +7,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceI
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.IoTDataOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsDetails
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsItem
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.PriceAnalysisOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.ShopItem
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
@@ -14,6 +15,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.CocoaAverageSellPr
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.IoTDataOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsDetailsDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.NewsItemDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.PriceAnalysisOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.ShopItemDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.formatFloat
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UIText
@@ -22,6 +24,7 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import kotlin.math.roundToInt
 
 object DuiMapper {
     private const val NEWS_ITEM_DATE_FORMAT = "d MMM yyyy"
@@ -153,5 +156,16 @@ object DuiMapper {
                 ?.formatFloat()?.toString()
         )
     }
+
+    fun mapPriceAnalysisOverviewToDui(
+        priceAnalysisOverview: PriceAnalysisOverview
+    ):PriceAnalysisOverviewDui{
+        return PriceAnalysisOverviewDui(
+            detectedCocoaCount = priceAnalysisOverview.detectedCocoaCount.toString(),
+            cocoaAverageWeight = priceAnalysisOverview.cocoaAverageWeight.formatFloat().toString(),
+            totalPredictedSellPrice = priceAnalysisOverview.totalPredictedSellPrice.roundToInt().formatToIdrCurrency()
+        )
+    }
+
 
 }

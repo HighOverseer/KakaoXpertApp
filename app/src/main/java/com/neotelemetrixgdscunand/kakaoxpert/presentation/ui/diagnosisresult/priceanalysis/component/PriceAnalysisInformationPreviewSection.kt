@@ -2,6 +2,7 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.pr
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +34,8 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
 
 @Composable
 fun PriceAnalysisInformationPreviewSection(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showSnackbar: (String) -> Unit = { }
 ) {
     Column(
         modifier
@@ -65,8 +67,13 @@ fun PriceAnalysisInformationPreviewSection(
 
         Spacer(Modifier.height(24.dp))
 
+        val featureNotYetAvailableMessage = stringResource(R.string.fitur_belum_tersedia)
         Text(
-            stringResource(R.string.klik_untuk_prediksi_harga_dengan_porsi_yang_berbeda),
+            modifier = Modifier
+                .clickable(onClick = {
+                    showSnackbar(featureNotYetAvailableMessage)
+                }),
+            text = stringResource(R.string.klik_untuk_prediksi_harga_dengan_porsi_yang_berbeda),
             style = MaterialTheme.typography.titleMedium.copy(
                 textDecoration = TextDecoration.Underline,
                 letterSpacing = (-0.175).sp

@@ -39,8 +39,11 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.PriceAnalysisOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getDetectedDiseaseCacaos
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.PriceAnalysisOverviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.components.OverlayCompose
@@ -104,6 +107,7 @@ fun DiagnosisResultScreen(
         modifier = modifier,
         navigateUp = navigateUp,
         uiState = uiState,
+        showSnackbar = showSnackbar,
         navigateToCacaoImageDetail = { detectedCacaoId ->
             uiState.imagePreviewPath?.apply {
                 navigateToCacaoImageDetail(
@@ -123,7 +127,8 @@ fun DiagnosisResultContent(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     uiState: DiagnosisResultUIState = DiagnosisResultUIState(),
-    navigateToCacaoImageDetail: (Int?) -> Unit = { }
+    navigateToCacaoImageDetail: (Int?) -> Unit = { },
+    showSnackbar: (String) -> Unit = { }
 ) {
 
     val imageAspectRatio = 1.26f
@@ -217,7 +222,8 @@ fun DiagnosisResultContent(
                 isLoadingProvider = { uiState.isLoading },
                 navigateToCacaoImageDetail = navigateToCacaoImageDetail,
                 isLocalNavigateUpButtonVisibleProvider = { isLocalNavigateUpButtonVisible },
-                navigateUp = navigateUp
+                navigateUp = navigateUp,
+                showSnackbar = showSnackbar
             )
 
         }
@@ -254,7 +260,8 @@ fun DiagnosisResultContentBody(
     isLoadingProvider: () -> Boolean = { false },
     isLocalNavigateUpButtonVisibleProvider: () -> Boolean = { false },
     navigateToCacaoImageDetail: (Int?) -> Unit,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    showSnackbar: (String) -> Unit = { }
 ) {
     val groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
         remember(analysisSessionDui) {
@@ -331,13 +338,23 @@ fun DiagnosisResultContentBody(
 
 
     } else {
+
+        val priceAnalysisOverviewDui = remember(analysisSessionDui) {
+            PriceAnalysisOverview(
+                totalPredictedSellPrice = analysisSessionDui.predictedPrice,
+                detectedCocoaCount = analysisSessionDui.detectedCocoas.size,
+                cocoaAverageWeight = 0.2f
+            ).run { DuiMapper.mapPriceAnalysisOverviewToDui(this) }
+        }
         Column(
             Modifier.verticalScroll(priceAnalysisColumnScrollState)
         ) {
             PriceAnalysisTabScreen(
                 isLoadingProvider = isLoadingProvider,
                 navigateToCacaoImageDetail = navigateToCacaoImageDetail,
-                groupedDetectedDisease = groupedDetectedDisease,
+                detectedCocoas = analysisSessionDui.detectedCocoas,
+                priceAnalysisOverviewDui = priceAnalysisOverviewDui,
+                showSnackbar = showSnackbar
             )
         }
     }

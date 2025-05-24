@@ -74,7 +74,7 @@
     <string name="dummy_selling_price">Normal: Rp 30,000 - Rp 60,000/kg.</string>
     <string name="varietas">Variety</string>
     <string name="dummy_variety">Criollo: Premium, disease-prone</string>
-    <string name="bobot_buah">Fruit Weight</string>
+    <string name="bobot_buah">Cocoa Weight</string>
     <string name="dummy_fruit_weight">Healthy: 400 – 600 grams.\nAffected: Weight decreases by up to 50% due to rot.</string>
     <string name="tingkat_kerusakan">Damage Level</string>
     <string name="dummy_level_of_damage">Moderate: Some pods rot, partially damaged beans</string>
@@ -172,28 +172,28 @@
     <string name="masukkan_jumlah">Enter Quantity</string>
     <string name="price_note">The price prediction below is calculated assuming equal proportions of all damage levels.</string>
     <string name="klik_untuk_prediksi_harga_dengan_porsi_yang_berbeda">Click for Price Prediction with Different Proportions</string>
-    <string name="total_buah_keseluruhan">Total Fruits</string>
-    <string name="rata_rata_bobot_buah">Average Fruit Weight (Kg)</string>
+    <string name="total_buah_keseluruhan">Total Cocoa Pods</string>
+    <string name="rata_rata_bobot_buah">Assumed Average Cocoa Weight (Kg)</string>
     <string name="prediksi_harga_jual">Selling Price Prediction</string>
     <string name="rincian_prediksi_harga">Price Prediction Details</string>
     <string name="sub_total_harga_jual">Subtotal Selling Price</string>
-    <string name="sub_harga_satuan">Unit Price</string>
-    <string name="sub_total_harga">Subtotal Price</string>
+    <string name="sub_harga_satuan">Price Per Cocoa</string>
+    <string name="sub_total_harga">Total Price</string>
 
     <string name="tingkat_kerusakan_rendah">Low Damage Level</string>
-    <string name="rendah_0_30_buah_rusak">Low: 10–30% damaged fruits.</string>
+    <string name="rendah_0_30_buah_rusak">Low: 10–30% damaged cocoa.</string>
     <string name="rendah_0_10_rusak">Low: 0 – 10% Damaged</string>
     <string name="rendah_11_20_rusak">Low: 11 – 20% Damaged</string>
     <string name="rendah_21_30_rusak">Low: 21 – 30% Damaged</string>
 
     <string name="tingkat_kerusakan_sedang">Moderate Damage Level</string>
-    <string name="sedang_31_60_buah_rusak">Moderate: 31–60% damaged fruits.</string>
+    <string name="sedang_31_60_buah_rusak">Moderate: 31–60% damaged cocoa.</string>
     <string name="sedang_31_40_rusak">Moderate: 31 – 40% Damaged</string>
     <string name="sedang_41_50_rusak">Moderate: 41 – 50% Damaged</string>
     <string name="sedang_51_60_rusak">Moderate: 51 – 60% Damaged</string>
 
     <string name="tingkat_kerusakan_berat">Severe Damage Level</string>
-    <string name="berat_61_90_buah_rusak">Severe: 61–90% damaged fruits.</string>
+    <string name="berat_61_90_buah_rusak">Severe: 61–90% damaged cocoa.</string>
     <string name="berat_61_70_rusak">Severe: 61 – 70% Damaged</string>
     <string name="berat_71_80_rusak">Severe: 71 – 80% Damaged</string>
     <string name="berat_81_90_rusak">Severe: 81 – 90% Damaged</string>
@@ -370,4 +370,26 @@
     <string name="berhasil_menambahkan_perangkat">Device added successfully…</string>
 
     <string name="there_is_no_sensor_data_to_show">There is no sensor data to show..</string>
+
+    <string name="tidak_ada_item_yang_ditemukan">No items found</string>
+    <string name="nama_perangkat">Device Name</string>
+    <string name="id_perangkat">Device ID</string>
+    <string name="reset">Reset</string>
+    <string name="hapus">Delete</string>
+    <string name="status">Status</string>
+    <string name="aktif">Active</string>
+    <string name="tidak_aktif">Inactive</string>
+    <string name="iya">Yes</string>
+    <string name="apakah_anda_yakin_ingin_mereset_data_sensor_dari_perangkat_iot_ini">Are you sure you want to reset the sensor data from this IoT device?</string>
+    <string name="apakah_anda_yakin_ingin_menghapus">Are you sure you want to remove this device from the list of devices connected to your account?</string>
+    <string name="berhasil_menghapus_perangkat">Device successfully removed.</string>
+    <string name="data_sensor_dari_perangkat_iot_yang_dipilih_telah_direset">Sensor data from the selected IoT device has been reset.</string>
+    <string name="buah">%1$s Cocoa Pods</string>
+    <string name="berat_buah_rusak">Severe: %1$s%% Damaged Cocoa</string>
+    <string name="sedang_buah_rusak">Moderate: %1$s%% Damaged Cocoa</string>
+    <string name="ringan_buah_rusak">Mild: %1$s%% Damaged Cocoa</string>
+    <string name="jumlah_buah">Total Cocoa</string>
+
+    <string name="kg_assumed_weight">%1$s Kg (Assumed Weight)</string>
+    <string name="cek_rincian_prediksi_harga_jual_dibawah_ini">*See the predicted selling price details below.</string>
 </resources>

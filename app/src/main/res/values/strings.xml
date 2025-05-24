@@ -171,12 +171,12 @@
     <string name="price_note">Prediksi Harga dibawah ini didapatkan dengan anggapan seluruh tingkat kerusakan mendapatkan  porsi yang sama.</string>
     <string name="klik_untuk_prediksi_harga_dengan_porsi_yang_berbeda">Klik Untuk Prediksi Harga Dengan Porsi yang Berbeda</string>
     <string name="total_buah_keseluruhan">Total Buah Keseluruhan</string>
-    <string name="rata_rata_bobot_buah">Rata-Rata Bobot Buah (Kg)</string>
+    <string name="rata_rata_bobot_buah">Asumsi Rata-Rata Bobot Buah (Kg)</string>
     <string name="prediksi_harga_jual">Prediksi Harga Jual</string>
     <string name="rincian_prediksi_harga">Rincian Prediksi Harga</string>
     <string name="sub_total_harga_jual">Sub Total Harga Jual</string>
     <string name="sub_harga_satuan">Sub Harga Satuan</string>
-    <string name="sub_total_harga">Sub Total Harga</string>
+    <string name="sub_total_harga">Total Harga</string>
 
     <string name="tingkat_kerusakan_rendah">Tingkat Kerusakan Rendah</string>
     <string name="rendah_0_30_buah_rusak">Rendah: 10–30% buah rusak.</string>
@@ -371,4 +371,12 @@
     <string name="apakah_anda_yakin_ingin_menghapus">Apakah anda yakin ingin menghapus perangkat ini dari daftar perangkat yang tersambung di akun Anda?</string>
     <string name="berhasil_menghapus_perangkat">Berhasil Menghapus Perangkat..</string>
     <string name="data_sensor_dari_perangkat_iot_yang_dipilih_telah_direset">Data Sensor dari Perangkat Iot yang dipilih telah direset..</string>
+    <string name="buah">%1$s Buah</string>
+    <string name="berat_buah_rusak">Berat: %1$s%% Buah Rusak</string>
+    <string name="sedang_buah_rusak">Sedang: %1$s%% Buah Rusak</string>
+    <string name="ringan_buah_rusak">Ringan: %1$s%% Buah Rusak</string>
+    <string name="jumlah_buah">Jumlah Buah</string>
+
+    <string name="kg_assumed_weight">%1$s Kg (Berat Asumsi)</string>
+    <string name="cek_rincian_prediksi_harga_jual_dibawah_ini">*Cek rincian prediksi harga jual dibawah ini</string>
 </resources>

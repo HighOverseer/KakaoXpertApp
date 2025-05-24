@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,30 +32,50 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DamageLevelCategory
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper.formatToIdrCurrency
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.SecondaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.TitleShimmeringLoading
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DescriptionShimmeringLoading
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.dashedBorder
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableMap
+import kotlin.math.roundToInt
 
 @Composable
 fun PriceAnalysisContent(
     modifier: Modifier = Modifier,
     isInitiallyExpanded: Boolean = false,
-    groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
-        emptyMap<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
-    damageLevelCategory: DamageLevelCategory = DamageLevelCategory.High,
-    onDetectedCacaoImageClicked: (Int) -> Unit = { }
+    groupedDamagedLevelToDetectedCocoa: ImmutableMap<Int, ImmutableList<DetectedCocoa>> =
+        emptyMap<Int, ImmutableList<DetectedCocoa>>().toImmutableMap(),
+   // damageLevelCategory: DamageLevelCategory = DamageLevelCategory.High,
+    onDetectedCacaoImageClicked: (Int) -> Unit = { },
+    diseaseName:String = "",
+    averageCocoaWeight:Float = 0.2f,
 ) {
 
     var isExpand by remember {
         mutableStateOf(isInitiallyExpanded)
     }
+
+    val detectedCocoaCount = remember(groupedDamagedLevelToDetectedCocoa) {
+        groupedDamagedLevelToDetectedCocoa.values.sumOf { it.size }
+    }
+
+    val subTotalPrice = remember(groupedDamagedLevelToDetectedCocoa) {
+        groupedDamagedLevelToDetectedCocoa.values.sumOf {
+            it.sumOf { it.predictedPriceInIdr.toDouble() }
+        }.formatToIdrCurrency()
+    }
+
 
     Column(
         modifier = modifier
@@ -62,7 +84,7 @@ fun PriceAnalysisContent(
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                stringResource(damageLevelCategory.titleResId),
+                diseaseName,
                 style = MaterialTheme.typography.titleMedium,
                 color = Orange80,
                 modifier = Modifier.weight(1f)
@@ -87,7 +109,7 @@ fun PriceAnalysisContent(
                     imageVector = ImageVector
                         .vectorResource(drawableResId),
                     contentDescription = null,
-                    tint = Color.Black,
+                    tint = Orange80,
                     modifier = Modifier
                         .width(14.dp)
                         .height(14.dp)
@@ -96,70 +118,66 @@ fun PriceAnalysisContent(
         }
 
         if (isExpand) {
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(16.dp))
 
             SecondaryDescription(
-                title = stringResource(R.string.tingkat_serangan_penyakit),
-                description = stringResource(damageLevelCategory.descriptionResId)
+                title = stringResource(R.string.jumlah_buah),
+                description = stringResource(R.string.buah, detectedCocoaCount)
             )
 
             Spacer(Modifier.height(24.dp))
 
             SecondaryDescription(
                 title = stringResource(R.string.bobot_buah),
-                description = "1 Kg"
+                description = stringResource(R.string.kg_assumed_weight, averageCocoaWeight)
             )
 
             Spacer(Modifier.height(24.dp))
 
-            PriceAnalysisDetails(
-                groupedDetectedDisease = groupedDetectedDisease,
-                subDamageLevelSubCategory = damageLevelCategory.firstSubLevelCategory,
-                onDetectedCacaoImageClicked = onDetectedCacaoImageClicked
-            )
 
-            Spacer(Modifier.height(16.dp))
+            groupedDamagedLevelToDetectedCocoa.keys.forEachIndexed{ index, damageLevel ->
+                key(damageLevel) {
+                    PriceAnalysisDetails(
+                        onDetectedCacaoImageClicked = onDetectedCacaoImageClicked,
+                        detectedCocoas = groupedDamagedLevelToDetectedCocoa[damageLevel] ?: persistentListOf(),
+                        damageLevel = damageLevel
+                    )
 
-            PriceAnalysisDetails(
-                groupedDetectedDisease = groupedDetectedDisease,
-                subDamageLevelSubCategory = damageLevelCategory.secondSubLevelCategory,
-                onDetectedCacaoImageClicked = onDetectedCacaoImageClicked
-            )
+                    if(index != groupedDamagedLevelToDetectedCocoa.keys.size - 1){
+                        Spacer(Modifier.height(16.dp))
+                    }
 
-            Spacer(Modifier.height(16.dp))
-
-            PriceAnalysisDetails(
-                groupedDetectedDisease = groupedDetectedDisease,
-                subDamageLevelSubCategory = damageLevelCategory.thirdSubLevelCategory,
-                onDetectedCacaoImageClicked = onDetectedCacaoImageClicked
-            )
+                }
+            }
 
         }
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(16.dp))
 
         Row(
             Modifier
                 .fillMaxWidth()
                 .background(color = Yellow90, shape = RoundedCornerShape(8.dp))
+                .dashedBorder(color = Orange80, shape = RoundedCornerShape(8.dp))
                 .padding(vertical = 12.dp, horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 stringResource(R.string.sub_total_harga_jual),
                 style = MaterialTheme.typography.titleMedium,
-                color = Green55,
+                color = Orange90,
                 modifier = Modifier
                     .weight(1f)
             )
 
             Text(
-                "Rp 3.000 - Rp 6.000/kg",
-                style = MaterialTheme.typography.labelMedium,
-                color = Green55
+                subTotalPrice,
+                style = MaterialTheme.typography.titleMedium,
+                color = Black10
             )
         }
     }
+
 }
 
 
@@ -257,7 +275,10 @@ fun PriceAnalysisContentLoading(modifier: Modifier = Modifier) {
 @Composable
 private fun PriceAnalysisContentPreview() {
     KakaoXpertTheme {
-        PriceAnalysisContent()
+        PriceAnalysisContent(
+            diseaseName = "Busuk Buah",
+            isInitiallyExpanded = true
+        )
     }
 }
 

@@ -45,6 +45,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.formatSellPriceEstimationForHistory
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
+import kotlin.math.roundToInt
 
 @Composable
 fun DiagnosisHistory(
@@ -106,7 +107,7 @@ fun DiagnosisHistory(
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = "~${item.predictedPrice.formatToIdrCurrency()}",
+                    text = item.predictedPrice.roundToInt().formatToIdrCurrency(),
                     style = MaterialTheme.typography.labelMedium,
                     color = Black10
                 )
