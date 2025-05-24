@@ -63,10 +63,10 @@ object CocoaDiseaseMapper {
         )
     )
 
-    fun getDefaultSolutionResIdOfInfectedDiseases(detectedCocoas: List<DetectedCocoa>): Int {
-        val doesContainBlackpod = detectedCocoas.any { it.disease == CocoaDisease.BLACKPOD }
-        val doesContainPodBorer = detectedCocoas.any { it.disease == CocoaDisease.POD_BORER }
-        val doesContainHelopeltis = detectedCocoas.any { it.disease == CocoaDisease.HELOPELTIS }
+    fun getDefaultSolutionResIdOfInfectedDiseases(detectedCocoaDisease:List<CocoaDisease>): Int {
+        val doesContainBlackpod = detectedCocoaDisease.any { it == CocoaDisease.BLACKPOD }
+        val doesContainPodBorer = detectedCocoaDisease.any { it == CocoaDisease.POD_BORER }
+        val doesContainHelopeltis = detectedCocoaDisease.any { it == CocoaDisease.HELOPELTIS }
 
         return when {
             doesContainBlackpod && doesContainPodBorer && doesContainHelopeltis -> {
@@ -101,10 +101,10 @@ object CocoaDiseaseMapper {
         }
     }
 
-    fun getDefaultPreventionsResIdOfInfectedDiseases(detectedCocoas: List<DetectedCocoa>): Int {
-        val doesContainBlackpod = detectedCocoas.any { it.disease == CocoaDisease.BLACKPOD }
-        val doesContainPodBorer = detectedCocoas.any { it.disease == CocoaDisease.POD_BORER }
-        val doesContainHelopeltis = detectedCocoas.any { it.disease == CocoaDisease.HELOPELTIS }
+    fun getDefaultPreventionsResIdOfInfectedDiseases(detectedCocoaDisease:List<CocoaDisease>): Int {
+        val doesContainBlackpod = detectedCocoaDisease.any { it == CocoaDisease.BLACKPOD }
+        val doesContainPodBorer = detectedCocoaDisease.any { it == CocoaDisease.POD_BORER }
+        val doesContainHelopeltis = detectedCocoaDisease.any { it == CocoaDisease.HELOPELTIS }
 
         return when {
             doesContainBlackpod && doesContainPodBorer && doesContainHelopeltis -> {

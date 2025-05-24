@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,36 +36,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.PriceAnalysisOverview
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.getDetectedDiseaseCacaos
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.PriceAnalysisOverviewDui
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.components.OverlayCompose
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.DiagnosisResultTabSection
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.NavigateUpButton
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.DiagnosisDiseaseTabScreen
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DiagnosisResultHeaderSection
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.PriceAnalysisTabScreen
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.getBoundingBoxWithItsNameAsTheLabel
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.DiagnosisResultTabSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.NavigateUpButton
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.DiagnosisDiseaseTabScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.component.DiagnosisResultHeaderSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.PriceAnalysisTabScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.collectChannelWhenStarted
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun DiagnosisResultScreen(
+fun AnalysisResultScreen(
     modifier: Modifier = Modifier,
-    viewModel: DiagnosisResultViewModel = hiltViewModel(),
+    viewModel: AnalysisResultViewModel = hiltViewModel(),
     navigateUp: () -> Unit = {},
     showSnackbar: (String) -> Unit = { },
     navigateToCacaoImageDetail: (Int, Int?, String) -> Unit = { _, _, _ -> },
@@ -99,11 +89,17 @@ fun DiagnosisResultScreen(
                     showSnackbar(message)
                     navigateUp()
                 }
+
+                is AnalysisResultUIEvent.OnInputCocoaAverageWeightInvalid -> {
+                    showSnackbar(event.errorUIText.getValue(context))
+                }
             }
         }
     }
 
-    DiagnosisResultContent(
+    val cocoaAverageWeightInput by viewModel.cocoaAverageWeightInput.collectAsStateWithLifecycle()
+
+    AnalysisResultContent(
         modifier = modifier,
         navigateUp = navigateUp,
         uiState = uiState,
@@ -111,24 +107,30 @@ fun DiagnosisResultScreen(
         navigateToCacaoImageDetail = { detectedCacaoId ->
             uiState.imagePreviewPath?.apply {
                 navigateToCacaoImageDetail(
-                    uiState.diagnosisSession.id,
+                    uiState.sessionId,
                     detectedCacaoId,
                     this
                 )
             }
-        }
+        },
+        cocoaAverageWeightInputProvider = { cocoaAverageWeightInput },
+        onCocoaAverageWeightChanged = viewModel::onCocoaAverageWeightChanged,
+        onChangeSelectedTab = viewModel::onChangeSelectedTab
     )
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DiagnosisResultContent(
+fun AnalysisResultContent(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
-    uiState: DiagnosisResultUIState = DiagnosisResultUIState(),
+    uiState: AnalysisResultUIState = AnalysisResultUIState(),
     navigateToCacaoImageDetail: (Int?) -> Unit = { },
-    showSnackbar: (String) -> Unit = { }
+    showSnackbar: (String) -> Unit = { },
+    cocoaAverageWeightInputProvider: () -> String = { "0.2" },
+    onCocoaAverageWeightChanged: (String) -> Unit = { },
+    onChangeSelectedTab: (Boolean) -> Unit = { }
 ) {
 
     val imageAspectRatio = 1.26f
@@ -188,17 +190,12 @@ fun DiagnosisResultContent(
                         )
 
                         val context = LocalContext.current
-                        val adjustedBoundingBox = remember(uiState.diagnosisSession) {
-                            uiState.diagnosisSession.detectedCocoas.map {
-                                it.getBoundingBoxWithItsNameAsTheLabel(context)
-                            }
-                        }
 
                         OverlayCompose(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .align(Alignment.Center),
-                            boundingBoxes = adjustedBoundingBox
+                            boundingBoxes = uiState.imageBoundingBoxes
                         )
 
                         TopAppBarNavigateUpButtonWrapper(
@@ -217,13 +214,15 @@ fun DiagnosisResultContent(
                 .padding(innerPadding)
         ) {
 
-            DiagnosisResultContentBody(
-                analysisSessionDui = uiState.diagnosisSession,
-                isLoadingProvider = { uiState.isLoading },
+            AnalysisResultContentBody(
+                uiState = uiState,
                 navigateToCacaoImageDetail = navigateToCacaoImageDetail,
                 isLocalNavigateUpButtonVisibleProvider = { isLocalNavigateUpButtonVisible },
                 navigateUp = navigateUp,
-                showSnackbar = showSnackbar
+                showSnackbar = showSnackbar,
+                cocoaAverageWeightInputProvider = cocoaAverageWeightInputProvider,
+                onCocoaAverageWeightChanged = onCocoaAverageWeightChanged,
+                onChangeSelectedTab = onChangeSelectedTab
             )
 
         }
@@ -255,28 +254,24 @@ fun TopAppBarNavigateUpButtonWrapper(
 }
 
 @Composable
-fun DiagnosisResultContentBody(
-    analysisSessionDui: AnalysisSessionDui = AnalysisSessionDui(),
-    isLoadingProvider: () -> Boolean = { false },
+fun AnalysisResultContentBody(
     isLocalNavigateUpButtonVisibleProvider: () -> Boolean = { false },
     navigateToCacaoImageDetail: (Int?) -> Unit,
     navigateUp: () -> Unit = {},
-    showSnackbar: (String) -> Unit = { }
+    showSnackbar: (String) -> Unit = { },
+    uiState: AnalysisResultUIState = AnalysisResultUIState(),
+    cocoaAverageWeightInputProvider: () -> String = { "0.2" },
+    onCocoaAverageWeightChanged: (String) -> Unit = { },
+    onChangeSelectedTab: (Boolean) -> Unit = { }
 ) {
-    val groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
-        remember(analysisSessionDui) {
-            val map = mutableMapOf<CocoaDisease, ImmutableList<DetectedCocoa>>()
-            analysisSessionDui.detectedCocoas.groupBy {
-                it.disease
-            }.map {
-                val (cocoaDisease, list) = it.toPair()
-                map[cocoaDisease] = list.toImmutableList()
-            }
-            map.toImmutableMap()
-        }
 
-    val isExpandList = remember(groupedDetectedDisease) {
-        List(groupedDetectedDisease.keys.size) { index ->
+    val isLoadingProvider = remember(uiState) { {
+            uiState.isLoading
+        }
+    }
+
+    val isExpandList = remember(uiState.groupedDetectedDiseaseToDetectedCocoas) {
+        List(uiState.groupedDetectedDiseaseToDetectedCocoas.keys.size) { index ->
             val isInitialStateExpand = index == 0
             mutableStateOf(isInitialStateExpand)
         }.toImmutableList()
@@ -288,7 +283,7 @@ fun DiagnosisResultContentBody(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, top = 16.dp, end = 16.dp),
-        sessionName = analysisSessionDui.title,
+        sessionName = uiState.sessionTitle,
         isLoadingProvider = isLoadingProvider,
         isLocalNavigateUpButtonVisibleProvider = isLocalNavigateUpButtonVisibleProvider,
         navigateUp = navigateUp
@@ -298,32 +293,32 @@ fun DiagnosisResultContentBody(
     val diagnosisDiseaseColumnScrollState = rememberScrollState()
     val priceAnalysisColumnScrollState = rememberScrollState()
 
-    val changeSelectedTab: (Boolean) -> Unit = remember {
-        {
-            val isReselectedTab = it == isDiagnosisTabSelected
-            if (!isReselectedTab) {
-                isDiagnosisTabSelected = it
-                coroutineScope.launch {
-                    if (isDiagnosisTabSelected) {
-                        diagnosisDiseaseColumnScrollState.scrollTo(0)
-                    } else priceAnalysisColumnScrollState.scrollTo(0)
-                }
-            }
-        }
-    }
+//    val changeSelectedTab: (Boolean) -> Unit = remember {
+//        {
+//            val isReselectedTab = it == isDiagnosisTabSelected
+//            if (!isReselectedTab) {
+//                isDiagnosisTabSelected = it
+//                coroutineScope.launch {
+//                    if (isDiagnosisTabSelected) {
+//                        diagnosisDiseaseColumnScrollState.scrollTo(0)
+//                    } else priceAnalysisColumnScrollState.scrollTo(0)
+//                }
+//            }
+//        }
+//    }
 
     DiagnosisResultTabSection(
-        isDiagnosisTabSelected = isDiagnosisTabSelected,
-        changeSelectedTab = changeSelectedTab
+        isDiagnosisTabSelected = uiState.isDiagnosisTabSelected,
+        changeSelectedTab = onChangeSelectedTab
     )
 
-    if (isDiagnosisTabSelected) {
+    if (uiState.isDiagnosisTabSelected) {
         Column(
             Modifier
                 .verticalScroll(diagnosisDiseaseColumnScrollState)
         ) {
             DiagnosisDiseaseTabScreen(
-                groupedDetectedDisease = groupedDetectedDisease,
+                groupedDetectedDisease = uiState.groupedDetectedDiseaseToDetectedCocoas,
                 toggleItemExpand = { index ->
                     isExpandList[index].value = !isExpandList[index].value
                 },
@@ -332,29 +327,24 @@ fun DiagnosisResultContentBody(
                 },
                 isLoadingProvider = isLoadingProvider,
                 navigateToCacaoImageDetail = navigateToCacaoImageDetail,
-                analysisSessionDui = analysisSessionDui
+                diagnosisResultOverviewDui = uiState.diagnosisResultOverview
             )
         }
 
 
     } else {
 
-        val priceAnalysisOverviewDui = remember(analysisSessionDui) {
-            PriceAnalysisOverview(
-                totalPredictedSellPrice = analysisSessionDui.predictedPrice,
-                detectedCocoaCount = analysisSessionDui.detectedCocoas.size,
-                cocoaAverageWeight = 0.2f
-            ).run { DuiMapper.mapPriceAnalysisOverviewToDui(this) }
-        }
         Column(
             Modifier.verticalScroll(priceAnalysisColumnScrollState)
         ) {
             PriceAnalysisTabScreen(
                 isLoadingProvider = isLoadingProvider,
                 navigateToCacaoImageDetail = navigateToCacaoImageDetail,
-                detectedCocoas = analysisSessionDui.detectedCocoas,
-                priceAnalysisOverviewDui = priceAnalysisOverviewDui,
-                showSnackbar = showSnackbar
+                groupedDetectedDiseaseToDamageLevelsToDetectedCocoas = uiState.groupedDetectedDiseaseToDamageLevelsToDetectedCocoas,
+                priceAnalysisOverviewDui = uiState.priceAnalysisOverview,
+                showSnackbar = showSnackbar,
+                cocoaAverageWeightInputProvider = cocoaAverageWeightInputProvider,
+                onCocoaAverageWeightChanged = onCocoaAverageWeightChanged
             )
         }
     }
@@ -362,19 +352,10 @@ fun DiagnosisResultContentBody(
 
 @Preview(showBackground = true, heightDp = 2000)
 @Composable
-private fun DiagnosisResultScreenPreview() {
+private fun AnalysisResultScreenPreview() {
     KakaoXpertTheme {
-        DiagnosisResultContent(
-            uiState = DiagnosisResultUIState(
-                diagnosisSession = AnalysisSessionDui(
-                    id = 0,
-                    title = "Sampel Kakao Pak Tono",
-                    imageUrlOrPath = "https://lh3.googleusercontent.com/fife/ALs6j_FBmyzFhcT48JsWTnlztAKHZJVIxq_KWTNbYFRO8aOkqiJtsH0HDNSDjaqO-1SrWvE8AR85sU2QcU93FD_OWlJ_xZQsL4JpmKESvrTSvPr37FzRfsudWwBrs6HPawtN9qXiqM6JRd4htsh1cuv4SUajVBpjwkIuUVFhfdmMgV-qlZsqn7Ui_W2zj3Kf2Z6BuAeQ-rxzhVoMWxsiXxZL1OVHRz4permiV_G8nOHZLLLbJ_hwKLNHpnFPH15efQarYQtdrfiTXwcYSC_F5_sEasYb-IgUrr1o-_T-__wrnZSc6GEF9YUxQcv2urAt5EqcPdGumJ9GWToq9AtYz9XfD5zB0rsBNl2GhHn23p8DIkq3NCJNUM4hGXSVBLIi5GmBxZXnKlox4vKRarRvtzipvfCpd-iCm6i-66uvx31ghCU2LH5DrqjaPB5-hL30W20F7vbzmHHf2j78Hd6wM7xlhptZChs7_AzZxq9fZ_D9dAAkXaZ9uWuKvKddSFiaajWNapI2mcOae_QKEraLv2t41uxjxAhz1kEhgERN_ZQXAuTpaCudlpaqZRa88LkVwdrmEsfcgAcLAWiEnvcwWJNhjD-B7hWMOx4NvxC_Nz3MAhflOI4-i1u4HDkY6GsZ3mBpzaWiKY6Po6tkjJx1UMTozff4YmDK1W59wqd-YZ8ZQkLCjrRJO_FIkVo9RTaQm-kY_4pCz2f4PjWPbVxsUUiHVQJEB-nus4cK2kGS3DMheO11j2i_EcnuEBXH69fazqZFTU9ahQ4_fARXMxn_k30h5Nkl7YiLMW_R3YK4huwaJUCxwhTTv3vWMeQDkSWOTI2lnks1soQyPRRaBCn3tFYY0BlaR9Gdz__3OrXtFECyGcqVfOEuY-tvGtqwQfHBXNG5XqN8e28CM7Pt2f0gFk3ha9K1m6DOJR2dkLy9monvnx_L4UEPfGWIMa2pnSPOORePp9v_nK380f2t15GPjtpznc4ezON3dHidJV3pkwXpsgXQf0gOjSBWdSf8GtIDoHALK0BpPb5nW0nTMkw7bunhDhk9BCB11WjzbsTLi-Tlau17NQAcFaJE6EQlz0ujZsKMK6oshGveVET6gt7480hPoiGo0LCarO8gDXR8Y6QQDY6mearThrt9xquxCwff-SS-sleeJMk9hqahiAHiureTtT_lwKOJIscCZA7PkDy22tx-gCyquIIh0N3layVLsKX-y07p3Bu18y7KFU1Ld9-RA7IfX6aaOyGyqJMDswpiIytQyQXh9cRlCX0Qjn81YNKmQurktSRZ7c99ht17JBo5dGdmXlVk87kHVthwjqygGU9slR6OhgNW0nOHEgDVS-RDv_7Cy3sA55Vs9P82RO8qC1WW7zlUV5gIETD0o_mgy5zBKEgWRhKixYnSoAuXodVNvUNpG4u7Df29GJkq_exP_iOL0OGS3qPMneG_OC6V9Uez4Jd9nVrNpCnySAXksOGNYUiwt_KkOsc98VRAsb5jV5qrd3ad-bziRcIci09WjDNbMjKJ89bO8yZV8DMCJd0uOVRp3DDHRLh8l5vCha8gtLQqLcMV8htomJtJy7hME1v-C8v9iXt6rIGoRRgYOfnnDNQCwBnRhUxA4WSNMbqnw_qQ2F6LEAODfhJfXfR_di9OyPh2q3K9h3mS=w1920-h927",
-                    date = "9-11-2024",
-                    predictedPrice = 1200f,
-                    detectedCocoas = getDetectedDiseaseCacaos().toImmutableList()
-                )
-            )
+        AnalysisResultContent(
+            uiState = AnalysisResultUIState()
         )
     }
 }

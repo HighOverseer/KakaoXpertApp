@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

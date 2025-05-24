@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,21 +32,21 @@ import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.PriceAnalysisOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryTextField
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.SecondaryDescription
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.SecondaryDescription
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.dashedBorder
 
 @Composable
 fun PriceAnalysisOverviewSection(
     modifier: Modifier = Modifier,
-    priceAnalysisOverviewDui: PriceAnalysisOverviewDui = PriceAnalysisOverviewDui(totalPredictedSellPrice = "")
+    priceAnalysisOverviewDui: PriceAnalysisOverviewDui = PriceAnalysisOverviewDui(totalPredictedSellPrice = ""),
+    cocoaAverageWeightProvider:() -> String = { "0.2" },
+    onCocoaAverageWeightChanged: (String) -> Unit = { },
 ) {
     Column(
         modifier
@@ -71,26 +70,17 @@ fun PriceAnalysisOverviewSection(
 
         Spacer(Modifier.height(8.dp))
 
-        val allowedCharacterPattern = remember {
-            "^[0-9]*[,]{0,1}[0-9]*$".toRegex()
-        }
-
         val interactionSource = remember {
             MutableInteractionSource()
         }
 
-        var cacaoAverageWeightInput by remember { mutableStateOf(priceAnalysisOverviewDui.cocoaAverageWeight) }
         val isFocused by interactionSource.collectIsFocusedAsState()
 
         PrimaryTextField(
             contentPadding = PaddingValues(vertical = 13.5.dp, horizontal = 16.dp),
             hintText = stringResource(R.string.masukkan_jumlah),
-            valueProvider = { cacaoAverageWeightInput },
-            onValueChange = {
-                if (allowedCharacterPattern.matches(it)) {
-                    cacaoAverageWeightInput = it
-                }
-            },
+            valueProvider = cocoaAverageWeightProvider,
+            onValueChange = onCocoaAverageWeightChanged,
             textColor = Black10,
             isFocusedProvider = { isFocused },
             interactionSource = interactionSource,

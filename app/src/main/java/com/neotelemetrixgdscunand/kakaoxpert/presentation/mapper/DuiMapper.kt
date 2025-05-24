@@ -97,7 +97,7 @@ object DuiMapper {
         )
     }
 
-    fun mapDiagnosisSessionToDui(analysisSession: AnalysisSession): AnalysisSessionDui {
+    fun mapAnalysisSessionToDui(analysisSession: AnalysisSession): AnalysisSessionDui {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = analysisSession.createdAt
         val sdf = SimpleDateFormat("d-MM-yyyy", Locale.getDefault())

@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -19,11 +19,12 @@ import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.DiagnosisResultOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.CocoaDiseaseMapper
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DetectedCacaoDiseasePreviewSection
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DiagnosisBottomContent
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DiagnosisDiseaseDetails
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.component.DetectedCacaoDiseaseOverviewSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.component.DiagnosisBottomContent
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.component.DiagnosisDiseaseDetails
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
@@ -35,20 +36,16 @@ fun DiagnosisDiseaseTabScreen(
     groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
         mutableMapOf<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
     navigateToCacaoImageDetail: (Int) -> Unit = { },
-    analysisSessionDui: AnalysisSessionDui = AnalysisSessionDui(),
     isLoadingProvider: () -> Boolean = { false },
     isItemExpandProvider: (Int) -> Boolean = { false },
     toggleItemExpand: (Int) -> Unit = { },
+    diagnosisResultOverviewDui: DiagnosisResultOverviewDui = DiagnosisResultOverviewDui()
 ) {
-    DetectedCacaoDiseasePreviewSection(
+
+    DetectedCacaoDiseaseOverviewSection(
         modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .background(
-                color = Color.White,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            .padding(horizontal = 16.dp),
         groupedDetectedDisease = groupedDetectedDisease,
         navigateToCacaoImageDetail = navigateToCacaoImageDetail
     )
@@ -57,29 +54,29 @@ fun DiagnosisDiseaseTabScreen(
 
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
-    val solution = remember(analysisSessionDui) {
-        if (analysisSessionDui.solutionEn == null || analysisSessionDui.solutionId == null) {
+    val solution = remember(diagnosisResultOverviewDui, groupedDetectedDisease) {
+        if (diagnosisResultOverviewDui.solutionEn == null || diagnosisResultOverviewDui.solutionId == null) {
             CocoaDiseaseMapper.getDefaultSolutionResIdOfInfectedDiseases(
-                analysisSessionDui.detectedCocoas
+                groupedDetectedDisease.keys.toList()
             ).let { context.getString(it) }
         } else {
             when (configuration.locales[0].language) {
-                "id" -> analysisSessionDui.solutionId
-                else -> analysisSessionDui.solutionEn
+                "id" -> diagnosisResultOverviewDui.solutionId
+                else -> diagnosisResultOverviewDui.solutionEn
             }
         }
 
     }
 
-    val preventions = remember(analysisSessionDui) {
-        if (analysisSessionDui.preventionsEn == null || analysisSessionDui.preventionsId == null) {
+    val preventions = remember(diagnosisResultOverviewDui, groupedDetectedDisease) {
+        if (diagnosisResultOverviewDui.preventionEn == null || diagnosisResultOverviewDui.preventionId == null) {
             CocoaDiseaseMapper.getDefaultPreventionsResIdOfInfectedDiseases(
-                analysisSessionDui.detectedCocoas
+                groupedDetectedDisease.keys.toList()
             ).let { context.getString(it) }
         } else {
             when (configuration.locales[0].language) {
-                "id" -> analysisSessionDui.preventionsId
-                else -> analysisSessionDui.preventionsEn
+                "id" -> diagnosisResultOverviewDui.preventionId
+                else -> diagnosisResultOverviewDui.preventionEn
             }
         }.split("\n")
             .toImmutableList()

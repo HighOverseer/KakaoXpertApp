@@ -4,11 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun OverlayCompose(
     modifier: Modifier = Modifier,
-    boundingBoxes: List<BoundingBox>
+    boundingBoxes: ImmutableList<BoundingBox>
 ) {
     AndroidView(
         modifier = modifier,

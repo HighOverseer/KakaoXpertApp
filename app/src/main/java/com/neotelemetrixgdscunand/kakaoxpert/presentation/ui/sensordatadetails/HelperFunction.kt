@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.asAndroidPath
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.SensorItemData
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.util.roundOffDecimal
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.ensureActive
 import java.text.SimpleDateFormat

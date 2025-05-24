@@ -379,4 +379,11 @@
 
     <string name="kg_assumed_weight">%1$s Kg (Berat Asumsi)</string>
     <string name="cek_rincian_prediksi_harga_jual_dibawah_ini">*Cek rincian prediksi harga jual dibawah ini</string>
+    <string name="cek_detail_penyakit_yang_terdeteksi_dibawah_ini">*Cek detail penyakit yang terdeteksi dibawah ini</string>
+    <string name="total_penyakit_yang_terdeteksi">Total Penyakit Yang Terdeteksi</string>
+    <string name="penyakit_format">%1$s Penyakit</string>
+    <string name="input_berat_rata_rata_kakao_tidak_boleh_kosong">Input Berat rata-rata kakao tidak boleh kosong..</string>
+    <string name="input_berat_rata_rata_kakao_tidak_boleh_melebihi_5kg">Input Berat rata-rata kakao tidak boleh melebihi 5 Kg</string>
+    <string name="input_berat_rata_rata_kakao_tidak_valid">Input berat rata-rata kakao yang dimasukkan tidak valid..</string>
+
 </resources>

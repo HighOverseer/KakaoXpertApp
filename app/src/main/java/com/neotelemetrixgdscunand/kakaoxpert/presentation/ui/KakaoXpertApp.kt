@@ -30,7 +30,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.LoginScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.RegisterScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.CacaoImageDetailScreen
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.DiagnosisResultScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.AnalysisResultScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news.NewsDetailsScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.news.NewsScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.notif.screen.CacaoRequestScreen
@@ -312,7 +312,7 @@ fun KakaoXpertApp(
             }
 
             composable<Navigation.DiagnosisResult> {
-                DiagnosisResultScreen(
+                AnalysisResultScreen(
                     navigateUp = rootNavHostController::navigateUp,
                     showSnackbar = showSnackbar,
                     navigateToCacaoImageDetail = { sessionId, detectedCacaoId, imagePreviewPath ->

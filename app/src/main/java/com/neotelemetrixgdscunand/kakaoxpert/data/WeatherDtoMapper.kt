@@ -5,7 +5,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto.WeatherForecastOver
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherForecastItem
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherForecastOverview
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.WeatherType
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.util.roundOffDecimal
 import kotlinx.coroutines.CancellationException
 import java.text.SimpleDateFormat
 import java.util.Locale

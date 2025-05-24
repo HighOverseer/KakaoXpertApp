@@ -1,5 +1,7 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -7,42 +9,48 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DamageLevelCategory
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.PriceAnalysisOverviewDui
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.CocoaDiseaseMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component.PriceAnalysisContent
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component.PriceAnalysisInformationPreviewSection
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component.PriceAnalysisOverviewSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.emptyGroupedMap2
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.component.PriceAnalysisContent
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.component.PriceAnalysisContentLoading
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.component.PriceAnalysisInformationPreviewSection
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.component.PriceAnalysisOverviewSection
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
-import kotlin.math.roundToInt
 
 @Composable
 fun PriceAnalysisTabScreen(
     modifier: Modifier = Modifier,
     isLoadingProvider: () -> Boolean = { false },
-    detectedCocoas:ImmutableList<DetectedCocoa> = persistentListOf(),
+    groupedDetectedDiseaseToDamageLevelsToDetectedCocoas:ImmutableMap<CocoaDisease, ImmutableMap<Int, ImmutableList<DetectedCocoa>>> = emptyGroupedMap2,
     priceAnalysisOverviewDui: PriceAnalysisOverviewDui = PriceAnalysisOverviewDui(),
     navigateToCacaoImageDetail: (Int) -> Unit = { },
-    showSnackbar: (String) -> Unit = { }
+    showSnackbar: (String) -> Unit = { },
+    cocoaAverageWeightInputProvider: () -> String = { "0.2" },
+    onCocoaAverageWeightChanged: (String) -> Unit = { }
 ) {
     if (isLoadingProvider()) {
-        PriceAnalysisContent()
+        PriceAnalysisContentLoading()
     } else {
+
 
         PriceAnalysisInformationPreviewSection(
             showSnackbar = showSnackbar
@@ -51,7 +59,9 @@ fun PriceAnalysisTabScreen(
         Spacer(Modifier.height(16.dp))
 
         PriceAnalysisOverviewSection(
-            priceAnalysisOverviewDui = priceAnalysisOverviewDui
+            priceAnalysisOverviewDui = priceAnalysisOverviewDui,
+            cocoaAverageWeightProvider = cocoaAverageWeightInputProvider,
+            onCocoaAverageWeightChanged = onCocoaAverageWeightChanged,
         )
 
         Spacer(Modifier.height(16.dp))
@@ -73,34 +83,8 @@ fun PriceAnalysisTabScreen(
                 .padding(horizontal = 16.dp)
         }
 
-//        val damageLevelCategoryInfo = remember {
-//            listOf(
-//                DamageLevelCategory.LOW,
-//                DamageLevelCategory.MEDIUM,
-//                DamageLevelCategory.HIGH
-//            )
-//        }
-
-        val doubleGroupedData = remember(detectedCocoas){
-            val outerMap = mutableMapOf<CocoaDisease, ImmutableMap<Int, ImmutableList<DetectedCocoa>>>()
-            detectedCocoas.groupBy { it.disease }.map {
-                val (cocoaDisease, list) = it.toPair()
-                val immutableList = list.toImmutableList()
-
-                val innerMap = mutableMapOf<Int, ImmutableList<DetectedCocoa>>()
-                immutableList.groupBy { item ->
-                    item.damageLevel.roundToInt()
-                }.map { innerItem ->
-                    val (damageLevel, innerList) = innerItem.toPair()
-                    innerMap[damageLevel] = innerList.toImmutableList()
-                }
-                outerMap[cocoaDisease] = innerMap.toImmutableMap()
-            }
-            outerMap.toImmutableMap()
-        }
-
-        val groupedDetectedDiseaseKeys = remember(doubleGroupedData) {
-            doubleGroupedData.keys
+        val groupedDetectedDiseaseKeys = remember(groupedDetectedDiseaseToDamageLevelsToDetectedCocoas) {
+            groupedDetectedDiseaseToDamageLevelsToDetectedCocoas.keys
         }
 
         val emptyMap = remember {
@@ -120,9 +104,10 @@ fun PriceAnalysisTabScreen(
                     modifier = outermostPaddingModifier,
                     isInitiallyExpanded = isInitiallyExpanded,
                     //damageLevelCategory = damageLevelCategoryInfo[index],
-                    groupedDamagedLevelToDetectedCocoa = doubleGroupedData[diseaseKey] ?: emptyMap,
+                    groupedDamagedLevelToDetectedCocoa = groupedDetectedDiseaseToDamageLevelsToDetectedCocoas[diseaseKey] ?: emptyMap,
                     onDetectedCacaoImageClicked = navigateToCacaoImageDetail,
-                    diseaseName = diseaseName
+                    diseaseName = diseaseName,
+                    cocoaAverageWeightInputProvider = cocoaAverageWeightInputProvider
                 )
                 Spacer(Modifier.height(16.dp))
             }

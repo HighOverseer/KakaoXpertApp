@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.util
 
 import android.content.Context
 import androidx.compose.animation.core.animateFloat

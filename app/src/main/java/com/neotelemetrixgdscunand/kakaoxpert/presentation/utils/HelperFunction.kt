@@ -11,7 +11,12 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.UsernameValidator
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionDui
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -86,3 +91,31 @@ fun Result.Error<*, RootError>.toErrorUIText(): UIText {
     return UIText.StringResource(stringResource)
 }
 
+
+fun AnalysisSessionDui.deepCopy():AnalysisSessionDui{
+    return AnalysisSessionDui(
+        id = id,
+        title = title,
+        imageUrlOrPath = imageUrlOrPath,
+        date = date,
+        predictedPrice = predictedPrice,
+        detectedCocoas = detectedCocoas.map { it.deepCopy() }.toImmutableList(),
+        solutionEn = solutionEn,
+        preventionsEn = preventionsEn,
+        solutionId = solutionId,
+        preventionsId = preventionsId
+
+    )
+}
+
+fun DetectedCocoa.deepCopy():DetectedCocoa{
+    return DetectedCocoa(
+        id, cacaoNumber, boundingBox.deepCopy(), disease, predictedPriceInIdr, damageLevel
+    )
+}
+
+fun BoundingBox.deepCopy():BoundingBox{
+    return BoundingBox(
+        x1, y1, x2, y2, cx, cy, w, h, cnf, cls, label
+    )
+}

@@ -4,11 +4,10 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaPriceInfoRepositor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaPriceCalculationHelper
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.util.roundOffDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

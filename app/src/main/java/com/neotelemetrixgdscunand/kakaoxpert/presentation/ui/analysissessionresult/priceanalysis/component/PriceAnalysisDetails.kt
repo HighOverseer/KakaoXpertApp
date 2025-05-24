@@ -1,8 +1,7 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.component
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,18 +35,12 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.CocoaDamageLevelMapper
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper.formatToIdrCurrency
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green60
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.PrimaryDescription
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DetectedCacaoImageGrid
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.formatFloat
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.component.DetectedCacaoImageGrid
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlin.math.roundToInt
 
 @Composable
 fun PriceAnalysisDetails(

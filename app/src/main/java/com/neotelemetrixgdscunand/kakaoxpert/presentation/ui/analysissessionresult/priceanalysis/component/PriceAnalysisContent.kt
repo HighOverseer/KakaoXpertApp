@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.priceanalysis.component
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,26 +28,21 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DamageLevelCategory
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper.formatToIdrCurrency
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.SecondaryDescription
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.component.TitleShimmeringLoading
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent.DescriptionShimmeringLoading
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.SecondaryDescription
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.TitleShimmeringLoading
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.component.DescriptionShimmeringLoading
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.dashedBorder
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableMap
-import kotlin.math.roundToInt
 
 @Composable
 fun PriceAnalysisContent(
@@ -59,7 +53,7 @@ fun PriceAnalysisContent(
    // damageLevelCategory: DamageLevelCategory = DamageLevelCategory.High,
     onDetectedCacaoImageClicked: (Int) -> Unit = { },
     diseaseName:String = "",
-    averageCocoaWeight:Float = 0.2f,
+    cocoaAverageWeightInputProvider:()-> String = { "0.2f" },
 ) {
 
     var isExpand by remember {
@@ -129,7 +123,7 @@ fun PriceAnalysisContent(
 
             SecondaryDescription(
                 title = stringResource(R.string.bobot_buah),
-                description = stringResource(R.string.kg_assumed_weight, averageCocoaWeight)
+                description = stringResource(R.string.kg_assumed_weight, cocoaAverageWeightInputProvider())
             )
 
             Spacer(Modifier.height(24.dp))

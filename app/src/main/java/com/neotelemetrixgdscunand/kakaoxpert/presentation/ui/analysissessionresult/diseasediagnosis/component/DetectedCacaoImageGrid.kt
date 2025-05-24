@@ -1,4 +1,4 @@
-package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.diseasediagnosis.compoenent
+package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +38,9 @@ import kotlinx.collections.immutable.toImmutableList
 fun DetectedCacaoImageGrid(
     modifier: Modifier = Modifier,
     detectedCacaos: ImmutableList<DetectedCocoa> = persistentListOf(),
-    onItemClicked: (Int) -> Unit = { }
+    onItemClicked: (Int) -> Unit = { },
+    textStyle: TextStyle = MaterialTheme.typography.labelMedium,
+    textColor: Color = Black10,
 ) {
 
     val chunkedDetectedCacao = remember(detectedCacaos) {
@@ -62,15 +66,15 @@ fun DetectedCacaoImageGrid(
 
                     Text(
                         "- ",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = Black10
+                        style = textStyle,
+                        color = textColor
                     )
 
                     Text(
                         stringResource(R.string.kakao, currentCacao.cacaoNumber),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = textStyle,
                         textDecoration = TextDecoration.Underline,
-                        color = Black10
+                        color = textColor
                     )
 
                     Spacer(Modifier.width(4.dp))

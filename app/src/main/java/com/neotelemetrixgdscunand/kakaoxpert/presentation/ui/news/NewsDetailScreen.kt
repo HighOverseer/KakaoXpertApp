@@ -41,7 +41,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black50
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey53
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.shimmeringEffect
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.util.shimmeringEffect
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.AsyncImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.collectChannelWhenStarted
 
