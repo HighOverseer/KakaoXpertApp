@@ -40,16 +40,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.components.OverlayCompose
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.DiagnosisResultTabSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.NavigateUpButton
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.DiagnosisDiseaseTabScreen
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis.component.DiagnosisResultHeaderSection
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis.PriceAnalysisTabScreen
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.cacaoimagedetail.components.OverlayCompose
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.collectChannelWhenStarted
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
@@ -265,7 +264,8 @@ fun AnalysisResultContentBody(
     onChangeSelectedTab: (Boolean) -> Unit = { }
 ) {
 
-    val isLoadingProvider = remember(uiState) { {
+    val isLoadingProvider = remember(uiState) {
+        {
             uiState.isLoading
         }
     }

@@ -11,7 +11,6 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.UsernameValidator
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.AnalysisSession
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.BoundingBox
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.NewsType
@@ -92,7 +91,7 @@ fun Result.Error<*, RootError>.toErrorUIText(): UIText {
 }
 
 
-fun AnalysisSessionDui.deepCopy():AnalysisSessionDui{
+fun AnalysisSessionDui.deepCopy(): AnalysisSessionDui {
     return AnalysisSessionDui(
         id = id,
         title = title,
@@ -108,13 +107,13 @@ fun AnalysisSessionDui.deepCopy():AnalysisSessionDui{
     )
 }
 
-fun DetectedCocoa.deepCopy():DetectedCocoa{
+fun DetectedCocoa.deepCopy(): DetectedCocoa {
     return DetectedCocoa(
         id, cacaoNumber, boundingBox.deepCopy(), disease, predictedPriceInIdr, damageLevel
     )
 }
 
-fun BoundingBox.deepCopy():BoundingBox{
+fun BoundingBox.deepCopy(): BoundingBox {
     return BoundingBox(
         x1, y1, x2, y2, cx, cy, w, h, cnf, cls, label
     )

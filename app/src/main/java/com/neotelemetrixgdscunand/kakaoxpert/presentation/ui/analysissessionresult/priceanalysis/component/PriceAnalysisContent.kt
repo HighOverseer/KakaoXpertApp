@@ -50,10 +50,10 @@ fun PriceAnalysisContent(
     isInitiallyExpanded: Boolean = false,
     groupedDamagedLevelToDetectedCocoa: ImmutableMap<Int, ImmutableList<DetectedCocoa>> =
         emptyMap<Int, ImmutableList<DetectedCocoa>>().toImmutableMap(),
-   // damageLevelCategory: DamageLevelCategory = DamageLevelCategory.High,
+    // damageLevelCategory: DamageLevelCategory = DamageLevelCategory.High,
     onDetectedCacaoImageClicked: (Int) -> Unit = { },
-    diseaseName:String = "",
-    cocoaAverageWeightInputProvider:()-> String = { "0.2f" },
+    diseaseName: String = "",
+    cocoaAverageWeightInputProvider: () -> String = { "0.2f" },
 ) {
 
     var isExpand by remember {
@@ -123,21 +123,25 @@ fun PriceAnalysisContent(
 
             SecondaryDescription(
                 title = stringResource(R.string.bobot_buah),
-                description = stringResource(R.string.kg_assumed_weight, cocoaAverageWeightInputProvider())
+                description = stringResource(
+                    R.string.kg_assumed_weight,
+                    cocoaAverageWeightInputProvider()
+                )
             )
 
             Spacer(Modifier.height(24.dp))
 
 
-            groupedDamagedLevelToDetectedCocoa.keys.forEachIndexed{ index, damageLevel ->
+            groupedDamagedLevelToDetectedCocoa.keys.forEachIndexed { index, damageLevel ->
                 key(damageLevel) {
                     PriceAnalysisDetails(
                         onDetectedCacaoImageClicked = onDetectedCacaoImageClicked,
-                        detectedCocoas = groupedDamagedLevelToDetectedCocoa[damageLevel] ?: persistentListOf(),
+                        detectedCocoas = groupedDamagedLevelToDetectedCocoa[damageLevel]
+                            ?: persistentListOf(),
                         damageLevel = damageLevel
                     )
 
-                    if(index != groupedDamagedLevelToDetectedCocoa.keys.size - 1){
+                    if (index != groupedDamagedLevelToDetectedCocoa.keys.size - 1) {
                         Spacer(Modifier.height(16.dp))
                     }
 

@@ -13,11 +13,12 @@ object CocoaDamageLevelMapper {
     )
 
     fun getFormattedDamageLevelDescription(
-        damageLevel:Float
-    ):UIText{
+        damageLevel: Float
+    ): UIText {
         val damageLevelCategory = DamageLevelCategory.getFromDamageLevel(damageLevel = damageLevel)
 
-        val formatResId = mapDamageLevelToFormatResId[damageLevelCategory] ?: R.string.ringan_buah_rusak
+        val formatResId =
+            mapDamageLevelToFormatResId[damageLevelCategory] ?: R.string.ringan_buah_rusak
 
         return UIText.StringResource(formatResId, arrayOf(damageLevel.toInt().toString()))
     }

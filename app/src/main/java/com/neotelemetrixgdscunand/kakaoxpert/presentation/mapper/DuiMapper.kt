@@ -134,7 +134,7 @@ object DuiMapper {
         )
     }
 
-    fun Number.formatToIdrCurrency():String{
+    fun Number.formatToIdrCurrency(): String {
         return NumberFormat.getCurrencyInstance(Locale("in", "ID"))
             .format(this)
             .replace("Rp", "Rp ")
@@ -144,7 +144,8 @@ object DuiMapper {
         cocoaAverageSellPriceInfo: CocoaAverageSellPriceInfo
     ): CocoaAverageSellPriceInfoDui {
 
-        val currentAveragePrice = cocoaAverageSellPriceInfo.currentAveragePrice.formatFloat().formatToIdrCurrency()
+        val currentAveragePrice =
+            cocoaAverageSellPriceInfo.currentAveragePrice.formatFloat().formatToIdrCurrency()
 
         val previousAveragePriceFormatted =
             cocoaAverageSellPriceInfo.previousAveragePrice?.formatFloat()?.formatToIdrCurrency()
@@ -159,11 +160,12 @@ object DuiMapper {
 
     fun mapPriceAnalysisOverviewToDui(
         priceAnalysisOverview: PriceAnalysisOverview
-    ):PriceAnalysisOverviewDui{
+    ): PriceAnalysisOverviewDui {
         return PriceAnalysisOverviewDui(
             detectedCocoaCount = priceAnalysisOverview.detectedCocoaCount.toString(),
             cocoaAverageWeight = priceAnalysisOverview.cocoaAverageWeight.formatFloat().toString(),
-            totalPredictedSellPrice = priceAnalysisOverview.totalPredictedSellPrice.roundToInt().formatToIdrCurrency()
+            totalPredictedSellPrice = priceAnalysisOverview.totalPredictedSellPrice.roundToInt()
+                .formatToIdrCurrency()
         )
     }
 

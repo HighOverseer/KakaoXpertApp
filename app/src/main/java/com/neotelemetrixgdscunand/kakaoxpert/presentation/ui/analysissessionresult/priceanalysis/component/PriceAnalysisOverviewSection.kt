@@ -18,9 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,16 +34,18 @@ import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange80
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Yellow90
-import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryTextField
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.SecondaryDescription
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth.component.PrimaryTextField
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.ImagePainterStable
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.dashedBorder
 
 @Composable
 fun PriceAnalysisOverviewSection(
     modifier: Modifier = Modifier,
-    priceAnalysisOverviewDui: PriceAnalysisOverviewDui = PriceAnalysisOverviewDui(totalPredictedSellPrice = ""),
-    cocoaAverageWeightProvider:() -> String = { "0.2" },
+    priceAnalysisOverviewDui: PriceAnalysisOverviewDui = PriceAnalysisOverviewDui(
+        totalPredictedSellPrice = ""
+    ),
+    cocoaAverageWeightProvider: () -> String = { "0.2" },
     onCocoaAverageWeightChanged: (String) -> Unit = { },
 ) {
     Column(

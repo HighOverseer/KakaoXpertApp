@@ -46,8 +46,8 @@ import kotlinx.collections.immutable.persistentListOf
 fun PriceAnalysisDetails(
     modifier: Modifier = Modifier,
     isInitiallyExpanded: Boolean = true,
-    damageLevel:Int = 0,
-    detectedCocoas:ImmutableList<DetectedCocoa> = persistentListOf(),
+    damageLevel: Int = 0,
+    detectedCocoas: ImmutableList<DetectedCocoa> = persistentListOf(),
     //subDamageLevelSubCategory: DamageLevelSubCategory = DamageLevelCategory.Low.secondSubLevelCategory,
     onDetectedCacaoImageClicked: (Int) -> Unit = { }
 ) {
@@ -55,7 +55,7 @@ fun PriceAnalysisDetails(
     var isDetailsExpanded by remember(isInitiallyExpanded) {
         mutableStateOf(isInitiallyExpanded)
     }
-    val damageLevelDescription = remember(damageLevel){
+    val damageLevelDescription = remember(damageLevel) {
         CocoaDamageLevelMapper.getFormattedDamageLevelDescription(damageLevel = damageLevel.toFloat())
     }
     val sellPricePerUnit = remember(detectedCocoas) {
@@ -76,7 +76,7 @@ fun PriceAnalysisDetails(
         onClick = {
             isDetailsExpanded = !isDetailsExpanded
         }
-    ){
+    ) {
         Column(
             modifier = modifier
                 .background(color = Yellow90, shape = RoundedCornerShape(8.dp))
@@ -119,8 +119,8 @@ fun PriceAnalysisDetails(
 
                 Spacer(Modifier.height(8.dp))
 
-                Row(Modifier.fillMaxWidth()){
-                    Column(Modifier.weight(1f)){
+                Row(Modifier.fillMaxWidth()) {
+                    Column(Modifier.weight(1f)) {
                         Text(
                             modifier = modifier,
                             text = stringResource(R.string.sub_harga_satuan),
@@ -141,7 +141,7 @@ fun PriceAnalysisDetails(
 
                     Spacer(Modifier.height(24.dp))
 
-                    Column(Modifier.weight(1f)){
+                    Column(Modifier.weight(1f)) {
                         Text(
                             modifier = modifier,
                             text = stringResource(R.string.sub_total_harga),

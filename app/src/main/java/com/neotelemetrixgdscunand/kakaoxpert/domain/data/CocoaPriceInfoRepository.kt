@@ -12,5 +12,5 @@ interface CocoaPriceInfoRepository {
 
     fun getCocoaPriceInfo(): Flow<CocoaAverageSellPriceInfo?>
 
-    suspend fun getCocoaDiseasePriceInfoList():List<CocoaDiseaseSellPriceInfo>
+    suspend fun getCocoaDiseasePriceInfoList(): List<CocoaDiseaseSellPriceInfo>
 }

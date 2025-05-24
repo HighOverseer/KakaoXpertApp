@@ -1,6 +1,5 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto
 
-import androidx.room.ColumnInfo
 import com.google.gson.annotations.SerializedName
 
 data class DetectedCocoaDto(

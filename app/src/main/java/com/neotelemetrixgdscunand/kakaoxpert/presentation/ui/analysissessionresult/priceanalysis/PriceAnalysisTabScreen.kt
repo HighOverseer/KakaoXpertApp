@@ -1,7 +1,5 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.priceanalysis
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,13 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,7 +33,7 @@ import kotlinx.collections.immutable.toImmutableMap
 fun PriceAnalysisTabScreen(
     modifier: Modifier = Modifier,
     isLoadingProvider: () -> Boolean = { false },
-    groupedDetectedDiseaseToDamageLevelsToDetectedCocoas:ImmutableMap<CocoaDisease, ImmutableMap<Int, ImmutableList<DetectedCocoa>>> = emptyGroupedMap2,
+    groupedDetectedDiseaseToDamageLevelsToDetectedCocoas: ImmutableMap<CocoaDisease, ImmutableMap<Int, ImmutableList<DetectedCocoa>>> = emptyGroupedMap2,
     priceAnalysisOverviewDui: PriceAnalysisOverviewDui = PriceAnalysisOverviewDui(),
     navigateToCacaoImageDetail: (Int) -> Unit = { },
     showSnackbar: (String) -> Unit = { },
@@ -83,9 +76,10 @@ fun PriceAnalysisTabScreen(
                 .padding(horizontal = 16.dp)
         }
 
-        val groupedDetectedDiseaseKeys = remember(groupedDetectedDiseaseToDamageLevelsToDetectedCocoas) {
-            groupedDetectedDiseaseToDamageLevelsToDetectedCocoas.keys
-        }
+        val groupedDetectedDiseaseKeys =
+            remember(groupedDetectedDiseaseToDamageLevelsToDetectedCocoas) {
+                groupedDetectedDiseaseToDamageLevelsToDetectedCocoas.keys
+            }
 
         val emptyMap = remember {
             emptyMap<Int, ImmutableList<DetectedCocoa>>()
@@ -93,10 +87,10 @@ fun PriceAnalysisTabScreen(
         }
 
 
-        groupedDetectedDiseaseKeys.forEachIndexed{index, diseaseKey ->
+        groupedDetectedDiseaseKeys.forEachIndexed { index, diseaseKey ->
             key(diseaseKey) {
                 val isInitiallyExpanded = index == 0
-                
+
                 val diseaseName =
                     CocoaDiseaseMapper.mapToNameResId[diseaseKey]?.let { stringResource(it) } ?: "-"
 
@@ -104,7 +98,8 @@ fun PriceAnalysisTabScreen(
                     modifier = outermostPaddingModifier,
                     isInitiallyExpanded = isInitiallyExpanded,
                     //damageLevelCategory = damageLevelCategoryInfo[index],
-                    groupedDamagedLevelToDetectedCocoa = groupedDetectedDiseaseToDamageLevelsToDetectedCocoas[diseaseKey] ?: emptyMap,
+                    groupedDamagedLevelToDetectedCocoa = groupedDetectedDiseaseToDamageLevelsToDetectedCocoas[diseaseKey]
+                        ?: emptyMap,
                     onDetectedCacaoImageClicked = navigateToCacaoImageDetail,
                     diseaseName = diseaseName,
                     cocoaAverageWeightInputProvider = cocoaAverageWeightInputProvider

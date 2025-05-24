@@ -53,7 +53,7 @@ class AnalysisCocoaInteractor(
         val predictedDamageLevels = mutableListOf<Float>()
         val predictedDamageLevelResult = try {
             cocoaDamageLevelPredictionHelper.predict(imagePath, boundingBoxes)
-        }finally {
+        } finally {
             cocoaDamageLevelPredictionHelper.cleanResource()
         }
 
@@ -63,7 +63,7 @@ class AnalysisCocoaInteractor(
             }
 
             is CocoaDamageLevelPredictionResult.Success -> {
-                if(boundingBoxes.size != predictedDamageLevelResult.damageLevels.size){
+                if (boundingBoxes.size != predictedDamageLevelResult.damageLevels.size) {
                     return Result.Error(CocoaAnalysisError.FAILED_TO_DETECT_COCOA)
                 }
 
@@ -78,13 +78,13 @@ class AnalysisCocoaInteractor(
             boundingBoxDamageLevels
         )
 
-        if(boundingBoxes.size != calculatedCocoaSellPrices.size){
+        if (boundingBoxes.size != calculatedCocoaSellPrices.size) {
             return Result.Error(CocoaAnalysisError.FAILED_TO_DETECT_COCOA)
         }
 
         val detectedCocoas = boundingBoxDamageLevels.zip(
             calculatedCocoaSellPrices
-        ).mapIndexed{ index, (boundingBoxAndDamageLevels, sellPrice) ->
+        ).mapIndexed { index, (boundingBoxAndDamageLevels, sellPrice) ->
             val (boundingBox, damageLevel) = boundingBoxAndDamageLevels
 
             DetectedCocoa(

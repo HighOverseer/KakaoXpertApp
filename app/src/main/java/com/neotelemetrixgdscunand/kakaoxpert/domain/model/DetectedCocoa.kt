@@ -7,8 +7,8 @@ data class DetectedCocoa(
     val cacaoNumber: Short,
     val boundingBox: BoundingBox,
     val disease: CocoaDisease,
-    val predictedPriceInIdr:Float,
-    val damageLevel:Float
+    val predictedPriceInIdr: Float,
+    val damageLevel: Float
 )
 
 fun getDetectedDiseaseCacaos(): List<DetectedCocoa> {

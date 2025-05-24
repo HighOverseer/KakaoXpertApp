@@ -53,7 +53,7 @@ class AnalysisResultViewModel @Inject constructor(
     private val getCocoaAnalysisSessionUseCase: GetCocoaAnalysisSessionUseCase,
     private val savedStateHandle: SavedStateHandle,
     private val duiMapper: DuiMapper,
-    @ApplicationContext private val applicationContext:Context
+    @ApplicationContext private val applicationContext: Context
 ) : ViewModel() {
 
     // Backup new diagnosis session id that just has been saved, in case process death happens
@@ -65,10 +65,11 @@ class AnalysisResultViewModel @Inject constructor(
 
     //May be Modified cause of multiplier change
     private val invalidSessionId = -1
-    private val _presentedAnalysisSessionDui = MutableStateFlow(AnalysisSessionDui(id = invalidSessionId))
+    private val _presentedAnalysisSessionDui =
+        MutableStateFlow(AnalysisSessionDui(id = invalidSessionId))
 
     @Volatile
-    private var unmodifiedAnalysisSessionDui:AnalysisSessionDui? = null
+    private var unmodifiedAnalysisSessionDui: AnalysisSessionDui? = null
 
     private val _uiState = MutableStateFlow(AnalysisResultUIState())
     val uiState = _uiState.asStateFlow()
@@ -83,8 +84,8 @@ class AnalysisResultViewModel @Inject constructor(
 
     private val initialAssumedCocoaAverageWeight = 0.2f //in KG
 
-    fun onChangeSelectedTab(isDiagnosisTabSelected:Boolean){
-        if(isDiagnosisTabSelected){
+    fun onChangeSelectedTab(isDiagnosisTabSelected: Boolean) {
+        if (isDiagnosisTabSelected) {
             onCocoaAverageWeightChanged(initialAssumedCocoaAverageWeight.toString())
             _multiplier.update { 1f }
         }
@@ -104,12 +105,12 @@ class AnalysisResultViewModel @Inject constructor(
 
     private val _multiplier = MutableStateFlow(1f)
 
-    private var calculateMultiplierJob:Job? = null
+    private var calculateMultiplierJob: Job? = null
 
     private val debounceDuration = 2000L
 
-    fun onCocoaAverageWeightChanged(value:String){
-        if(!allowedCharacterPattern.matches(value) || value.length > 3) return
+    fun onCocoaAverageWeightChanged(value: String) {
+        if (!allowedCharacterPattern.matches(value) || value.length > 3) return
 
         _cocoaAverageWeightInput.update { value }
 
@@ -118,51 +119,51 @@ class AnalysisResultViewModel @Inject constructor(
             delay(debounceDuration)
 
             try {
-                if(value.isBlank()){
+                if (value.isBlank()) {
                     _event.send(
                         AnalysisResultUIEvent.OnInputCocoaAverageWeightInvalid(
                             UIText.StringResource(R.string.input_berat_rata_rata_kakao_tidak_boleh_kosong)
                         )
                     )
 
-                    withContext(NonCancellable){
+                    withContext(NonCancellable) {
                         _cocoaAverageWeightInput.update { "$initialAssumedCocoaAverageWeight" }
                     }
                     return@launch
                 }
 
-                val finalValue = if(value.contains(",")){
+                val finalValue = if (value.contains(",")) {
                     value.replace(",", ".")
-                }else value
+                } else value
 
                 val isValueAFloat = try {
                     finalValue.toFloat()
                     true
-                }catch (e:NumberFormatException){
+                } catch (e: NumberFormatException) {
                     false
                 }
 
-                if(!isValueAFloat){
+                if (!isValueAFloat) {
                     _event.send(
                         AnalysisResultUIEvent.OnInputCocoaAverageWeightInvalid(
                             UIText.StringResource(R.string.input_berat_rata_rata_kakao_tidak_valid)
                         )
                     )
 
-                    withContext(NonCancellable){
+                    withContext(NonCancellable) {
                         _cocoaAverageWeightInput.update { "$initialAssumedCocoaAverageWeight" }
                     }
                     return@launch
                 }
 
-                if(finalValue.toFloat() > 5f){
+                if (finalValue.toFloat() > 5f) {
                     _event.send(
                         AnalysisResultUIEvent.OnInputCocoaAverageWeightInvalid(
                             UIText.StringResource(R.string.input_berat_rata_rata_kakao_tidak_boleh_melebihi_5kg)
                         )
                     )
 
-                    withContext(NonCancellable){
+                    withContext(NonCancellable) {
                         _cocoaAverageWeightInput.update { "$initialAssumedCocoaAverageWeight" }
                     }
                     return@launch
@@ -171,10 +172,10 @@ class AnalysisResultViewModel @Inject constructor(
                 _multiplier.update { finalValue.toFloat() / initialAssumedCocoaAverageWeight }
                 _cocoaAverageWeightInput.update { finalValue }
 
-            }catch (e:Exception){
-                if(e is CancellationException) throw e
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
 
-                withContext(NonCancellable){
+                withContext(NonCancellable) {
                     _cocoaAverageWeightInput.update { "$initialAssumedCocoaAverageWeight" }
                 }
 
@@ -183,36 +184,39 @@ class AnalysisResultViewModel @Inject constructor(
 
     }
 
-    private val getGroupedDetectedDiseaseToDetectedCocoas = { analysisSessionDui: AnalysisSessionDui ->
-        val map = mutableMapOf<CocoaDisease, ImmutableList<DetectedCocoa>>()
-        analysisSessionDui.detectedCocoas.groupBy {
-            it.disease
-        }.map {
-            val (cocoaDisease, list) = it.toPair()
-            map[cocoaDisease] = list.toImmutableList()
-        }
-        map.toImmutableMap()
-    }
-
-    private val getGroupedDetectedDiseaseToDamageLevelsToDetectedCocoas = { analysisSessionDui: AnalysisSessionDui ->
-        val outerMap = mutableMapOf<CocoaDisease, ImmutableMap<Int, ImmutableList<DetectedCocoa>>>()
-        analysisSessionDui.detectedCocoas.groupBy { it.disease }.map {
-            val (cocoaDisease, list) = it.toPair()
-            val immutableList = list.toImmutableList()
-
-            val innerMap = mutableMapOf<Int, ImmutableList<DetectedCocoa>>()
-            immutableList.groupBy { item ->
-                item.damageLevel.roundToInt()
-            }.map { innerItem ->
-                val (damageLevel, innerList) = innerItem.toPair()
-                innerMap[damageLevel] = innerList.toImmutableList()
+    private val getGroupedDetectedDiseaseToDetectedCocoas =
+        { analysisSessionDui: AnalysisSessionDui ->
+            val map = mutableMapOf<CocoaDisease, ImmutableList<DetectedCocoa>>()
+            analysisSessionDui.detectedCocoas.groupBy {
+                it.disease
+            }.map {
+                val (cocoaDisease, list) = it.toPair()
+                map[cocoaDisease] = list.toImmutableList()
             }
-            outerMap[cocoaDisease] = innerMap.toImmutableMap()
+            map.toImmutableMap()
         }
-        outerMap.toImmutableMap()
-    }
 
-    private fun getDiagnosisResultOverview(analysisSessionDui: AnalysisSessionDui):DiagnosisResultOverviewDui{
+    private val getGroupedDetectedDiseaseToDamageLevelsToDetectedCocoas =
+        { analysisSessionDui: AnalysisSessionDui ->
+            val outerMap =
+                mutableMapOf<CocoaDisease, ImmutableMap<Int, ImmutableList<DetectedCocoa>>>()
+            analysisSessionDui.detectedCocoas.groupBy { it.disease }.map {
+                val (cocoaDisease, list) = it.toPair()
+                val immutableList = list.toImmutableList()
+
+                val innerMap = mutableMapOf<Int, ImmutableList<DetectedCocoa>>()
+                immutableList.groupBy { item ->
+                    item.damageLevel.roundToInt()
+                }.map { innerItem ->
+                    val (damageLevel, innerList) = innerItem.toPair()
+                    innerMap[damageLevel] = innerList.toImmutableList()
+                }
+                outerMap[cocoaDisease] = innerMap.toImmutableMap()
+            }
+            outerMap.toImmutableMap()
+        }
+
+    private fun getDiagnosisResultOverview(analysisSessionDui: AnalysisSessionDui): DiagnosisResultOverviewDui {
         return DiagnosisResultOverviewDui(
             solutionId = analysisSessionDui.solutionId,
             preventionId = analysisSessionDui.preventionsId,
@@ -221,13 +225,13 @@ class AnalysisResultViewModel @Inject constructor(
         )
     }
 
-    private fun getImageBoundingBoxes(analysisSessionDui: AnalysisSessionDui):ImmutableList<BoundingBox>{
+    private fun getImageBoundingBoxes(analysisSessionDui: AnalysisSessionDui): ImmutableList<BoundingBox> {
         return analysisSessionDui.detectedCocoas.map {
             it.getBoundingBoxWithItsNameAsTheLabel(applicationContext)
         }.toImmutableList()
     }
 
-    private fun getPriceAnalysisOverviewDui(analysisSessionDui: AnalysisSessionDui):PriceAnalysisOverviewDui{
+    private fun getPriceAnalysisOverviewDui(analysisSessionDui: AnalysisSessionDui): PriceAnalysisOverviewDui {
         return PriceAnalysisOverview(
             totalPredictedSellPrice = analysisSessionDui.predictedPrice,
             detectedCocoaCount = analysisSessionDui.detectedCocoas.size,
@@ -360,9 +364,11 @@ class AnalysisResultViewModel @Inject constructor(
 
         viewModelScope.launch {
             _presentedAnalysisSessionDui.collectLatest { diagnosisSessionDui ->
-                withContext(Dispatchers.Default){
-                    val groupedDetectedDiseaseToDetectedCocoas = getGroupedDetectedDiseaseToDetectedCocoas(diagnosisSessionDui)
-                    val groupedDetectedDiseaseToDamageLevelsToDetectedCocoas = getGroupedDetectedDiseaseToDamageLevelsToDetectedCocoas(diagnosisSessionDui)
+                withContext(Dispatchers.Default) {
+                    val groupedDetectedDiseaseToDetectedCocoas =
+                        getGroupedDetectedDiseaseToDetectedCocoas(diagnosisSessionDui)
+                    val groupedDetectedDiseaseToDamageLevelsToDetectedCocoas =
+                        getGroupedDetectedDiseaseToDamageLevelsToDetectedCocoas(diagnosisSessionDui)
                     val priceAnalysisOverviewDui = getPriceAnalysisOverviewDui(diagnosisSessionDui)
                     val imageBoundingBoxes = getImageBoundingBoxes(diagnosisSessionDui)
                     val diagnosisResultOverviewDui = getDiagnosisResultOverview(diagnosisSessionDui)
@@ -385,14 +391,14 @@ class AnalysisResultViewModel @Inject constructor(
 
         viewModelScope.launch {
             _multiplier.collectLatest { multiplier ->
-                withContext(Dispatchers.Default){
-                    if(unmodifiedAnalysisSessionDui == null || unmodifiedAnalysisSessionDui?.id == invalidSessionId){
+                withContext(Dispatchers.Default) {
+                    if (unmodifiedAnalysisSessionDui == null || unmodifiedAnalysisSessionDui?.id == invalidSessionId) {
                         unmodifiedAnalysisSessionDui = _presentedAnalysisSessionDui.value.deepCopy()
                     }
 
                     val original = unmodifiedAnalysisSessionDui
 
-                    if(original != null){
+                    if (original != null) {
                         _presentedAnalysisSessionDui.update {
                             original.copy(
                                 predictedPrice = (original.predictedPrice * multiplier),

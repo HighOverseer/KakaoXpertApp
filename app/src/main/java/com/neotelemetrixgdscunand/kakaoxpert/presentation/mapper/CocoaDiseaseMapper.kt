@@ -2,7 +2,6 @@ package com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper
 
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDisease
-import com.neotelemetrixgdscunand.kakaoxpert.domain.model.DetectedCocoa
 
 object CocoaDiseaseMapper {
 
@@ -63,7 +62,7 @@ object CocoaDiseaseMapper {
         )
     )
 
-    fun getDefaultSolutionResIdOfInfectedDiseases(detectedCocoaDisease:List<CocoaDisease>): Int {
+    fun getDefaultSolutionResIdOfInfectedDiseases(detectedCocoaDisease: List<CocoaDisease>): Int {
         val doesContainBlackpod = detectedCocoaDisease.any { it == CocoaDisease.BLACKPOD }
         val doesContainPodBorer = detectedCocoaDisease.any { it == CocoaDisease.POD_BORER }
         val doesContainHelopeltis = detectedCocoaDisease.any { it == CocoaDisease.HELOPELTIS }
@@ -101,7 +100,7 @@ object CocoaDiseaseMapper {
         }
     }
 
-    fun getDefaultPreventionsResIdOfInfectedDiseases(detectedCocoaDisease:List<CocoaDisease>): Int {
+    fun getDefaultPreventionsResIdOfInfectedDiseases(detectedCocoaDisease: List<CocoaDisease>): Int {
         val doesContainBlackpod = detectedCocoaDisease.any { it == CocoaDisease.BLACKPOD }
         val doesContainPodBorer = detectedCocoaDisease.any { it == CocoaDisease.POD_BORER }
         val doesContainHelopeltis = detectedCocoaDisease.any { it == CocoaDisease.HELOPELTIS }

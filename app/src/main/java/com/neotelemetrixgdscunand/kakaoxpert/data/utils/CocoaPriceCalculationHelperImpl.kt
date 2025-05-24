@@ -13,35 +13,40 @@ import javax.inject.Inject
 
 class CocoaPriceCalculationHelperImpl @Inject constructor(
     private val cocoaPriceInfoRepository: CocoaPriceInfoRepository
-):CocoaPriceCalculationHelper {
+) : CocoaPriceCalculationHelper {
 
-    override suspend fun calculate(boundingBoxAndDamageLevelList: List<Pair<BoundingBox, Float>>): List<Float>
-    = withContext(Dispatchers.Default){
+    override suspend fun calculate(boundingBoxAndDamageLevelList: List<Pair<BoundingBox, Float>>): List<Float> =
+        withContext(Dispatchers.Default) {
 
-        val cocoaDiseasePriceInfoList = cocoaPriceInfoRepository.getCocoaDiseasePriceInfoList()
-            .distinctBy { it.disease }
+            val cocoaDiseasePriceInfoList = cocoaPriceInfoRepository.getCocoaDiseasePriceInfoList()
+                .distinctBy { it.disease }
 
-        val mapCocoaDiseaseToPriceInfo = cocoaDiseasePriceInfoList.associateBy { it.disease }
+            val mapCocoaDiseaseToPriceInfo = cocoaDiseasePriceInfoList.associateBy { it.disease }
 
-        val healthyCocoaPrice = cocoaDiseasePriceInfoList.first { it.disease == CocoaDisease.NONE }
-            .highestPrice
+            val healthyCocoaPrice =
+                cocoaDiseasePriceInfoList.first { it.disease == CocoaDisease.NONE }
+                    .highestPrice
 
-        val cocoaSellPriceListDeferred = boundingBoxAndDamageLevelList.map { (boundingBox, damageLevel) -> async {
-                val currentBoundingBoxCocoaDisease = CocoaDisease.getDiseaseFromName(boundingBox.label)
-                val decreasingPricePerOneDamageLevel = mapCocoaDiseaseToPriceInfo[currentBoundingBoxCocoaDisease]
-                    ?.decreasingRatePerDamageLevel ?: 0f
+            val cocoaSellPriceListDeferred =
+                boundingBoxAndDamageLevelList.map { (boundingBox, damageLevel) ->
+                    async {
+                        val currentBoundingBoxCocoaDisease =
+                            CocoaDisease.getDiseaseFromName(boundingBox.label)
+                        val decreasingPricePerOneDamageLevel =
+                            mapCocoaDiseaseToPriceInfo[currentBoundingBoxCocoaDisease]
+                                ?.decreasingRatePerDamageLevel ?: 0f
 
-                val decreasingAmount = damageLevel * decreasingPricePerOneDamageLevel
+                        val decreasingAmount = damageLevel * decreasingPricePerOneDamageLevel
 
-                val cocoaSellPrice = (healthyCocoaPrice - decreasingAmount)
-                    .coerceIn(0f, healthyCocoaPrice)
-                    .roundOffDecimal(n = 2)
+                        val cocoaSellPrice = (healthyCocoaPrice - decreasingAmount)
+                            .coerceIn(0f, healthyCocoaPrice)
+                            .roundOffDecimal(n = 2)
 
-                cocoaSellPrice
-            }
+                        cocoaSellPrice
+                    }
+                }
+
+            val cocoaSellPriceList = cocoaSellPriceListDeferred.awaitAll()
+            cocoaSellPriceList
         }
-
-        val cocoaSellPriceList = cocoaSellPriceListDeferred.awaitAll()
-        cocoaSellPriceList
-    }
 }

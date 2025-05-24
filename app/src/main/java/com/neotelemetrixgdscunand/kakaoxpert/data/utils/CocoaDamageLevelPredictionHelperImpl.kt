@@ -125,7 +125,7 @@ class CocoaDamageLevelPredictionHelperImpl @Inject constructor(
             try {
                 val disease = CocoaDisease.getDiseaseFromName(currentBoundingBox.label)
 
-                if(disease == CocoaDisease.NONE){
+                if (disease == CocoaDisease.NONE) {
                     predictedDamageLevelList.add(0f)
                     return@forEach
                 }
