@@ -10,6 +10,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.RootNetworkError
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaPriceInfoRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaAverageSellPriceInfo
+import com.neotelemetrixgdscunand.kakaoxpert.domain.model.CocoaDiseaseSellPriceInfo
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
@@ -90,5 +91,12 @@ class CocoaPriceInfoRepositoryImpl @Inject constructor(
                 } else null
             }
         )
+    }
+
+    override suspend fun getCocoaDiseasePriceInfoList(): List<CocoaDiseaseSellPriceInfo> {
+        return cocoaDiseaseSellPriceInfoDao.getAllCocoaDiseaseSellPriceInfo()
+            .map {
+                dataMapper.mapCocoaDiseaseSellPriceInfoEntityToDomain(it)
+            }
     }
 }

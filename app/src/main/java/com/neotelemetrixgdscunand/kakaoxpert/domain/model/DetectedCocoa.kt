@@ -6,7 +6,9 @@ data class DetectedCocoa(
     val id: Int = Random.nextInt(1000_000_001, 2000_000_000),
     val cacaoNumber: Short,
     val boundingBox: BoundingBox,
-    val disease: CocoaDisease
+    val disease: CocoaDisease,
+    val predictedPriceInIdr:Float,
+    val damageLevel:Float
 )
 
 fun getDetectedDiseaseCacaos(): List<DetectedCocoa> {
@@ -26,7 +28,9 @@ fun getDetectedDiseaseCacaos(): List<DetectedCocoa> {
                 cls = 1,
                 label = "Kakao"
             ),
-            disease = CocoaDisease.BLACKPOD
+            disease = CocoaDisease.BLACKPOD,
+            predictedPriceInIdr = 1680f,
+            damageLevel = 0.5f
         ),
         DetectedCocoa(
             cacaoNumber = 2,
@@ -43,7 +47,9 @@ fun getDetectedDiseaseCacaos(): List<DetectedCocoa> {
                 cls = 1,
                 label = "Kakao"
             ),
-            disease = CocoaDisease.HELOPELTIS
+            disease = CocoaDisease.HELOPELTIS,
+            predictedPriceInIdr = 1680f,
+            damageLevel = 0.5f
         ),
         DetectedCocoa(
             cacaoNumber = 3,
@@ -60,7 +66,9 @@ fun getDetectedDiseaseCacaos(): List<DetectedCocoa> {
                 cls = 1,
                 label = "Kakao"
             ),
-            disease = CocoaDisease.BLACKPOD
+            disease = CocoaDisease.BLACKPOD,
+            predictedPriceInIdr = 1680f,
+            damageLevel = 0.5f
         ),
         DetectedCocoa(
             cacaoNumber = 4,
@@ -77,7 +85,9 @@ fun getDetectedDiseaseCacaos(): List<DetectedCocoa> {
                 cls = 1,
                 label = "Kakao"
             ),
-            disease = CocoaDisease.BLACKPOD
+            disease = CocoaDisease.BLACKPOD,
+            predictedPriceInIdr = 1680f,
+            damageLevel = 0.5f
         ),
         DetectedCocoa(
             cacaoNumber = 5,
@@ -94,7 +104,9 @@ fun getDetectedDiseaseCacaos(): List<DetectedCocoa> {
                 cls = 1,
                 label = "Kakao"
             ),
-            disease = CocoaDisease.BLACKPOD
+            disease = CocoaDisease.BLACKPOD,
+            predictedPriceInIdr = 1680f,
+            damageLevel = 0.5f
         ),
 
         )

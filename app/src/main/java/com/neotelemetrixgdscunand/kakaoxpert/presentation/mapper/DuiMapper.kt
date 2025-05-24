@@ -105,7 +105,7 @@ object DuiMapper {
             title = analysisSession.title,
             imageUrlOrPath = analysisSession.imageUrlOrPath,
             date = dateString,
-            predictedPrice = analysisSession.predictedPrice,
+            predictedPrice = analysisSession.totalPredictedPrice,
             detectedCocoas = analysisSession.detectedCocoas.toImmutableList(),
             solutionEn = analysisSession.solutionEn,
             preventionsEn = analysisSession.preventionsEn,
@@ -125,26 +125,26 @@ object DuiMapper {
             title = analysisSessionPreview.title,
             imageUrlOrPath = analysisSessionPreview.imageUrlOrPath,
             date = dateString,
-            predictedPrice = analysisSessionPreview.predictedPrice,
+            predictedPrice = analysisSessionPreview.totalPredictedPrice,
             hasSynced = analysisSessionPreview.hasSynced,
             availableOffline = analysisSessionPreview.isDetailAvailableInLocal
         )
     }
 
+    fun Number.formatToIdrCurrency():String{
+        return NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+            .format(this)
+            .replace("Rp", "Rp ")
+    }
+
     fun mapCocoaAverageSellPriceInfoToDui(
         cocoaAverageSellPriceInfo: CocoaAverageSellPriceInfo
     ): CocoaAverageSellPriceInfoDui {
-        val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
 
-        val currentAveragePrice = cocoaAverageSellPriceInfo.currentAveragePrice.formatFloat().let {
-            formatter.format(it)
-                .replace("Rp", "Rp ")
-        }
+        val currentAveragePrice = cocoaAverageSellPriceInfo.currentAveragePrice.formatFloat().formatToIdrCurrency()
+
         val previousAveragePriceFormatted =
-            cocoaAverageSellPriceInfo.previousAveragePrice?.formatFloat()?.let {
-                formatter.format(it)
-                    .replace("Rp", "Rp ")
-            }
+            cocoaAverageSellPriceInfo.previousAveragePrice?.formatFloat()?.formatToIdrCurrency()
 
         return CocoaAverageSellPriceInfoDui(
             currentAveragePrice = currentAveragePrice,

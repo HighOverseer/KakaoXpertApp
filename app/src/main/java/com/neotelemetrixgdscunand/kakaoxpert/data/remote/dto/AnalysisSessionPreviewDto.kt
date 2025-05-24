@@ -14,5 +14,8 @@ data class AnalysisSessionPreviewDto(
     val sessionImage: String? = null,
 
     @field:SerializedName("session_id")
-    val sessionId: Int? = null
+    val sessionId: Int? = null,
+
+    @field:SerializedName("total_predicted_price")
+    val totalPredictedPrice: Float? = null
 )

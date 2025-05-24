@@ -1,5 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.data.remote.dto
 
+import androidx.room.ColumnInfo
 import com.google.gson.annotations.SerializedName
 
 data class DetectedCocoaDto(
@@ -9,6 +10,9 @@ data class DetectedCocoaDto(
 
     @field:SerializedName("damage_level")
     val damageLevel: Float? = null,
+
+    @field:SerializedName("predicted_price")
+    val predictedPrice: Float? = null,
 
     @field:SerializedName("bb_coordinate_top")
     val bbCoordinateTop: Float? = null,

@@ -16,6 +16,9 @@ data class UnsavedCocoaAnalysisEntity(
     @ColumnInfo("session_name")
     val sessionName: String,
 
+    @ColumnInfo("total_predicted_price")
+    val totalPredictedPrice: Float,
+
 //    @ColumnInfo("solution_en")
 //    val solutionEn: String,
 

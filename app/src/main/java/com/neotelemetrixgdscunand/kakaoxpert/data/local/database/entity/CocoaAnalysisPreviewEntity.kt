@@ -20,7 +20,7 @@ data class CocoaAnalysisPreviewEntity(
     val sessionImageUrl: String,
 
     @ColumnInfo("predicted_price")
-    val predictedPrice: Float = 2100f,
+    val totalPredictedPrice: Float,
 
     @ColumnInfo("last_synced_time")
     val lastSyncedTime: Long = 0L,

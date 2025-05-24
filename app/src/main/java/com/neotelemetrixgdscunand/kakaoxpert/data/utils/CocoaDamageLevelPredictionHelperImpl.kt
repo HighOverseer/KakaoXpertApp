@@ -39,6 +39,14 @@ class CocoaDamageLevelPredictionHelperImpl @Inject constructor(
     private var numChannel = 0
     //private var numElements = 0
 
+    private val mapCocoaDiseaseToInterpreter by lazy {
+        hashMapOf(
+            CocoaDisease.BLACKPOD to blackpodModelInterpreter,
+            CocoaDisease.HELOPELTIS to helopeltisModelInterpreter,
+            CocoaDisease.POD_BORER to podborerModelInterpreter
+        )
+    }
+
     override suspend fun setup() = withContext(Dispatchers.Default) {
         cleanResource()
 
@@ -66,6 +74,7 @@ class CocoaDamageLevelPredictionHelperImpl @Inject constructor(
         tensorHeight = inputShape[2]
         numChannel = inputShape[3]
     }
+
 
     override suspend fun predict(
         imagePath: String,
@@ -116,24 +125,13 @@ class CocoaDamageLevelPredictionHelperImpl @Inject constructor(
             try {
                 val disease = CocoaDisease.getDiseaseFromName(currentBoundingBox.label)
 
-                when (disease) {
-                    CocoaDisease.BLACKPOD -> blackpodModelInterpreter?.run(
-                        imageBuffer,
-                        output.buffer
-                    )
-
-                    CocoaDisease.HELOPELTIS -> helopeltisModelInterpreter?.run(
-                        imageBuffer,
-                        output.buffer
-                    )
-
-                    CocoaDisease.POD_BORER -> podborerModelInterpreter?.run(
-                        imageBuffer,
-                        output.buffer
-                    )
-
-                    else -> throw IllegalArgumentException("Invalid disease type")
+                if(disease == CocoaDisease.NONE){
+                    predictedDamageLevelList.add(0f)
+                    return@forEach
                 }
+
+                val interpreter = mapCocoaDiseaseToInterpreter[disease]
+                interpreter?.run(imageBuffer, output.buffer)
 
                 val predictedPrice = output.floatArray.first()
                 predictedDamageLevelList.add(predictedPrice)

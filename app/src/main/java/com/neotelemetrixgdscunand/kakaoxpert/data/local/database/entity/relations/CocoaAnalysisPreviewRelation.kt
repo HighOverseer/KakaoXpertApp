@@ -16,7 +16,7 @@ data class CocoaAnalysisPreviewRelation(
     val sessionImageUrlOrPath: String,
 
     @ColumnInfo("predicted_price")
-    val predictedPrice: Float = 2100f,
+    val predictedPrice: Float,
 
     @ColumnInfo("last_synced_time")
     val lastSyncedTime: Long,

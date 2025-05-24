@@ -47,7 +47,7 @@ import kotlinx.collections.immutable.toImmutableMap
 @Composable
 fun PriceAnalysisDetails(
     modifier: Modifier = Modifier,
-    isInitiallyExpanded: Boolean = false,
+    isInitiallyExpanded: Boolean = true,
     groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
         emptyMap<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
     subDamageLevelSubCategory: DamageLevelSubCategory = DamageLevelCategory.Low.secondSubLevelCategory,

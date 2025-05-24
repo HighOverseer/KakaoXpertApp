@@ -31,6 +31,9 @@ data class SavedDetectedCocoaEntity(
     @ColumnInfo("damage_level")
     val damageLevel: Float,
 
+    @ColumnInfo("predicted_price")
+    val predictedPrice: Float,
+
     @ColumnInfo("bb_coordinate_top")
     val bbCoordinateTop: Float,
 

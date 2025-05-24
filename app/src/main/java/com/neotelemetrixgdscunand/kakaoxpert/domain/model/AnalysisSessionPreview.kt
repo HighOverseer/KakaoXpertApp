@@ -5,7 +5,7 @@ data class AnalysisSessionPreview(
     val title: String,
     val imageUrlOrPath: String,
     val createdAt: Long,
-    val predictedPrice: Float,
+    val totalPredictedPrice: Float,
     val hasSynced: Boolean,
     val isDetailAvailableInLocal: Boolean
 )

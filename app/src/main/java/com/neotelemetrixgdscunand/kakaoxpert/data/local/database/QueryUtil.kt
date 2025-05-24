@@ -37,7 +37,7 @@ object QueryUtil {
                 unsaved.created_at,
                 unsaved.session_name,
                 unsaved.session_image_path AS session_image_url_or_path,
-                2100 AS predicted_price,
+                unsaved.total_predicted_price AS predicted_price,
                 0 AS last_synced_time,
                 1 AS is_details_available_in_local_db
                 FROM unsaved_cocoa_analysis AS unsaved

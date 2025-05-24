@@ -36,12 +36,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.dui.AnalysisSessionPreviewDui
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.mapper.DuiMapper.formatToIdrCurrency
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey65
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange85
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.formatSellPriceEstimationForHistory
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.diagnosisresult.util.roundOffDecimal
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.util.AsyncImagePainterStable
 
 @Composable
@@ -104,7 +106,7 @@ fun DiagnosisHistory(
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = formatSellPriceEstimationForHistory(sellPrice = item.predictedPrice),
+                    text = "~${item.predictedPrice.formatToIdrCurrency()}",
                     style = MaterialTheme.typography.labelMedium,
                     color = Black10
                 )

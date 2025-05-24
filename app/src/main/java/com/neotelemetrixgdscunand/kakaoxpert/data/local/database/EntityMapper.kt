@@ -77,7 +77,7 @@ object EntityMapper {
             sessionName = analysisSessionPreviewDto.sessionName ?: return null,
             sessionImageUrl = imageUrl,
             createdAt = createdAt,
-            predictedPrice = 2100f,
+            totalPredictedPrice = analysisSessionPreviewDto.totalPredictedPrice ?: return null,
             isDeleted = false
         )
     }
@@ -102,7 +102,9 @@ object EntityMapper {
                 label = unsavedDetectedCocoaEntity.bbLabel
             ),
             disease = CocoaDisease.getDiseaseFromId(unsavedDetectedCocoaEntity.diseaseId)
-                ?: return null
+                ?: return null,
+            predictedPriceInIdr = unsavedDetectedCocoaEntity.predictedPrice,
+            damageLevel = unsavedDetectedCocoaEntity.damageLevel
         )
     }
 
@@ -126,7 +128,8 @@ object EntityMapper {
             bbConfidence = detectedCocoa.boundingBox.cnf,
             diseaseId = detectedCocoa.disease.id,
             varietyInfoId = 1,
-            damageLevel = 0.5f
+            damageLevel = detectedCocoa.damageLevel,
+            predictedPrice = detectedCocoa.predictedPriceInIdr
         )
     }
 
@@ -159,7 +162,7 @@ object EntityMapper {
             sessionName = analysisSessionDto.sessionName ?: return null,
             createdAt = createdAt,
             sessionImageUrl = imageUrl,
-            predictedPrice = 2100f,
+            totalPredictedPrice = analysisSessionDto.totalPredictedPrice ?: return null,
             solutionEn = analysisSessionDto.solutionEn ?: return null,
             preventionsEn = analysisSessionDto.preventionEn ?: return null,
             solutionId = analysisSessionDto.solutionId ?: return null,
@@ -189,7 +192,8 @@ object EntityMapper {
             diseaseId = detectedCocoaDto.diseaseId ?: return null,
             varietyInfoId = 1,
             sessionId = sessionId,
-            damageLevel = detectedCocoaDto.damageLevel ?: return null
+            damageLevel = detectedCocoaDto.damageLevel ?: return null,
+            predictedPrice = detectedCocoaDto.predictedPrice ?: return null
         )
     }
 
@@ -205,7 +209,7 @@ object EntityMapper {
             title = unsavedCocoaAnalysisEntity.sessionName,
             imageUrlOrPath = unsavedCocoaAnalysisEntity.sessionImagePath,
             createdAt = unsavedCocoaAnalysisEntity.createdAt,
-            predictedPrice = 2100f,
+            totalPredictedPrice = unsavedCocoaAnalysisEntity.totalPredictedPrice,
             detectedCocoas = detectedCocoas,
 //            solutionId = unsavedCocoaAnalysisEntity.solutionId,
 //            preventionsId = unsavedCocoaAnalysisEntity.preventionId,
@@ -227,7 +231,7 @@ object EntityMapper {
             title = savedCocoaAnalysisEntity.sessionName,
             imageUrlOrPath = savedCocoaAnalysisEntity.sessionImageUrl,
             createdAt = savedCocoaAnalysisEntity.createdAt,
-            predictedPrice = savedCocoaAnalysisEntity.predictedPrice,
+            totalPredictedPrice = savedCocoaAnalysisEntity.totalPredictedPrice,
             detectedCocoas = detectedCocoas,
             solutionId = savedCocoaAnalysisEntity.solutionId,
             preventionsId = savedCocoaAnalysisEntity.preventionsId,
@@ -256,7 +260,9 @@ object EntityMapper {
                 label = savedDetectedCocoaEntity.bbLabel
             ),
             disease = CocoaDisease.getDiseaseFromId(savedDetectedCocoaEntity.diseaseId)
-                ?: return null
+                ?: return null,
+            predictedPriceInIdr = savedDetectedCocoaEntity.predictedPrice,
+            damageLevel = savedDetectedCocoaEntity.damageLevel
         )
     }
 
@@ -271,7 +277,7 @@ object EntityMapper {
             title = cocoaAnalysisPreviewRelation.sessionName,
             imageUrlOrPath = cocoaAnalysisPreviewRelation.sessionImageUrlOrPath,
             createdAt = cocoaAnalysisPreviewRelation.createdAt,
-            predictedPrice = cocoaAnalysisPreviewRelation.predictedPrice,
+            totalPredictedPrice = cocoaAnalysisPreviewRelation.predictedPrice,
             isDetailAvailableInLocal = cocoaAnalysisPreviewRelation.isDetailAvailableInLocalDB,
             hasSynced = hasSynced,
         )
@@ -285,7 +291,7 @@ object EntityMapper {
             createdAt = savedCocoaAnalysisEntity.createdAt,
             sessionName = savedCocoaAnalysisEntity.sessionName,
             sessionImageUrl = savedCocoaAnalysisEntity.sessionImageUrl,
-            predictedPrice = savedCocoaAnalysisEntity.predictedPrice,
+            totalPredictedPrice = savedCocoaAnalysisEntity.totalPredictedPrice,
             lastSyncedTime = System.currentTimeMillis(),
             isDeleted = false
         )

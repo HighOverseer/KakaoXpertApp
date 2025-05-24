@@ -31,6 +31,8 @@ interface CocoaAnalysisApiService {
         @Part("detected_diseases_ids") detectedDiseaseIds: RequestBody,
         @Part("variety_ids") varietyIds: RequestBody,
         @Part("damage_percentage") damagePercentage: RequestBody,
+        @Part("predicted_price") predictedPrices: RequestBody,
+
         @Part("cocoa_numbers") cocoaNumbers: RequestBody,
 
         @Part("bb_coordinates_left") bbCoordinatesLeft: RequestBody,
@@ -54,6 +56,8 @@ interface CocoaAnalysisApiService {
         val detectedDiseaseIds: RequestBody,
         val varietyIds: RequestBody,
         val damagePercentage: RequestBody,
+        val predictedPrice: RequestBody,
+
         val cocoaNumbers: RequestBody,
 
         val bbCoordinatesLeft: RequestBody,
@@ -97,8 +101,12 @@ interface CocoaAnalysisApiService {
                 val varietyIds = detectedCocoas.map { "1" }
                     .toTextRequestBody()
 
-                val damagePercentages = detectedCocoas.map { "0.1" }
+                val damagePercentages = detectedCocoas.map { it.damageLevel.toString() }
                     .toTextRequestBody()
+
+                val predictedPrices = detectedCocoas.map { it.predictedPriceInIdr.toString() }
+                    .toTextRequestBody()
+
 
                 val cocoaNumbers = detectedCocoas.map {
                     it.cacaoNumber.toString()
@@ -154,6 +162,7 @@ interface CocoaAnalysisApiService {
                     detectedDiseaseIds = detectedDiseaseIds,
                     varietyIds = varietyIds,
                     damagePercentage = damagePercentages,
+                    predictedPrice = predictedPrices,
                     cocoaNumbers = cocoaNumbers,
                     bbCoordinatesLeft = bbCoordinatesLeft,
                     bbCoordinatesTop = bbCoordinatesTop,

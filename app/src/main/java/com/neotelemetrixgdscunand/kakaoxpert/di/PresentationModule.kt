@@ -3,6 +3,7 @@ package com.neotelemetrixgdscunand.kakaoxpert.di
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CapturedImageFileHandlerImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaDamageLevelPredictionHelperImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaDiseaseDetectorHelperImpl
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaPriceCalculationHelperImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.LocationManagerImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.ModelLabelExtractorImpl
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.PasswordValidator
@@ -11,6 +12,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.data.LocationManager
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CaptureImageFileHandler
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaPriceCalculationHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.ModelLabelExtractor
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.PasswordValidatorImpl
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.utils.UsernameValidatorImpl
@@ -29,6 +31,9 @@ abstract class PresentationModule {
 
     @Binds
     abstract fun bindCocoaPricePredictionHelper(cocoaDamageLevelPredictionHelperImpl: CocoaDamageLevelPredictionHelperImpl): CocoaDamageLevelPredictionHelper
+
+    @Binds
+    abstract fun bindCocoaPriceCalculationHelper(cocoaPriceCalculationHelperImpl: CocoaPriceCalculationHelperImpl): CocoaPriceCalculationHelper
 
     @Binds
     @ViewModelScoped

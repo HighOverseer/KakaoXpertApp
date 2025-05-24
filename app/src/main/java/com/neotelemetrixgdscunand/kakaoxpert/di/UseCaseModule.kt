@@ -1,5 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.di
 
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaPriceCalculationHelperImpl
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.AuthPreference
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.CocoaAnalysisRepository
 import com.neotelemetrixgdscunand.kakaoxpert.domain.data.DataPreference
@@ -8,6 +9,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.GetCocoaAnalysisS
 import com.neotelemetrixgdscunand.kakaoxpert.domain.interactor.LogoutInteractor
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDamageLevelPredictionHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaDiseaseDetectorHelper
+import com.neotelemetrixgdscunand.kakaoxpert.domain.presentation.CocoaPriceCalculationHelper
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.AnalysisCocoaUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.GetCocoaAnalysisSessionUseCase
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.LogoutUseCase
@@ -26,11 +28,13 @@ class UseCaseModule {
     fun provideAnalysisCocoaUseCase(
         cocoaAnalysisRepository: CocoaAnalysisRepository,
         cocoaDiseaseDetectorHelper: CocoaDiseaseDetectorHelper,
+        cocoaPriceCalculationHelper: CocoaPriceCalculationHelper,
         cocoaDamageLevelPredictionHelper: CocoaDamageLevelPredictionHelper
     ): AnalysisCocoaUseCase {
         return AnalysisCocoaInteractor(
             cocoaDiseaseDetectorHelper,
             cocoaDamageLevelPredictionHelper,
+            cocoaPriceCalculationHelper,
             cocoaAnalysisRepository
         )
     }

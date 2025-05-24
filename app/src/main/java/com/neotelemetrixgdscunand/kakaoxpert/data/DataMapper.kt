@@ -155,66 +155,6 @@ object DataMapper {
         )
     }
 
-    fun mapAnalysisSessionDtoToDomain(
-        analysisSessionDto: AnalysisSessionDto
-    ): AnalysisSession? {
-
-        val dateDateString = analysisSessionDto.date ?: return null
-        val datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        val sdf = SimpleDateFormat(datePattern, Locale.getDefault())
-        sdf.timeZone = TimeZone.getTimeZone("UTC")
-
-        val date = try {
-            sdf.parse(dateDateString)
-        } catch (e: ParseException) {
-            return null
-        }
-
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        val createdAt = calendar.timeInMillis
-
-        val imageUrl = "${BuildConfig.IMAGE_BASE_URL}${analysisSessionDto.sessionImage}"
-
-        return AnalysisSession(
-            id = analysisSessionDto.sessionId ?: return null,
-            title = analysisSessionDto.sessionName ?: return null,
-            createdAt = createdAt,
-            imageUrlOrPath = imageUrl,
-            predictedPrice = 2100f,
-            solutionEn = analysisSessionDto.solutionEn,
-            preventionsEn = analysisSessionDto.preventionEn,
-            solutionId = analysisSessionDto.solutionId,
-            preventionsId = analysisSessionDto.preventionId,
-            detectedCocoas = analysisSessionDto.detectedCocoas?.mapNotNull {
-                mapDetectedCocoaDtoToDomain(it)
-            } ?: return null
-        )
-    }
-
-    fun mapDetectedCocoaDtoToDomain(
-        detectedCocoaDto: DetectedCocoaDto?
-    ): DetectedCocoa? {
-        return DetectedCocoa(
-            id = detectedCocoaDto?.id ?: return null,
-            cacaoNumber = detectedCocoaDto.cocoaNumber?.toShort() ?: return null,
-            boundingBox = BoundingBox(
-                x1 = detectedCocoaDto.bbCoordinateLeft ?: return null,
-                y1 = detectedCocoaDto.bbCoordinateTop ?: return null,
-                x2 = detectedCocoaDto.bbCoordinateRight ?: return null,
-                y2 = detectedCocoaDto.bbCoordinateBottom ?: return null,
-                cx = detectedCocoaDto.bbCenterX ?: return null,
-                cy = detectedCocoaDto.bbCenterY ?: return null,
-                w = detectedCocoaDto.bbWidth ?: return null,
-                h = detectedCocoaDto.bbHeight ?: return null,
-                label = detectedCocoaDto.bbLabel ?: return null,
-                cls = detectedCocoaDto.bbCls ?: return null,
-                cnf = detectedCocoaDto.bbConfidence ?: return null
-            ),
-            disease = CocoaDisease.getDiseaseFromId(detectedCocoaDto.diseaseId ?: return null)
-                ?: return null
-        )
-    }
 
     fun mapCocoaAverageSellPriceInfoEntityToDomain(
         cocoaAverageSellPriceHistoryEntity: CocoaAverageSellPriceHistoryEntity
@@ -229,14 +169,13 @@ object DataMapper {
 
     fun mapCocoaDiseaseSellPriceInfoEntityToDomain(
         cocoaDiseaseSellPriceInfoEntity: CocoaDiseaseSellPriceInfoEntity
-    ): CocoaDiseaseSellPriceInfo? {
-        val disease =
-            CocoaDisease.getDiseaseFromId(cocoaDiseaseSellPriceInfoEntity.diseaseId) ?: return null
+    ): CocoaDiseaseSellPriceInfo {
+        val disease = CocoaDisease.getDiseaseFromId(cocoaDiseaseSellPriceInfoEntity.diseaseId) ?: CocoaDisease.NONE
         return CocoaDiseaseSellPriceInfo(
             disease = disease,
             highestPrice = cocoaDiseaseSellPriceInfoEntity.highestPrice,
             lowestPrice = cocoaDiseaseSellPriceInfoEntity.lowestPrice,
-            decreasingRatePerDamageLevel = cocoaDiseaseSellPriceInfoEntity.decreasingRatePerDamageLevel,
+            decreasingRatePerDamageLevel = cocoaDiseaseSellPriceInfoEntity.decreasingRatePerDamageLevel
         )
     }
 

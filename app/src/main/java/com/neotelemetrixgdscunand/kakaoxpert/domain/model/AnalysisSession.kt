@@ -7,7 +7,7 @@ data class AnalysisSession(
     val title: String = "",
     val imageUrlOrPath: String = "",
     val createdAt: Long = 0,
-    val predictedPrice: Float = 0f,
+    val totalPredictedPrice: Float,
     val detectedCocoas: List<DetectedCocoa> = emptyList(),
     val solutionEn: String? = null,
     val preventionsEn: String? = null,

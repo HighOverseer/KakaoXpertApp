@@ -30,6 +30,7 @@ data class SavedCocoaAnalysisEntity(
     @ColumnInfo("solution_en")
     val solutionEn: String,
 
+
 //    @ColumnInfo("user_id")
 //    val userId: Int,
 
@@ -45,6 +46,6 @@ data class SavedCocoaAnalysisEntity(
     @ColumnInfo("solution_id")
     val solutionId: String,
 
-    @ColumnInfo("predicted_price")
-    val predictedPrice: Float = 2100f,
+    @ColumnInfo("total_predicted_price")
+    val totalPredictedPrice: Float,
 )

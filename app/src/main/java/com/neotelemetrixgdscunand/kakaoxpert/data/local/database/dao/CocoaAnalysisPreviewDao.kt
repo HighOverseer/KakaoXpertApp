@@ -46,11 +46,11 @@ interface CocoaAnalysisPreviewDao {
         LEFT JOIN saved_cocoa_analysis ON
         cocoa_analysis_preview.session_id = saved_cocoa_analysis.session_id
         WHERE saved_cocoa_analysis.session_id IS NULL
-        ORDER BY cocoa_analysis_preview.created_at ASC
+        ORDER BY cocoa_analysis_preview.created_at DESC
         LIMIT 5
     """
     )
-    suspend fun getFiveOldestWhichNotHaveDetailsYet(): List<Int>
+    suspend fun getFiveLatestWhichNotHaveDetailsYet(): List<Int>
 
     @RawQuery(observedEntities = [CocoaAnalysisPreviewEntity::class, SavedCocoaAnalysisEntity::class, UnsavedCocoaAnalysisEntity::class])
     fun getAllAsPagingSource(query: SupportSQLiteQuery): PagingSource<Int, CocoaAnalysisPreviewRelation>
@@ -83,7 +83,7 @@ interface CocoaAnalysisPreviewDao {
                 unsaved.created_at,
                 unsaved.session_name,
                 unsaved.session_image_path AS session_image_url_or_path,
-                2100 AS predicted_price,
+                unsaved.total_predicted_price AS predicted_price,
                 0 AS last_synced_time,
                 1 AS is_details_available_in_local_db
                 FROM unsaved_cocoa_analysis AS unsaved
