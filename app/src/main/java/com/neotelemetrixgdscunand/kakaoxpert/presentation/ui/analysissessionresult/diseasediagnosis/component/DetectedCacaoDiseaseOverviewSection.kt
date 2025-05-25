@@ -66,15 +66,15 @@ fun DetectedCacaoDiseaseOverviewSection(
     groupedDetectedDisease: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> =
         mutableMapOf<CocoaDisease, ImmutableList<DetectedCocoa>>().toImmutableMap(),
     navigateToCacaoImageDetail: (Int) -> Unit = { },
-    isLoadingProvider:()-> Boolean = { false }
+    isLoadingProvider: () -> Boolean = { false }
 ) {
-    if(isLoadingProvider()){
+    if (isLoadingProvider()) {
         DetectedCacaoDiseaseOverviewSectionLoading(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
         )
 
-    }else{
+    } else {
         val groupedDetectedDiseaseKeys = remember(groupedDetectedDisease) {
             groupedDetectedDisease.keys
         }
@@ -161,7 +161,8 @@ fun DetectedCacaoDiseaseOverviewSection(
                                 Spacer(Modifier.width(2.dp))
 
                                 val diseaseNameResId = CocoaDiseaseMapper.mapToNameResId[diseaseKey]
-                                val diseaseName = diseaseNameResId?.let { stringResource(it) } ?: "-"
+                                val diseaseName =
+                                    diseaseNameResId?.let { stringResource(it) } ?: "-"
                                 Text(
                                     text = diseaseName,
                                     style = MaterialTheme.typography.titleLarge,

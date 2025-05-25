@@ -66,7 +66,7 @@ fun DiagnosisBottomContent(
 
     } else Column(modifier = modifier) {
         val isFromLLM = isSolutionsFromLLMProvider()
-        if(isFromLLM){
+        if (isFromLLM) {
             Row(
                 Modifier
                     .background(color = Color.White, shape = RoundedCornerShape(4.dp)),
@@ -92,10 +92,12 @@ fun DiagnosisBottomContent(
 
             Spacer(Modifier.height(16.dp))
 
-            Spacer(Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(color = Grey69))
+            Spacer(
+                Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(color = Grey69)
+            )
 
             Spacer(Modifier.height(16.dp))
         }
