@@ -396,4 +396,11 @@
     <string name="total_penyakit_yang_terdeteksi">Total Detected Diseases</string>
 
     <string name="penyakit_format">%1$s Diseases</string>
+
+    <string name="input_berat_rata_rata_kakao_tidak_boleh_kosong">Average cocoa weight input cannot be empty.</string>
+    <string name="input_berat_rata_rata_kakao_tidak_boleh_melebihi_5kg">Average cocoa weight input must not exceed 5 kg.</string>
+    <string name="input_berat_rata_rata_kakao_tidak_valid">The entered average cocoa weight input is not valid.</string>
+    <string name="mendeteksi_penyakit_dan_hama">Detecting diseases and pests...</string>
+    <string name="berdasarkan_data_sensor_perangkat_iot">Also based on IoT device sensor data</string>
+
 </resources>
