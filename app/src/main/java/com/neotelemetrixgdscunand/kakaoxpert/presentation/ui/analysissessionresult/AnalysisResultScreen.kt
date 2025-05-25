@@ -289,7 +289,6 @@ fun AnalysisResultContentBody(
         navigateUp = navigateUp
     )
 
-    val coroutineScope = rememberCoroutineScope()
     val diagnosisDiseaseColumnScrollState = rememberScrollState()
     val priceAnalysisColumnScrollState = rememberScrollState()
 
@@ -327,7 +326,8 @@ fun AnalysisResultContentBody(
                 },
                 isLoadingProvider = isLoadingProvider,
                 navigateToCacaoImageDetail = navigateToCacaoImageDetail,
-                diagnosisResultOverviewDui = uiState.diagnosisResultOverview
+                diagnosisResultOverviewDui = uiState.diagnosisResultOverview,
+                isSolutionsFromLLMProvider = { uiState.isSolutionsFromLLM }
             )
         }
 

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
@@ -43,6 +45,7 @@ import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Black10
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Green55
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey60
+import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Grey69
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.KakaoXpertTheme
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.theme.Orange90
 import com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.component.SecondaryDescription
@@ -55,12 +58,48 @@ fun DiagnosisBottomContent(
     modifier: Modifier = Modifier,
     solution: String = "-",
     preventions: ImmutableList<String> = persistentListOf(),
-    isLoadingProvider: () -> Boolean = { false }
+    isLoadingProvider: () -> Boolean = { false },
+    isSolutionsFromLLMProvider: () -> Boolean = { false }
 ) {
     if (isLoadingProvider()) {
         DiagnosisBottomContentLoading(modifier = modifier)
 
     } else Column(modifier = modifier) {
+        val isFromLLM = isSolutionsFromLLMProvider()
+        if(isFromLLM){
+            Row(
+                Modifier
+                    .background(color = Color.White, shape = RoundedCornerShape(4.dp)),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    imageVector = ImageVector
+                        .vectorResource(R.drawable.ic_checklist),
+                    contentDescription = null
+                )
+
+
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.berdasarkan_data_sensor_perangkat_iot),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = 14.sp
+                    ),
+                    color = Green55,
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            Spacer(Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(color = Grey69))
+
+            Spacer(Modifier.height(16.dp))
+        }
+
         Row(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -241,7 +280,7 @@ fun DiagnosisBottomContentLoading(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun DiagnosisBottomContentPreview() {
     KakaoXpertTheme { DiagnosisBottomContent() }

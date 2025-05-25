@@ -15,5 +15,6 @@ data class AnalysisSessionDui(
     val solutionEn: String? = null,
     val preventionsEn: String? = null,
     val solutionId: String? = null,
-    val preventionsId: String? = null
+    val preventionsId: String? = null,
+    val isSolutionsFromLLM:Boolean,
 )

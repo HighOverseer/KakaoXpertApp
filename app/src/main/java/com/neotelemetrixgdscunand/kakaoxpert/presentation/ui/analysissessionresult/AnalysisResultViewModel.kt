@@ -66,7 +66,7 @@ class AnalysisResultViewModel @Inject constructor(
     //May be Modified cause of multiplier change
     private val invalidSessionId = -1
     private val _presentedAnalysisSessionDui =
-        MutableStateFlow(AnalysisSessionDui(id = invalidSessionId))
+        MutableStateFlow(AnalysisSessionDui(id = invalidSessionId, isSolutionsFromLLM = false))
 
     @Volatile
     private var unmodifiedAnalysisSessionDui: AnalysisSessionDui? = null
@@ -377,6 +377,7 @@ class AnalysisResultViewModel @Inject constructor(
                         it.copy(
                             sessionId = diagnosisSessionDui.id,
                             sessionTitle = diagnosisSessionDui.title,
+                            isSolutionsFromLLM = diagnosisSessionDui.isSolutionsFromLLM,
                             groupedDetectedDiseaseToDetectedCocoas = groupedDetectedDiseaseToDetectedCocoas,
                             groupedDetectedDiseaseToDamageLevelsToDetectedCocoas = groupedDetectedDiseaseToDamageLevelsToDetectedCocoas,
                             priceAnalysisOverview = priceAnalysisOverviewDui,

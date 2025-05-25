@@ -102,7 +102,8 @@ fun AnalysisSessionDui.deepCopy(): AnalysisSessionDui {
         solutionEn = solutionEn,
         preventionsEn = preventionsEn,
         solutionId = solutionId,
-        preventionsId = preventionsId
+        preventionsId = preventionsId,
+        isSolutionsFromLLM = isSolutionsFromLLM
 
     )
 }

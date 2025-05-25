@@ -113,7 +113,8 @@ object DuiMapper {
             solutionEn = analysisSession.solutionEn,
             preventionsEn = analysisSession.preventionsEn,
             solutionId = analysisSession.solutionId,
-            preventionsId = analysisSession.preventionsId
+            preventionsId = analysisSession.preventionsId,
+            isSolutionsFromLLM = analysisSession.isSolutionsFromLLm
         )
     }
 

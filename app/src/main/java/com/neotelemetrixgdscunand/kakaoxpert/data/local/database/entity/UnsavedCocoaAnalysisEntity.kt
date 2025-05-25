@@ -28,6 +28,9 @@ data class UnsavedCocoaAnalysisEntity(
     @ColumnInfo("session_image_path")
     val sessionImagePath: String,
 
+    @ColumnInfo("is_solutions_from_llm")
+    val isSolutionsFromLLm: Boolean,
+
 //    @ColumnInfo("prevention_id")
 //    val preventionId: String,
 //

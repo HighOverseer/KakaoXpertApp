@@ -35,7 +35,10 @@ data class AnalysisSessionDto(
     val solutionId: String? = null,
 
     @field:SerializedName("total_predicted_price")
-    val totalPredictedPrice: Float? = null
+    val totalPredictedPrice: Float? = null,
+
+    @field:SerializedName("is_solutions_from_llm")
+    val isSolutionsFromLLm: Boolean? = null,
 )
 
 

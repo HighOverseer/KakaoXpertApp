@@ -20,6 +20,7 @@ data class AnalysisResultUIState(
     //val diagnosisSession: AnalysisSessionDui = AnalysisSessionDui(),
     val sessionId: Int = -1,
     val sessionTitle: String = "",
+    val isSolutionsFromLLM:Boolean = false,
     val groupedDetectedDiseaseToDetectedCocoas: ImmutableMap<CocoaDisease, ImmutableList<DetectedCocoa>> = emptyGroupedMap,
     val groupedDetectedDiseaseToDamageLevelsToDetectedCocoas: ImmutableMap<CocoaDisease, ImmutableMap<Int, ImmutableList<DetectedCocoa>>> = emptyGroupedMap2,
     val priceAnalysisOverview: PriceAnalysisOverviewDui = PriceAnalysisOverviewDui(),

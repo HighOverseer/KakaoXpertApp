@@ -167,8 +167,8 @@ object EntityMapper {
             preventionsEn = analysisSessionDto.preventionEn ?: return null,
             solutionId = analysisSessionDto.solutionId ?: return null,
             preventionsId = analysisSessionDto.preventionId ?: return null,
-
-            )
+            isSolutionsFromLLm = analysisSessionDto.isSolutionsFromLLm ?: return null
+        )
     }
 
     fun mapDetectedCocoaDtoToSavedEntity(
@@ -211,6 +211,7 @@ object EntityMapper {
             createdAt = unsavedCocoaAnalysisEntity.createdAt,
             totalPredictedPrice = unsavedCocoaAnalysisEntity.totalPredictedPrice,
             detectedCocoas = detectedCocoas,
+            isSolutionsFromLLm = unsavedCocoaAnalysisEntity.isSolutionsFromLLm
 //            solutionId = unsavedCocoaAnalysisEntity.solutionId,
 //            preventionsId = unsavedCocoaAnalysisEntity.preventionId,
 //            solutionEn = unsavedCocoaAnalysisEntity.solutionEn,
@@ -237,6 +238,7 @@ object EntityMapper {
             preventionsId = savedCocoaAnalysisEntity.preventionsId,
             solutionEn = savedCocoaAnalysisEntity.solutionEn,
             preventionsEn = savedCocoaAnalysisEntity.preventionsEn,
+            isSolutionsFromLLm = savedCocoaAnalysisEntity.isSolutionsFromLLm
         )
     }
 

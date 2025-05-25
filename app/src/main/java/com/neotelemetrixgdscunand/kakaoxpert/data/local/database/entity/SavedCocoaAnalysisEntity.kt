@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "saved_cocoa_analysis",
@@ -48,4 +49,7 @@ data class SavedCocoaAnalysisEntity(
 
     @ColumnInfo("total_predicted_price")
     val totalPredictedPrice: Float,
+
+    @ColumnInfo("is_solutions_from_llm")
+    val isSolutionsFromLLm: Boolean,
 )

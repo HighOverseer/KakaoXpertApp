@@ -38,7 +38,8 @@ fun DiagnosisDiseaseTabScreen(
     isLoadingProvider: () -> Boolean = { false },
     isItemExpandProvider: (Int) -> Boolean = { false },
     toggleItemExpand: (Int) -> Unit = { },
-    diagnosisResultOverviewDui: DiagnosisResultOverviewDui = DiagnosisResultOverviewDui()
+    diagnosisResultOverviewDui: DiagnosisResultOverviewDui = DiagnosisResultOverviewDui(),
+    isSolutionsFromLLMProvider: () -> Boolean = { false }
 ) {
 
     DetectedCacaoDiseaseOverviewSection(
@@ -46,7 +47,8 @@ fun DiagnosisDiseaseTabScreen(
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         groupedDetectedDisease = groupedDetectedDisease,
-        navigateToCacaoImageDetail = navigateToCacaoImageDetail
+        navigateToCacaoImageDetail = navigateToCacaoImageDetail,
+        isLoadingProvider = isLoadingProvider
     )
 
     Spacer(Modifier.height(16.dp))
@@ -89,7 +91,8 @@ fun DiagnosisDiseaseTabScreen(
             .padding(16.dp),
         preventions = preventions,
         solution = solution,
-        isLoadingProvider = isLoadingProvider
+        isLoadingProvider = isLoadingProvider,
+        isSolutionsFromLLMProvider = isSolutionsFromLLMProvider
     )
 
     Text(

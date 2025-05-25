@@ -12,6 +12,7 @@ data class AnalysisSession(
     val solutionEn: String? = null,
     val preventionsEn: String? = null,
     val solutionId: String? = null,
-    val preventionsId: String? = null
+    val preventionsId: String? = null,
+    val isSolutionsFromLLm: Boolean = false,
 )
 

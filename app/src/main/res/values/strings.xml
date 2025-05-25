@@ -385,5 +385,7 @@
     <string name="input_berat_rata_rata_kakao_tidak_boleh_kosong">Input Berat rata-rata kakao tidak boleh kosong..</string>
     <string name="input_berat_rata_rata_kakao_tidak_boleh_melebihi_5kg">Input Berat rata-rata kakao tidak boleh melebihi 5 Kg</string>
     <string name="input_berat_rata_rata_kakao_tidak_valid">Input berat rata-rata kakao yang dimasukkan tidak valid..</string>
+    <string name="mendeteksi_penyakit_dan_hama">Mendeteksi Penyakit dan Hama..</string>
+    <string name="berdasarkan_data_sensor_perangkat_iot">Juga Berdasarkan Data Sensor Perangkat IoT</string>
 
 </resources>
