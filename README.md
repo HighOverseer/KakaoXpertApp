@@ -118,8 +118,6 @@ For support, questions, or feedback:
 ## 🙏 Acknowledgments
 
 - Thanks to the cocoa farming community for their valuable feedback
-- YOLOv8 team for the excellent object detection framework
-- TensorFlow team for mobile ML capabilities
 - All contributors who helped make this project possible
 
 ---
