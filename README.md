@@ -3,10 +3,9 @@
 
 # KakaoXpert App
 
-![98f92e8819a7b04c88cee1e8863597fa_upscaled](https://github.com/user-attachments/assets/635f3dda-6567-4fa4-b895-a5c751a2fc0f)
-
-
 An AI-powered mobile application designed to help cocoa farmers detect diseases, assess damage levels, and manage the health of their cocoa plants through advanced computer vision and IoT integration.
+
+![98f92e8819a7b04c88cee1e8863597fa_upscaled](https://github.com/user-attachments/assets/635f3dda-6567-4fa4-b895-a5c751a2fc0f)
 
 ## 🌱 Overview
 
