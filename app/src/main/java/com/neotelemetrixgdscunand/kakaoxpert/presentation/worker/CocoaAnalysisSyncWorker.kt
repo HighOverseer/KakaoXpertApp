@@ -13,7 +13,6 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.neotelemetrixgdscunand.kakaoxpert.R
 import com.neotelemetrixgdscunand.kakaoxpert.domain.common.CocoaAnalysisSyncType
-import com.neotelemetrixgdscunand.kakaoxpert.domain.common.Result
 import com.neotelemetrixgdscunand.kakaoxpert.domain.usecase.SyncCocoaAnalysisDataUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
