@@ -1,6 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -128,6 +130,7 @@ fun RegisterContent(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(Color.White) // double layer
             .verticalScroll(scrollState),
     ) {
 

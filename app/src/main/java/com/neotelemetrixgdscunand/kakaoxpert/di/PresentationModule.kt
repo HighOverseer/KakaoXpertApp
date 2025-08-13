@@ -1,7 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.di
 
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CapturedImageFileHandlerImpl
-import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaDamageLevelPredictionHelperImpl
+import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaDamageSeverityPredictionHelperImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaDiseaseDetectorHelperImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.CocoaPriceCalculationHelperImpl
 import com.neotelemetrixgdscunand.kakaoxpert.data.utils.LocationManagerImpl
@@ -30,7 +30,7 @@ abstract class PresentationModule {
     abstract fun bindImageDetectorHelper(imageDetectorHelperImpl: CocoaDiseaseDetectorHelperImpl): CocoaDiseaseDetectorHelper
 
     @Binds
-    abstract fun bindCocoaPricePredictionHelper(cocoaDamageLevelPredictionHelperImpl: CocoaDamageLevelPredictionHelperImpl): CocoaDamageLevelPredictionHelper
+    abstract fun bindCocoaDamageSeverityPredictionHelper(cocoaDamageSeverityPredictionHelperImpl: CocoaDamageSeverityPredictionHelperImpl):CocoaDamageLevelPredictionHelper
 
     @Binds
     abstract fun bindCocoaPriceCalculationHelper(cocoaPriceCalculationHelperImpl: CocoaPriceCalculationHelperImpl): CocoaPriceCalculationHelper
@@ -50,5 +50,6 @@ abstract class PresentationModule {
 
     @Binds
     abstract fun bindLocationManager(locationManagerImpl: LocationManagerImpl): LocationManager
+
 
 }

@@ -269,7 +269,8 @@
     <string name="fitur_prediksi_cuaca_tidak_bisa">The Weather Prediction feature cannot be used without access to your location.</string>
     <string name="maaf_sepertinya_anda_perlu_mengaktifkan_beberapa_pengaturan_lokasi">Sorry, it seems you need to enable some location settings.</string>
     <string name="maaf_pengaturan_lokasi_perlu_anda_aktifkan">Sorry, you need to enable location settings.</string>
-    <string name="tidak_diketahui">Unknown</string>
+<!--    <string name="tidak_diketahui">Unknown</string>-->
+    <string name="tidak_diketahui">Padang City</string>
     <string name="maaf_detail_berita_tidak_ditemukan">Sorry, it seems the news content could not be found.</string>
     <string name="tidak_ditemukan_berita_yang_cocok">No matching news found</string>
     <string name="tidak_ada_berita_yang_tersedia">No news available</string>
@@ -400,7 +401,7 @@
     <string name="input_berat_rata_rata_kakao_tidak_boleh_kosong">Average cocoa weight input cannot be empty.</string>
     <string name="input_berat_rata_rata_kakao_tidak_boleh_melebihi_5kg">Average cocoa weight input must not exceed 5 kg.</string>
     <string name="input_berat_rata_rata_kakao_tidak_valid">The entered average cocoa weight input is not valid.</string>
-    <string name="mendeteksi_penyakit_dan_hama">Detecting diseases and pests...</string>
+    <string name="mendeteksi_penyakit_dan_hama">Detecting diseases and pests…</string>
     <string name="berdasarkan_data_sensor_perangkat_iot">Also based on IoT device sensor data</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.auth
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -105,6 +106,7 @@ fun LoginContent(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(Color.White) // double layer
             .verticalScroll(scrollState),
     ) {
 

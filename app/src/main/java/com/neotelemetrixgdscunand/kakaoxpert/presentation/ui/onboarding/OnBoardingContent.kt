@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -214,6 +215,7 @@ fun OnBoardingContent(
 
     ConstraintLayout(
         modifier = modifier
+            .background(Color.White) // double layer
             .fillMaxSize(),
         constraintSet = constraints
     ) {

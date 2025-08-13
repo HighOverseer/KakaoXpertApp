@@ -54,7 +54,8 @@ class CocoaDiseaseDetectorHelperImpl @Inject constructor(
         val model = FileUtil.loadMappedFile(context, MODEL_PATH)
         ensureActive()
         val options = Interpreter.Options()
-        options.numThreads = 6
+        //options.numThreads = 6
+        options.setNumThreads(6)
         interpreter = Interpreter(model, options)
 
         val inputShape = interpreter?.getInputTensor(0)?.shape() ?: return@withContext
@@ -78,6 +79,7 @@ class CocoaDiseaseDetectorHelperImpl @Inject constructor(
 
             labels.addAll(TEMP_CLASSES)
         }
+        println(labels)
     }
 
     override fun clearResource() {
@@ -149,7 +151,7 @@ class CocoaDiseaseDetectorHelperImpl @Inject constructor(
     companion object {
         private val INPUT_IMAGE_TYPE = DataType.FLOAT32
         private val OUTPUT_IMAGE_TYPE = DataType.FLOAT32
-        private const val MODEL_PATH = "cocoa_disease_detection.tflite"
+        private const val MODEL_PATH = /*"rev_2.tflite"*/ "model_new.tflite"
         private const val LABEL_PATH: String = "labels.txt"
     }
 

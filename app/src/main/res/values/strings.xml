@@ -262,7 +262,8 @@
     <string name="fitur_prediksi_cuaca_tidak_bisa">Fitur Prediksi Cuaca tidak bisa dijalankan tanpa izin akses ke lokasi anda..</string>
     <string name="maaf_sepertinya_anda_perlu_mengaktifkan_beberapa_pengaturan_lokasi">Maaf, sepertinya anda perlu mengaktifkan beberapa pengaturan lokasi..</string>
     <string name="maaf_pengaturan_lokasi_perlu_anda_aktifkan">Maaf, pengaturan lokasi perlu anda aktifkan..</string>
-    <string name="tidak_diketahui">Tidak Diketahui</string>
+<!--    <string name="tidak_diketahui">Tidak Diketahui</string>-->
+    <string name="tidak_diketahui">Kota Padang</string>
     <string name="maaf_detail_berita_tidak_ditemukan">Maaf, sepertinya konten berita tidak ditemukan..</string>
     <string name="tidak_ditemukan_berita_yang_cocok">Tidak ditemukan berita yang cocok</string>
     <string name="tidak_ada_berita_yang_tersedia">Tidak ada berita yang tersedia</string>

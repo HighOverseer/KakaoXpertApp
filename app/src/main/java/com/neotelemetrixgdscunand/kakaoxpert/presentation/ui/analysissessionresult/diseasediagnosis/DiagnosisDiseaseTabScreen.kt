@@ -1,5 +1,6 @@
 package com.neotelemetrixgdscunand.kakaoxpert.presentation.ui.analysissessionresult.diseasediagnosis
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -61,8 +62,15 @@ fun DiagnosisDiseaseTabScreen(
                 groupedDetectedDisease.keys.toList()
             ).let { context.getString(it) }
         } else {
-            when (configuration.locales[0].language) {
-                "id" -> diagnosisResultOverviewDui.solutionId
+            val languageCode = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+
+                configuration.locales[0].language
+            }else{
+                @Suppress("DEPRECATION")
+                configuration.locale.language
+            }
+            when (languageCode) {
+                "in" -> diagnosisResultOverviewDui.solutionId
                 else -> diagnosisResultOverviewDui.solutionEn
             }
         }
@@ -75,13 +83,21 @@ fun DiagnosisDiseaseTabScreen(
                 groupedDetectedDisease.keys.toList()
             ).let { context.getString(it) }
         } else {
-            when (configuration.locales[0].language) {
-                "id" -> diagnosisResultOverviewDui.preventionId
+            val languageCode = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                configuration.locales[0].language
+            }else{
+                @Suppress("DEPRECATION")
+                configuration.locale.language
+            }
+            when (languageCode) {
+                "in" -> diagnosisResultOverviewDui.preventionId
                 else -> diagnosisResultOverviewDui.preventionEn
             }
         }.split("\n")
             .toImmutableList()
     }
+
+
 
     DiagnosisBottomContent(
         modifier = Modifier
