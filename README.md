@@ -99,6 +99,9 @@ KakaoXpert is designed to work in areas with limited internet connectivity:
 - Analysis history is stored locally and synced when connection is available
 - Core AI models are embedded within the app for reliable performance
 
+## 🤖 App Demo Video
+Link : [KakaoXpert App Demo](https://drive.google.com/file/d/1bdo31vowj9H1WWXwKxdU5OtXh2gnzrsT/view?usp=sharing)
+
 ## 🤝 Contributing
 
 We welcome contributions to improve KakaoXpert! Please feel free to:
