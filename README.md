@@ -11,6 +11,8 @@ An AI-powered mobile application designed to help cocoa farmers detect diseases,
 
 KakaoXpert leverages artificial intelligence to analyze cocoa pod images, identify diseases, and predict damage extent. The app integrates with IoT devices to collect environmental data, providing farmers with comprehensive insights and treatment recommendations to optimize their cocoa crop management.
 
+For the backend, please visit this link : https://github.com/HighOverseer/KakaoXpert-Backend
+
 ## ✨ Key Features
 
 ### 🔍 Disease Detection & Analysis
@@ -24,7 +26,7 @@ KakaoXpert leverages artificial intelligence to analyze cocoa pod images, identi
 - **Device Management**: Allows users to manage and configure connected IoT devices
 
 ### 💡 Smart Recommendations
-- **Customized Treatment Solutions**: Provides tailored recommendations using Qwen+ LLM based on disease type and environmental conditions
+- **Customized Treatment Solutions**: Provides tailored recommendations using Meta LLMA based on disease type and environmental conditions
 - **Data-Driven Insights**: Combines AI analysis with environmental data for accurate treatment suggestions
 
 ### 📊 Data Management
@@ -47,7 +49,7 @@ KakaoXpert leverages artificial intelligence to analyze cocoa pod images, identi
 ### AI & Machine Learning
 - **Object Detection**: YOLOv8 for disease identification
 - **Segmentation**: YOLOv8-seg for damage level calculation
-- **Language Model**: Qwen+ LLM for treatment recommendations
+- **Language Model**: Meta LLMA for treatment recommendations
 - **ML Framework**: TensorFlow Lite for local model inference
 
 ### Data & Networking
